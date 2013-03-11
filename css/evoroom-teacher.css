@@ -1,0 +1,91 @@
+* {
+ font-family: inherit;  /* we can get rid of this after pulling in Matt's new stuff */
+}
+
+body {
+  background-color: #12120C;
+  background-image: url('/images/bkgd.png');
+  background-repeat: repeat;
+  font-family: 'Droid Sans', sans-serif !important;
+}
+
+.teacher-dashboard {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.teacher-dashboard tr.step > * {
+  vertical-align: middle;
+}
+
+.teacher-dashboard tr.step {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgba(0,0,0,0.3);
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+.teacher-dashboard tr.step:nth-child(even) {
+  background-color: rgba(0,0,0,0.6);
+}
+
+.teacher-dashboard tr.step > th {
+  color: white;
+  font-weight: bold;
+  width: 15ex;
+  margin-left: 10px;
+  margin-top: 12px;
+  font-size: 20px;
+  padding-left:20px;
+  text-align: left;
+  padding-right: 20px;
+  white-space: nowrap;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.teacher-dashboard tr.step > td.buttons {
+  line-height: 50px;
+  white-space: nowrap;
+}
+
+.teacher-dashboard tr.step > td.students {
+  margin-left: 15px;
+  white-space: normal;
+  min-width: 40%;
+}
+
+.teacher-button-done {
+  background-color: rgb(64, 179, 79)!important;
+}
+
+.teacher-button-primed {
+  background-color: #ff4;
+}
+
+.teacher-button-faded {
+  opacity: 0.5;
+}
+
+.student {
+  display: inline-block;
+  background: gray;
+  border-radius: 4px;
+  color: white;
+  font-size: 12px;
+  padding: 4px;
+  margin-right: 5px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.team-Darwin    { background-color: blue; }
+.team-Linneaus  { background-color: purple; }
+.team-Lamarck   { background-color: red; }
+.team-Wallace   { background-color: green; }
+
+.team-Mendel    { background-color: blue; }
+.team-Lyell     { background-color: purple; }
+.team-Huxley    { background-color: red; }
+.team-Mathus    { background-color: green; }

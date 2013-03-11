@@ -1,0 +1,7 @@
+*.log
+*.pid
+.DS_Store
+config.json
+node_modules/
+.settings
+.project
