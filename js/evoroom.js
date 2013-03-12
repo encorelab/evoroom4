@@ -1,104 +1,143 @@
-/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, plusplus: true, nomen: true, white: true, eqeq: false */
-/*globals Sail, Rollcall, $, Foo, _, window */
+/*jshint browser: true, devel: true, debug: true, strict: false, unused:false, undef:true */
+/*globals jQuery, _, Sail, EvoRoom, Rollcall, Wakeful */
 
-var EvoRoom = {
+window.EvoRoom = window.EvoRoom || {};
 
-  rollcallURL: '/rollcall',
+EvoRoom.Mobile = function() {
+  var app = this;
 
-  events: {
-    sail: {
-      /********************************************* INCOMING EVENTS *******************************************/
-      
-      dummy_event: function(ev) {
-        if (ev.payload) {
+  app.name = "EvoRoom.Mobile";
 
-        } else {
-          console.log("dummy_event received, but payload is incomplete or not for this user");
-        }
-      }
+  app.requiredConfig = {
+    xmpp: {
+      domain: 'string',
+      port: 'number',
+      url: 'string'
     },
+    rollcall: {
+      url: 'string'
+    },
+    drowsy: {
+      url: 'string'
+    },
+    wakeful: {
+      url: 'string'
+    }
+  };
 
+  // Global vars - a lot of this stuff can go TODO
+  app.rollcall = null;
+  app.userData = null;
+ 
+
+  app.init = function() {
+    Sail.verifyConfig(this.config, this.requiredConfig);
+    
+    Sail.modules
+      // Enable multi-picker login for CommonKnowledge curnit - asking for run (must be linked to curnit)
+      .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom'})
+      .load('Strophe.AutoConnector')
+      .load('AuthStatusWidget', {indicatorContainer: '#logout-container'})
+      .thenRun(function () {
+        Sail.autobindEvents(app);
+        app.trigger('initialized');
+
+        return true;
+      });
+
+    // Create a Rollcall instance so that sail.app has access to it later on
+    app.rollcall = new Rollcall.Client(app.config.rollcall.url);
+
+    // configure the toasts
+    jQuery().toastmessage({
+      position : 'middle-center'
+    });
+
+  };
+
+  app.authenticate = function() {
+    // TODO: implement me... probalby just copy + modify code from washago?
+
+    // TODO: for now we're hard-coding a run name... need to get this from auth
+    //this.config.run = {name: "ck-alpha1", id: 12};
+    if (!app.run) {
+      Rollcall.Authenticator.requestRun();
+    } else {
+      Rollcall.Authenticator.requestLogin();
+    }
+
+    
+  };
+
+  app.restoreState = function () {
+    console.log('restore UI state');
+  };
+
+  app.events = {
     initialized: function(ev) {
-      Sail.app.authenticate();
+      app.authenticate();
     },
+
+    'ui.initialized': function(ev) {
+      console.log('ui.initialized!');
+    },    
 
     authenticated: function(ev) {
-
+      console.log('Authenticated...');
     },
 
     connected: function(ev) {
-
+      console.log("Connected...");
     },
 
-    unauthenticated: function(ev) {
+    ready: function(ev) {
+      // TODO: maybe also wait until we're connected?
+      //       currently this just waits until CK.Model is initialized
+      console.log("Ready!");
 
-    }
-  },
-
-  init: function() {
-    Sail.app.rollcall = new Rollcall.Client(Sail.app.rollcallURL);
-
-    Sail.app.run = Sail.app.run || JSON.parse($.cookie('run'));
-    if (Sail.app.run) {
-      Sail.app.groupchatRoom = Sail.app.run.name + '@conference.' + Sail.app.xmppDomain;
-    }
-
-    Sail.modules
-    .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom4', userFilter: function(u) { return true; }})
-    .load('Strophe.AutoConnector')
-    .load('AuthStatusWidget')
-    .thenRun(function () {
-      Sail.autobindEvents(EvoRoom);
-
-      $(document).ready(function() {
-        $('#reload').click(function() {
-          Sail.Strophe.disconnect();
-          location.reload();
-        });
+      // Disable logout button
+      jQuery('#logout-button').unbind();
+      jQuery('#logout-button a').unbind();
+      jQuery('#logout-button a').click( function() {
+        console.log('reload');
+        window.location.reload();
       });
 
-      $(Sail.app).trigger('initialized');
-      return true;
-    });
-  },    
+      
+      // moved the view init here so that backbone is configured with URLs
+      app.initViews();
+    },
 
-  authenticate: function() {
-    Sail.app.token = Sail.app.rollcall.getCurrentToken();
+    'unauthenticated': function(ev) {
+      app.authenticate();
+    },
 
-    if (!Sail.app.run) {
-      Rollcall.Authenticator.requestRun();
-    } else if (!Sail.app.token) {
-      Rollcall.Authenticator.requestLogin();
-    } else {
-      Sail.app.rollcall.fetchSessionForToken(Sail.app.token, function(data) {
-        Sail.app.session = data.session;
-        $(Sail.app).trigger('authenticated');
-      },
-      function(error) {
-        console.warn("Token '"+Sail.app.token+"' is invalid. Will try to re-authenticate...");
-        Rollcall.Authenticator.unauthenticate();
+    sail: {
+      dummy: function(sev) {
+        console.log('received dummy sail event');
       }
-      );
     }
-  },
+  };
 
 
-  /********************************************* OUTGOING EVENTS *******************************************/
-  
-  submitDummy: function() {
-    var sev = new Sail.Event('dummy_done', {
-      author:Sail.app.session.account.login,
-      team_name:Sail.app.currentTeam,
-    });
+  /* Outgoing events */
+  app.sendDummy = function(model) {
+    var sev;
+    sev = new Sail.Event('dummy', model.toJSON());
+    
     Sail.app.groupchat.sendEvent(sev);
-  },
+    return true;
+  };
 
 
-  /********************************************** HELPER FUNCTIONS *****************************************/
+  /* Helper functions */
 
-  restoreState: function() {
-
-  },
+  app.initViews = function() {
+    console.log('initializing views');
+  };
 
 
 };
+
+EvoRoom.Mobile.prototype = new Sail.App();
+

@@ -1,9 +1,11 @@
 <!DOCTYPE html> 
 <html> 
-<head> 
-    <title>EvoRoom 3</title>
-
-    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,height=device-height" />
+<head>
+    <meta charset="utf-8">
+    <title>EvoRoom 4</title>
+    <meta name="viewport" content="initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
   
     <link href="js/sail.js/css/sail.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -11,9 +13,8 @@
     <link href="css/evoroom.css" rel="stylesheet" type="text/css" /> 
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         
-    <script src="js/libs/phonegap-1.2.0.js" type="text/javascript"></script>
-    <script src="js/libs/barcodescanner.js" type="text/javascript"></script>
-    <script src="js/sail.js/sail.js"></script>
+    <script src="js/sail.js/load.js" type="text/javascript"></script>
+    <script src="js/sail.js/sail.js" type="text/javascript"></script>
     <script>
         Sail.load()
             .then('js/sail.js/rollcall.js')
@@ -21,6 +22,19 @@
             .thenRun(function() { 
                 return Sail.init(EvoRoom);
             });
+    </script>
+    <script type="text/javascript">
+        Sail.JS_ROOT_PATH = "/js/sail.js";
+        Sail.load()
+            .then(Sail.JS_ROOT_PATH+'/rollcall.js')
+            .then('js/evoroom.js')
+            // .then('https://raw.github.com/zuk/Backbone.Drowsy/master/backbone.drowsy.js')
+            // .then('https://raw.github.com/zuk/Backbone.Drowsy/master/wakeful.js')
+            // .then('../shared/js/ck.model.js')
+            // .then('js/ck.mobile.js')
+            // .then('js/ck.mobile.view.js')
+            .then('js/deps/jquery.toastmessage.js')
+            .thenRun(function() { return Sail.init(new EvoRoom.Mobile()); });  
     </script>
 </head>
 <body>

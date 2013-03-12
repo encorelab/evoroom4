@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     //   }
     // }
     jshint: {
-      all: ['Gruntfile.js', 'mobile/js/ck.mobile.view.js', 'mobile/js/ck.mobile.js']
+      all: ['Gruntfile.js', 'js/evoroom.js', 'js/evoroom.teacher.js']
     }
   });
 

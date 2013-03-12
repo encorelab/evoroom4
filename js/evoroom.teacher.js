@@ -1,4 +1,6 @@
-/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true, sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, eqeq: false, plusplus: true, nomen: false, white: false */
+/*jslint devel: true, regexp: true, browser: true, unparam: true, debug: true,
+sloppy: true, sub: true, es5: true, vars: true, evil: true, fragment: true, 
+eqeq: false, plusplus: true, nomen: false, white: true */
 /*globals Sail, Rollcall, $, window, _ */
 
 var EvoRoom = window.EvoRoom || {};
@@ -180,7 +182,7 @@ EvoRoom.Teacher = {
     var marker = EvoRoom.Teacher.studentMarker(user);
     marker.attr('title', state + " ("+user.metadata.current_rotation+")");
     
-    if (user.metadata.day == 2) { // day 2
+    if (user.metadata.day === 2) { // day 2
       if (EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
         $('.step-2-2 button.start_feature_observations').removeClass('teacher-button-faded');
         $('.step-2-2 button.start_feature_observations').addClass('teacher-button-primed');
@@ -188,8 +190,7 @@ EvoRoom.Teacher = {
         $('.step-2-2 button.start_feature_observations').removeClass('teacher-button-primed');
       }
       
-      if (_.all(EvoRoom.Teacher.users, function(user, username) {return EvoRoom.Teacher.done_features[username] === true} )
-          && EvoRoom.Teacher.checkAllUsersInState('OBSERVING_PAST_FEATURES')) {
+      if (_.all(EvoRoom.Teacher.users, function(user, username) {return EvoRoom.Teacher.done_features[username] === true;}) && EvoRoom.Teacher.checkAllUsersInState('OBSERVING_PAST_FEATURES')) {
         $('button.start_pre_transition').removeClass('teacher-button-faded');
         $('button.start_pre_transition').addClass('teacher-button-primed');
         $('button.start_transition').removeClass('teacher-button-faded');
@@ -260,23 +261,23 @@ EvoRoom.Teacher = {
           $('.step-1-1 .students').append(marker);
           break;
         case "OBSERVING_PAST":
-          if (user.metadata.current_rotation == 1) {
+          if (user.metadata.current_rotation === 1) {
             $('.step-1-2 .students').append(marker);
-          } else if (user.metadata.current_rotation == 2) {
+          } else if (user.metadata.current_rotation === 2) {
             $('.step-1-4 .students').append(marker);
           }
           break;
         case "MEETUP":
         case "WAITING_FOR_MEETUP_START":
         case "WAITING_FOR_GROUP_TO_FINISH_MEETUP":
-          if (user.metadata.current_rotation == 1) {
+          if (user.metadata.current_rotation === 1) {
             $('.step-1-3 .students').append(marker);
           } else {
             $('.step-1-5 .students').append(marker);
           }
           break;
         case "OUTSIDE":
-          if (user.metadata.current_rotation == 2) {
+          if (user.metadata.current_rotation === 2) {
             $('.step-1-6 .students').append(marker);
           }
           break;
@@ -284,14 +285,14 @@ EvoRoom.Teacher = {
         case 'GOING_TO_ASSIGNED_LOCATION':
           switch(user.metadata.current_task) {
             case 'meetup':
-              if (user.metadata.current_rotation == 1) {
+              if (user.metadata.current_rotation === 1) {
                 $('.step-1-3 .students').append(marker);
               } else {
                 $('.step-1-5 .students').append(marker);
               }
               break;
             case 'observe_past_presence':
-              if (user.metadata.current_rotation == 1) {
+              if (user.metadata.current_rotation === 1) {
                 $('.step-1-2 .students').append(marker);
               } else {
                 $('.step-1-4 .students').append(marker);
@@ -326,10 +327,10 @@ EvoRoom.Teacher = {
   
   checkAllUsersInRotation: function(rotation) {
     var check = function(username,user) { 
-      if (rotation == 1) {
-        return !user.metadata.current_rotation || user.metadata.current_rotation == rotation; 
+      if (rotation === 1) {
+        return !user.metadata.current_rotation || user.metadata.current_rotation === rotation; 
       } else {
-        return user.metadata.current_rotation == rotation; 
+        return user.metadata.current_rotation === rotation; 
       }
     };
     return EvoRoom.Teacher.checkAllUsers(check);
