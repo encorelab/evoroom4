@@ -14,48 +14,10 @@
 }
 
 /* ===================== HEADER STUFF ===================== */
+
 header {
     height: 40px;
 }
-
-header .progressbar {
-    padding-bottom: 5px;
-    font-family: 'Droid Sans', sans-serif !important;
-    font-size: 12pt !important;
-}
-
-header .progressbar .indicator {
-    display: inline-block;
-    width: 103px;
-    height: 30px;
-    text-align: center;
-    padding-top: 10px;
-    margin-top: 2px;
-    margin-right: 3px;
-    /*border: 1px solid red;*/
-    background-color: #333333;
-    background-repeat: no-repeat;
-    background-position:center;
-    color: #808080;
-}
-
-header .done {
-    /*background-image: url('/images/arrow2_green.png');*/
-    background-color: #40B34F !important;
-    color: white !important;
-}
-
-/*header .todo {
-    background-color: #333333;
-    background-repeat: no-repeat;
-    background-position:center;
-    color: #808080;
-}*/
-
-header .hide {
-    display:none;
-}
-/* ===================== HEADER STUFF ===================== */
 
 .banner {
 	position: absolute;
@@ -70,11 +32,14 @@ header .hide {
 	padding: 35px;
 }
 
-.banner .project {
-    font-size: 48px;
+#step-container {
+    margin-top: 11px;
 }
 
-.full-text-box {
+
+/* ====================== BODY STUFF ====================== */
+
+.large-text-box {
 	position: absolute;
 	bottom: 0px;
 	left: 50%;
@@ -85,6 +50,20 @@ header .hide {
 	background-color: #F7F7F7;
 	padding: 35px;
 }
+
+.medium-text-box {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-left: -260px;
+    width: 520px;
+    height: 680px;
+    display: table;
+    background-color: #F7F7F7;
+    padding: 35px;    
+}
+
+
 
 .title {
 	margin-top: 15px;
