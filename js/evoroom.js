@@ -88,8 +88,13 @@ EvoRoom.Mobile = function() {
 
     connected: function(ev) {
       console.log("Connected...");
+      // these can likely go back in ready() when it's working correctly
+      app.initModels();
+      app.bindPageElements();
+      jQuery('#log-in-success').show();
     },
 
+    // NB: this is currently not getting called!
     ready: function(ev) {
       // TODO: maybe also wait until we're connected?
       //       currently this just waits until CK.Model is initialized
@@ -103,9 +108,6 @@ EvoRoom.Mobile = function() {
         window.location.reload();
       });
 
-      
-      // moved the view init here so that backbone is configured with URLs
-      app.initViews();
     },
 
     'unauthenticated': function(ev) {
@@ -130,10 +132,36 @@ EvoRoom.Mobile = function() {
   };
 
 
+
   /* Helper functions */
 
-  app.initViews = function() {
-    console.log('initializing views');
+  app.initModels = function() {
+    console.log('Initializing models...');
+
+    // create phase (?) object and wake it up (sub to collection)
+    // create user_state object if necessary
+    // create userState object and wake it up (sub to collection)
+
+  };
+
+  app.bindPageElements = function() {
+    console.log('Binding page elements...');
+
+    jQuery('#log-in-success').click(function() {
+      app.hidePageElements();
+
+      // insert the grouping check here
+
+      jQuery('#team-assignment').show();
+    });
+  };
+
+  app.hidePageElements = function() {
+    console.log('Hiding page elements...');
+    jQuery('#loading-page').hide();
+    jQuery('#team-meeting').hide();
+    jQuery('#log-in-success').hide();
+    jQuery('#team-assignment').hide();
   };
 
 
