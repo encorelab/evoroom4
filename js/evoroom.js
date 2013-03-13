@@ -84,6 +84,15 @@ EvoRoom.Mobile = function() {
 
     authenticated: function(ev) {
       console.log('Authenticated...');
+
+      // now we call a class function (configure) and hand in the drowsy url and the run name so we don't need
+      // to do this config again for each model instantiation
+      EvoRoom.Model.init(app.config.drowsy.url, app.run.name)
+      .done(function () {
+        Wakeful.loadFayeClient(app.config.wakeful.url).done(function () {
+          app.trigger('ready');
+        });
+      });
     },
 
     connected: function(ev) {
@@ -147,22 +156,23 @@ EvoRoom.Mobile = function() {
   app.bindPageElements = function() {
     console.log('Binding page elements...');
 
-    $('#log-in-success').click(function() {
+    jQuery('#log-in-success').click(function() {
       app.hidePageElements();
 
       // insert the grouping check here
 
-      $('#team-assignment .small-button').show();
+
+      jQuery('#team-assignment .small-button').show();
     });
   };
 
   app.hidePageElements = function() {
     console.log('Hiding page elements...');
-    $('#loading-page').hide();
-    $('#team-meeting').hide();
-    $('#log-in-success').hide();
-    $('#team-assignment').hide();
-  }
+    jQuery('#loading-page').hide();
+    jQuery('#team-meeting').hide();
+    jQuery('#log-in-success').hide();
+    jQuery('#team-assignment').hide();
+  };
 
 
 };

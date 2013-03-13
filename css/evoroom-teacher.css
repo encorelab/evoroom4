@@ -1,12 +1,8 @@
-* {
- font-family: inherit;  /* we can get rid of this after pulling in Matt's new stuff */
-}
-
 body {
   background-color: #12120C;
   background-image: url('/images/bkgd.png');
   background-repeat: repeat;
-  font-family: 'Droid Sans', sans-serif !important;
+  font-family: Verdana, sans-serif;
 }
 
 .teacher-dashboard {
