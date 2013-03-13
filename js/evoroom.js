@@ -147,22 +147,22 @@ EvoRoom.Mobile = function() {
   app.bindPageElements = function() {
     console.log('Binding page elements...');
 
-    $('#log-in-success').click(function() {
+    jQuery('#log-in-success').click(function() {
       app.hidePageElements();
 
       // insert the grouping check here
 
-      $('#team-assignment').show();
+      jQuery('#team-assignment').show();
     });
   };
 
   app.hidePageElements = function() {
     console.log('Hiding page elements...');
-    $('#loading-page').hide();
-    $('#team-meeting').hide();
-    $('#log-in-success').hide();
-    $('#team-assignment').hide();
-  }
+    jQuery('#loading-page').hide();
+    jQuery('#team-meeting').hide();
+    jQuery('#log-in-success').hide();
+    jQuery('#team-assignment').hide();
+  };
 
 
 };
