@@ -4,13 +4,13 @@
 
 #evoroom {
   background-color: #12120C;
-	background-image: url('/images/bkgd_wText.jpg');
-	background-repeat: no-repeat;
-	width: 800px;
-	height: 1186px;
-	font-size: 24px;
-	position: relative;
-	font-family: 'Droid Sans', sans-serif !important;
+    background-image: url('/images/bkgd_wText.jpg');
+    background-repeat: no-repeat;
+    width: 800px;
+    height: 1096px;
+    font-size: 24px;
+    position: relative;
+    font-family: 'Droid Sans', sans-serif !important;
 }
 
 /* ===================== HEADER STUFF ===================== */
@@ -20,16 +20,16 @@ header {
 }
 
 .banner {
-	position: absolute;
-	bottom: 840px;
-	left: 50%;			
-	margin-left: -295px;
-	width: 520px;
-	/*height: 780px;*/
-	display: table;
-	color: white;
-	/*background-color: #F7F7F7;*/
-	padding: 35px;
+    position: absolute;
+    bottom: 840px;
+    left: 50%;          
+    margin-left: -295px;
+    width: 520px;
+    /*height: 780px;*/
+    display: table;
+    color: white;
+    /*background-color: #F7F7F7;*/
+    padding: 35px;
 }
 
 #step-container {
@@ -39,295 +39,62 @@ header {
 
 /* ====================== BODY STUFF ====================== */
 
-.large-text-box {
-	position: absolute;
-	bottom: 0px;
-	left: 50%;
-	margin-left: -260px;				/* always width/2 */
-	width: 520px;
-	height: 780px;
-	display: table;
-	background-color: #F7F7F7;
-	padding: 35px;
-}
-
-.medium-text-box {
+.text-box-large {
     position: absolute;
     bottom: 0px;
     left: 50%;
     margin-left: -260px;
-    width: 520px;
-    height: 680px;
+    width: 460px;
+    height: 768px;
+    display: table;
+    background-color: #F7F7F7;
+    padding: 35px;
+}
+
+.text-box-medium {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-left: -260px;
+    width: 460px;
+    height: 610px;
     display: table;
     background-color: #F7F7F7;
     padding: 35px;    
 }
 
-
-
-.title {
-	margin-top: 15px;
-	margin-bottom: 20px;
+.title-container {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
-.orange {
-    color: #FB983B;
-}
-
-.small-font {
-    font-size: 18px;
-}
-
-.faded {
-    opacity: 0.3;
-}
-
-.indent {
-    margin-left: 30px;
-}
-
-.organism-image {
-    height: 200px;
-    width: 200px;
-}
-
-.text-entry {
-    margin-top: 25px;
-    width: 510px;
-    height: 330px;
-    font-size: 24px;
-}
-
-.big-button {
-	position: absolute;
-	bottom: 80px;
-	left: 50%;
-	margin-left: -170px;	
-	width: 340px;
-	height: 60px;
-	font-size: 28px;
-	color: white;
-	background: url('');
-	background-color: #007ADF;
-	border: 1px solid #007ADF;	
-}
-
-.big-error-resolver-button {
-	position: absolute;
-	bottom: 160px;
-	left: 50%;
-	margin-left: -170px;	
-	width: 340px;
-	height: 60px;
-	font-size: 28px;
-	color: white;
-	background: url('');
-	background-color: #007ADF;
-	border: 1px solid #007ADF;	
-}
-
-.small-error-resolver-button {
-	/*position: absolute;*/
-	/*bottom: 160px;*/
-	/*left: 50%;*/
-	/*margin-left: -70px;*/
-	/*width: 140px;*/
-	margin-top: 20px;
-	height: 60px;
-	font-size: 28px;
-	color: white;
-	background: url('');
-	background-color: #007ADF;
-	border: 1px solid #007ADF;	
-}
-
-.small-button {
-	position: absolute;
-	bottom: 80px;
-	left: 50%;
-	margin-left: -70px;
-	width: 140px;
-	height: 60px;
-	font-size: 28px;
-	color: white;
-	background: url('');
-	background-color: #007ADF;
-	border: 1px solid #007ADF;	
-}
-
-.organism-table {
-    margin-top: 30px;
-    width: 450px;
-    height: 500px;
-    border-collapse: collapse;
-}
-
-.organism-table td {
-    border: 1px dotted #949494;
-}
-
-.table-container {
-    height: 700px;
-    margin-bottom: 155px;
+.body-container-large {
+    height: 585px;
     overflow-y: scroll;
 }
 
-.organism-boxes {
-    text-align: center;
+.body-container-medium {
+    height: 420px;
+    overflow-y: scroll;
 }
 
-.organism-image {
-    width: 180px;
-    height: 180px;
-}
-
-#loading-page .loader-gif {
+.small-button {
     position: absolute;
-    top: 400px;
+    bottom: 50px;
     left: 50%;
-    margin-left: -63px;
-}
-
-#student-chosen-organisms {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-}
-
-#student-chosen-organisms .chosen-organism-image {
-    width: 200px;
-    height: 200px;
-}
-
-#is-organism-present .organism-choice-box {
-    margin-top: 100px;
-    text-align: center;
-}
-
-#observe-organisms .observe-organism-table {
-    margin-bottom: 170px;
-}
-
-#ancestor-information .ancestor-information-table {
-    margin-bottom: 170px;
-}
-
-#choose-ancestor .choose-ancestor-table {
-    margin-bottom: 170px;
-}
-
-#ancestor-information .second-content {
-    font-size: 20px;
-}
-
-/* ===================================== DAY 2========================================== */
-
-.lowest-content {
-    margin-bottom: 155px;
-}
-
-
-/* ============ present-day-organisms =================== */
-
-#present-day-organisms table {
-    width: 100%;
-    margin-top: 15px;
-    border-collapse: collapse;
-}
-
-#present-day-organisms td {
-    margin: 0;
-    padding-left: 20px;
-    border: dotted black 1px;
-}
-/* ============ present-day-organisms =================== */
-
-
-#concepts-discussion .evolution-concept-dropdown {
-    margin-top: 28px;
-    width: 450px;
-    height: 45px;
-    font-size: 22px;
-}
-
-#concepts-discussion .concepts-button {
-    margin-top: 20px;
-    width: 450px;
-    height: 45px;
-    font-size: 22px;
-    text-align: left;
-}
-
-#concepts-discussion .text-entry-header {
-    margin-top: 40px;
-    margin-bottom: -10px;
-}
-
-#concepts-discussion .text-entry {
-    height: 310px;
-    width: 450px;
-    margin-bottom: 135px;
-}
-
-.pop-up {
-    position: absolute;
-    top: 160px;
-    left: 50%;
-    margin-left: -320px;
-    width: 640px;
-    height: 500px;
-    padding-top: 50px;
-    background-color: black;
-    opacity: 0.9;
+    margin-left: -70px;
+    width: 140px;
+    height: 60px;
+    font-size: 28px;
     color: white;
-    font-size: 30px;
+    background: url('');
+    background-color: #007ADF;
+    border: 1px solid #007ADF;
+    border-radius: 8px;     
 }
 
-#organism-pop-up.pop-up {
-    top: 20px;
-    margin-left: -400px;
-    padding-top: 30px;
-    width: 800px;
-    height: 1040px;
-}
 
-#time-period-pop-up .column1 {
-    position: absolute;
-    left: 40px;
-}
 
-#time-period-pop-up .column2 {
-    position: absolute;
-    right: 30px;
-}
 
-#organism-pop-up .column1 {
-    position: absolute;
-    left: 20px;
-}
-
-#organism-pop-up .column2 {
-    position: absolute;
-    right: 80px;
-}
-
-.pop-up.small-button {
-    bottom: 60px;
-}
-
-.pop-up-checkbox {
-    margin: 8px;
-/*    outline: 1px solid white;*/
-}
-
-label.pop-up-checkbox {
-  /*padding: 4pt;*/
-  display: block;
-  border-radius: 10pt;
-  /*margin-bottom: 5pt;*/
-}
-
-label.checked {
-  background-color: purple;
-}
 
