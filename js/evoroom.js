@@ -27,7 +27,8 @@ EvoRoom.Mobile = function() {
 
   // Global vars - a lot of this stuff can go TODO
   app.rollcall = null;
-  app.userData = null;
+  // app.userData = null;
+  app.user = null;
  
 
   app.init = function() {
@@ -148,9 +149,44 @@ EvoRoom.Mobile = function() {
     console.log('Initializing models...');
 
     // create phase (?) object and wake it up (sub to collection)
-    // create user_state object if necessary
-    // create userState object and wake it up (sub to collection)
+    
 
+    // create users object and wake it up (sub to collection)
+    if (app.user === null) {
+      var u = Sail.app.session.account.login; // grab username from Rollcall
+      var users = new EvoRoom.Model.Users(); // create a users collction object
+
+      // users collection fetched
+      var fetchSuccess = function(collection, response) {
+        console.log('Users collection found retrieved');
+        // check if users collection contains an object for our current user
+        var myUser = users.find(function(user) { return user.get('username') === u; });
+        
+        if (myUser) {
+          console.log('There seems to be a users entry for us alread :)');
+          app.user = myUser;
+          app.user.wake(Sail.app.config.wakeful.url);
+        } else {
+          console.log("No users object found for ", u, " creating...");
+          app.user = new EvoRoom.Model.User({username: u}); // create new user object
+
+          var saveSuccess = function(model, response) {
+            app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
+            users.add(app.user); // Necessary???? add user model to users collection ??????
+          };
+
+          app.user.save(null, {success: saveSuccess}); // save the user object to the database
+        }
+      };
+
+      // error fetching collection means something is wrong with the database or connection
+      var fetchError = function(collection, response) {
+        console.error('No users collection found - and we are dead!!!!');
+      };
+
+      users.fetch({success: fetchSuccess, error: fetchError}); // fetch users collection object
+
+    }
   };
 
   app.bindPageElements = function() {
