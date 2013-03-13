@@ -14,6 +14,19 @@ module.exports = function(grunt) {
     // }
     jshint: {
       all: ['Gruntfile.js', 'js/evoroom.js', 'js/evoroom.teacher.js']
+    },
+    csslint: {
+      dev: {
+        options: {
+          'box-sizing': false,
+          'box-model': false,
+          'ids': false,
+          'important': false,
+          'shorthand': false,
+          'universal-selector': false
+        },
+        src: ['css/*.css']
+      }
     }
   });
 
@@ -21,12 +34,13 @@ module.exports = function(grunt) {
   // grunt.loadNpmTasks('grunt-contrib-uglify');
   // grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib');
-  grunt.loadNpmTasks('grunt-coffeelint');
+  grunt.loadNpmTasks('grunt-contrib-csslint');
+  // grunt.loadNpmTasks('grunt-coffeelint');
   // grunt.loadNpmTasks('grunt-coffee');
 
   // Default task(s).
   // grunt.registerTask('default', ['uglify']);
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['jshint', 'csslint']);
   
 
 };
