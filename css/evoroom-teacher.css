@@ -21,12 +21,14 @@ body {
 .teacher-dashboard tr.step {
   padding-top: 10px;
   padding-bottom: 10px;
+  background-color: black;
   background-color: rgba(0,0,0,0.3);
   padding-right: 50px;
   padding-left: 50px;
 }
 
 .teacher-dashboard tr.step:nth-child(even) {
+  background-color: black;
   background-color: rgba(0,0,0,0.6);
 }
 
@@ -45,12 +47,12 @@ body {
   padding-bottom: 10px;
 }
 
-.teacher-dashboard tr.step > td.buttons {
+.teacher-dashboard tr.step > .buttons {
   line-height: 50px;
   white-space: nowrap;
 }
 
-.teacher-dashboard tr.step > td.students {
+.teacher-dashboard tr.step > .students {
   margin-left: 15px;
   white-space: normal;
   min-width: 40%;
