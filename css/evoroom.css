@@ -8,9 +8,21 @@
     background-repeat: no-repeat;
     width: 800px;
     height: 1096px;
-    font-size: 24px;
+    font-size: 22px;
     position: relative;
     font-family: 'Droid Sans', sans-serif !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.dynamic-text {
+    color: #FB983B;
+}
+
+.indented-text {
+    margin-left: 30px;
 }
 
 /* ===================== HEADER STUFF ===================== */
@@ -64,7 +76,6 @@ header {
 }
 
 .title-container {
-    margin-top: 15px;
     margin-bottom: 20px;
     font-weight: bold;
 }
@@ -75,7 +86,7 @@ header {
 }
 
 .body-container-medium {
-    height: 420px;
+    height: 430px;
     overflow-y: scroll;
 }
 
@@ -87,6 +98,7 @@ header {
     width: 140px;
     height: 60px;
     font-size: 28px;
+    font-weight: bold;
     color: white;
     background: url('');
     background-color: #007ADF;

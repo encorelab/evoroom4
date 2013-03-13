@@ -132,8 +132,13 @@ EvoRoom.Mobile = function() {
 
   /* Helper functions */
 
-  app.initViews = function() {
-    console.log('initializing views');
+  app.initModels = function() {
+    console.log('initializing models');
+
+    // create phase (?) object and wake it up (sub to collection)
+    // create user_state object if necessary
+    // create userState object and wake it up (sub to collection)
+
   };
 
 
