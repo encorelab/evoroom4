@@ -25,9 +25,9 @@ EvoRoom.Mobile = function() {
     }
   };
 
-  // Global vars - a lot of this stuff can go TODO
   app.rollcall = null;
-  app.userData = null;
+  app.userData = null;        // to be filled by user object
+  app.groupData = null;       // maybe
  
 
   app.init = function() {
@@ -152,7 +152,7 @@ EvoRoom.Mobile = function() {
 
       // insert the grouping check here
 
-      $('#team-assignment').show();
+      $('#team-assignment .small-button').show();
     });
   };
 
