@@ -25,11 +25,9 @@ EvoRoom.Mobile = function() {
     }
   };
 
-  // Global vars - a lot of this stuff can go TODO
   app.rollcall = null;
-  // app.userData = null;
   app.user = null;
- 
+  app.group = null;       // maybe 
 
   app.init = function() {
     Sail.verifyConfig(this.config, this.requiredConfig);
@@ -197,7 +195,8 @@ EvoRoom.Mobile = function() {
 
       // insert the grouping check here
 
-      jQuery('#team-assignment').show();
+
+      jQuery('#team-assignment .small-button').show();
     });
   };
 
