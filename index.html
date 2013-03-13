@@ -17,12 +17,9 @@
         Sail.JS_ROOT_PATH = "/js/sail.js";
         Sail.load()
             .then(Sail.JS_ROOT_PATH+'/rollcall.js')
-            .then('js/evoroom.js')
-            // .then('https://raw.github.com/zuk/Backbone.Drowsy/master/backbone.drowsy.js')
-            // .then('https://raw.github.com/zuk/Backbone.Drowsy/master/wakeful.js')
-            // .then('../shared/js/ck.model.js')
-            // .then('js/ck.mobile.js')
-            // .then('js/ck.mobile.view.js')
+            .then('https://raw.github.com/zuk/Backbone.Drowsy/master/backbone.drowsy.js')
+            .then('https://raw.github.com/zuk/Backbone.Drowsy/master/wakeful.js')
+            .then('js/evoroom.js', 'js/evoroom.model.js')
             .then('js/deps/jquery.toastmessage.js')
             .thenRun(function() { return Sail.init(new EvoRoom.Mobile()); });  
     </script>

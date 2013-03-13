@@ -3,7 +3,7 @@
 
 window.EvoRoom = window.EvoRoom || {};
 
-EvoRoom.Model = (function(app) {
+EvoRoom.Model = (function() {
 	"use strict";
 
 	var model = {};
@@ -114,4 +114,4 @@ EvoRoom.Model = (function(app) {
   };
 
   return model;
-});
+})();

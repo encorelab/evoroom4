@@ -84,6 +84,15 @@ EvoRoom.Mobile = function() {
 
     authenticated: function(ev) {
       console.log('Authenticated...');
+
+      // now we call a class function (configure) and hand in the drowsy url and the run name so we don't need
+      // to do this config again for each model instantiation
+      EvoRoom.Model.init(app.config.drowsy.url, app.run.name)
+      .done(function () {
+        Wakeful.loadFayeClient(app.config.wakeful.url).done(function () {
+          app.trigger('ready');
+        });
+      });
     },
 
     connected: function(ev) {
