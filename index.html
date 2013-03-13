@@ -10,7 +10,6 @@
     <link href="js/sail.js/css/sail.css" rel="stylesheet" type="text/css" />
     <link href="css/deps/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="css/evoroom.css" rel="stylesheet" type="text/css" /> 
-    <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
 
     <script src="js/sail.js/load.js" type="text/javascript"></script>
     <script src="js/sail.js/sail.js" type="text/javascript"></script>
@@ -50,34 +49,34 @@
 
     <div id="evoroom">
          
-        <div id="loading-page" class="text-box-medium hide">
+        <div id="loading-page" class="text-box-medium" style="display: none">
             <div class="title"><b>Please wait...</b></div>
             <div class="content">Fetching data from server</div>
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
         
-        <div id="team-meeting" class="text-box-medium hide">
+        <div id="team-meeting" class="text-box-medium" style="display: none">
             <div class="title"><b>Please wait for all team members to arrive</b></div>
             <div class="content">Once all team members have scanned in at the location you will receive additional information to proceed.</div>
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
 
-        <div id="log-in-success" class="text-box-medium hide">
-            <div class="title-container"><b>Log in successful</b></div>
+        <div id="log-in-success" class="text-box-medium" style="display: none">
+            <div class="title-container">Log in successful</div>
             <div class="body-container-medium">
-                Welcome to the simulation lab. As part of your training to join a special team of rainforest ecologists to save the rain forest, we've prepared a number of exercises to test your knowledge, problem solving-skills and ability to work in a team-based environment.
+                <div>Welcome to the simulation lab. As part of your training to join a special team of rainforest ecologists to save the rain forest, we've prepared a number of exercises to test your knowledge, problem solving-skills and ability to work in a team-based environment.</div>
                 <br />
-                Your first task is in the domain of evolution. You will examine the Borneo area between 200 million years ago (mya) and present day. You will work in teams, with each member specializing in different species of the rainforest.
+                <div>Your first task is in the domain of evolution. You will examine the Borneo area between 200 million years ago (mya) and present day. You will work in teams, with each member specializing in different species of the rainforest.</div>
                 <br />
-                You will be collectively creating a cladogram and determine how the species of Borneo came to be in their current form.
+                <div>You will be collectively creating a cladogram and determine how the species of Borneo came to be in their current form.</div>
             </div>
             <button class="small-button">Next</button>
         </div>
 
-        <div id="team-assignment" class="text-box-medium">
+        <div id="team-assignment" class="text-box-medium" style="display: none">
             <div class="title-container">Welcome to the simulation lab</div>
             <div class="body-container-medium">
-                For this exercise, you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups. 
+                <div>For this exercise, you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups.</div>
                 <br />
                 <div>Team assignment:</div>
                 <div class="team-name dynamic-text indented-text"></div>
@@ -85,11 +84,10 @@
                 <div>Team members:</div>
                 <div class="team-members"></div>
             </div>
-            
             <button class="small-button">Next</button>
-        </div>        
+        </div>
 
-        <div class="text-box-medium hide">
+        <div class="text-box-medium" style="display: none">
             <div class="title-container">Welcome to the simulation lab</div>
             <div class="body-container-medium">
                 Lots of text lots of text lots of text Lots of text lots of text lots of text Lots of text lots of text lots of text 
