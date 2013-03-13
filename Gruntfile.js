@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     //   }
     // }
     jshint: {
-      all: ['Gruntfile.js', 'js/evoroom.js', 'js/evoroom.teacher.js']
+      all: ['Gruntfile.js', 'js/evo*.js']
     },
     csslint: {
       dev: {
