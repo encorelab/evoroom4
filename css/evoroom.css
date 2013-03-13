@@ -41,7 +41,7 @@ header {
 
 .text-box-large {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 50%;
     margin-left: -260px;
     width: 460px;
@@ -53,7 +53,7 @@ header {
 
 .text-box-medium {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 50%;
     margin-left: -260px;
     width: 460px;
