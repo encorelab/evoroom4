@@ -175,6 +175,7 @@ EvoRoom.Mobile = function() {
           console.log('There seems to be a users entry for us already :)');
           app.user = myUser;
           app.user.wake(Sail.app.config.wakeful.url);
+          users.wake(Sail.app.config.wakeful.url);
         } else {
           console.log("No users object found for ", u, " creating...");
           app.user = new EvoRoom.Model.User({username: u}); // create new user object
@@ -182,6 +183,7 @@ EvoRoom.Mobile = function() {
           var saveSuccess = function(model, response) {
             app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
             users.add(app.user); // Necessary???? add user model to users collection ??????
+            users.wake(Sail.app.config.wakeful.url);
           };
 
           app.user.save(null, {success: saveSuccess}); // save the user object to the database
