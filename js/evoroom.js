@@ -28,7 +28,9 @@ EvoRoom.Mobile = function() {
   app.rollcall = null;
   app.phase = null;     // temp?
   app.user = null;
+  app.rollcall_groupname = null;
   app.group = null;       // maybe 
+  app.rollcall_metadata = null; // Static stuff we pull once from Rollcall like direction
 
   app.init = function() {
     jQuery('#evoroom').addClass('hide'); // hide everything except login screen
@@ -114,23 +116,31 @@ EvoRoom.Mobile = function() {
     ready: function(ev) {
       console.log("Ready!");
 
-      // Disable logout button to avoid crash of node-bosh-ws-xmpp bridge
-      // FIXME: unneccessary once XMPP is turned off
-      jQuery('#logout-button').unbind();
-      jQuery('#logout-button a').unbind();
-      jQuery('#logout-button a').click( function() {
-        console.log('reload');
-        window.location.reload();
+      Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
+        // retrieve group name from Rollcall
+        app.rollcall_groupname = data.groups[0].name;
+        // Grab metadata from Rollcall
+        app.rollcall_metadata = data.metadata;
+
+        // do the rest of the ready function ;)
+        // Disable logout button to avoid crash of node-bosh-ws-xmpp bridge
+        // FIXME: unneccessary once XMPP is turned off
+        jQuery('#logout-button').unbind();
+        jQuery('#logout-button a').unbind();
+        jQuery('#logout-button a').click( function() {
+          console.log('reload');
+          window.location.reload();
+        });
+
+        // init all models and collections needed an make them wakefull
+        app.initModels();
+        // return user to last screen according to user object and enable transitions according to phase object
+        app.restoreState();
+        // hock up event listener to buttons to allow interactions
+        app.bindEventsToPageElements();
+
+        jQuery('#evoroom').removeClass('hide'); // unhide everything
       });
-
-      // init all models and collections needed an make them wakefull
-      app.initModels();
-      // return user to last screen according to user object and enable transitions according to phase object
-      app.restoreState();
-      // hock up event listener to buttons to allow interactions
-      app.bindEventsToPageElements();
-
-      jQuery('#evoroom').removeClass('hide'); // unhide everything
     },
 
     'unauthenticated': function(ev) {
@@ -202,20 +212,24 @@ EvoRoom.Mobile = function() {
         if (myUser) {
           console.log('There seems to be a users entry for us already :)');
           app.user = myUser;
-          app.user.wake(Sail.app.config.wakeful.url);
-          users.wake(Sail.app.config.wakeful.url);
+          app.user.set('modified_at', new Date());
         } else {
           console.log("No users object found for ", u, " creating...");
           app.user = new EvoRoom.Model.User({username: u}); // create new user object
-
-          var saveSuccess = function(model, response) {
-            app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
-            users.add(app.user); // Necessary???? add user model to users collection ??????
-            users.wake(Sail.app.config.wakeful.url);
-          };
-
-          app.user.save(null, {success: saveSuccess}); // save the user object to the database
+          app.user.set('user_phase', '');
+          app.user.set('phase_data', {});
+          app.user.set('created_at', new Date());
         }
+
+        var saveSuccess = function(model, response) {
+          app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
+          users.wake(Sail.app.config.wakeful.url);
+        };
+
+        app.user.set('group_name', app.rollcall_groupname);
+        app.user.set('direction', app.rollcall_metadata.direction);
+
+        app.user.save(null, {success: saveSuccess}); // save the user object to the database
       };
 
       // error fetching collection means something is wrong with the database or connection
