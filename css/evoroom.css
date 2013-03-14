@@ -8,9 +8,15 @@ body {
     background-repeat: no-repeat;
     width: 800px;
     height: 1096px;
-    font-size: 22px;
+    font-size: 20px;
     position: relative;
     /*font-family: 'Droid Sans', sans-serif !important;*/
+}
+
+#start-rotation-1 {
+    position: absolute;
+    top: 40px;
+    right: 40px;
 }
 
 .hide {

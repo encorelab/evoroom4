@@ -26,6 +26,7 @@ EvoRoom.Mobile = function() {
   };
 
   app.rollcall = null;
+  app.phase = null;     // temp?
   app.user = null;
   app.group = null;       // maybe 
 
@@ -71,9 +72,14 @@ EvoRoom.Mobile = function() {
   };
 
   app.restoreState = function () {
-    console.log('restore UI state');
+    console.log('Restoring UI state...');
 
     // Reading user object and deciding which screen to go to
+    
+    // user state 1    TODO
+    jQuery('#log-in-success').show();
+    //app.handlePhaseChange();
+
 
     // Reading phase object and calling functions that allow transitions to certain phases
   };
@@ -105,7 +111,6 @@ EvoRoom.Mobile = function() {
       // FIXME: We might not even come through here once we take XMPP connection out.
     },
 
-    // NB: this is currently not getting called!
     ready: function(ev) {
       console.log("Ready!");
 
@@ -124,7 +129,6 @@ EvoRoom.Mobile = function() {
       app.restoreState();
       // hock up event listener to buttons to allow interactions
       app.bindEventsToPageElements();
-      jQuery('#log-in-success').show();
 
       jQuery('#evoroom').removeClass('hide'); // unhide everything
     },
@@ -158,53 +162,81 @@ EvoRoom.Mobile = function() {
     console.log('Initializing models...');
 
     // create phase (?) object and wake it up (sub to collection)
-    
+    var phases = new EvoRoom.Model.Phases();
+
+    var fetchPhaseSuccess = function(collection, response) {
+      console.log('Retrieved phase object...');
+
+      if (collection.length === 1) {
+        app.phase = collection.models[0];
+        app.phase.wake(Sail.app.config.wakeful.url);
+        app.phase.on('change', app.handlePhaseChange);
+        app.phase.trigger('change');
+
+        collection.wake(Sail.app.config.wakeful.url);         // do we need this?
+
+      } else {
+        console.error('More or less than 1 phase object found in phases collection');
+      }
+    };
+
+    // error fetching collection means something is wrong with the database or connection
+    var fetchPhaseError = function(collection, response) {
+      console.error('No phase found - and we are dead!!!!');
+    };
+
+    phases.fetch({success: fetchPhaseSuccess, error: fetchPhaseError}); // fetch phase object    
 
     // create users object and wake it up (sub to collection)
-    if (app.user === null) {
-      var u = Sail.app.session.account.login; // grab username from Rollcall
-      var users = new EvoRoom.Model.Users(); // create a users collction object
+    // if (app.user === null) {
+    //   var u = Sail.app.session.account.login; // grab username from Rollcall
+    //   var users = new EvoRoom.Model.Users(); // create a users collction object
 
-      // users collection fetched
-      var fetchSuccess = function(collection, response) {
-        console.log('Users collection found retrieved');
-        // check if users collection contains an object for our current user
-        var myUser = users.find(function(user) { return user.get('username') === u; });
+    //   // users collection fetched
+    //   var fetchSuccess = function(collection, response) {
+    //     console.log('Users collection found retrieved');
+    //     // check if users collection contains an object for our current user
+    //     var myUser = users.find(function(user) { return user.get('username') === u; });
         
-        if (myUser) {
-          console.log('There seems to be a users entry for us already :)');
-          app.user = myUser;
-          app.user.wake(Sail.app.config.wakeful.url);
-        } else {
-          console.log("No users object found for ", u, " creating...");
-          app.user = new EvoRoom.Model.User({username: u}); // create new user object
+    //     if (myUser) {
+    //       console.log('There seems to be a users entry for us already :)');
+    //       app.user = myUser;
+    //       app.user.wake(Sail.app.config.wakeful.url);
+    //     } else {
+    //       console.log("No users object found for ", u, " creating...");
+    //       app.user = new EvoRoom.Model.User({username: u}); // create new user object
 
-          var saveSuccess = function(model, response) {
-            app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
-            users.add(app.user); // Necessary???? add user model to users collection ??????
-          };
+    //       var saveSuccess = function(model, response) {
+    //         app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
+    //         users.add(app.user); // Necessary???? add user model to users collection ??????
+    //       };
 
-          app.user.save(null, {success: saveSuccess}); // save the user object to the database
-        }
-      };
+    //       app.user.save(null, {success: saveSuccess}); // save the user object to the database
+    //     }
+    //   };
 
-      // error fetching collection means something is wrong with the database or connection
-      var fetchError = function(collection, response) {
-        console.error('No users collection found - and we are dead!!!!');
-      };
+    //   // error fetching collection means something is wrong with the database or connection
+    //   var fetchError = function(collection, response) {
+    //     console.error('No users collection found - and we are dead!!!!');
+    //   };
 
-      users.fetch({success: fetchSuccess, error: fetchError}); // fetch users collection object
+    //   users.fetch({success: fetchSuccess, error: fetchError}); // fetch users collection object
 
-    }
+    // }
   };
 
   app.bindEventsToPageElements = function() {
     console.log('Binding page elements...');
 
+    // to be removed once teacher tablet is up and going
+    jQuery('#start-rotation-1').click(function() {
+
+    });
+
     jQuery('#log-in-success .small-button').click(function() {
       app.hidePageElements();
 
-      // insert the grouping check here
+      // insert the grouping check here?
 
       jQuery('#team-assignment').show();
     });
@@ -212,7 +244,7 @@ EvoRoom.Mobile = function() {
     jQuery('#team-assignment .small-button').click(function() {
       app.hidePageElements();
 
-      // check which rotation we're on, add the appropriate dynamic text
+      // check which rotation we're on, add the appropriate dynamic text?
 
       jQuery('#rotation-instructions').show();
     });    
@@ -225,6 +257,12 @@ EvoRoom.Mobile = function() {
     jQuery('#log-in-success').hide();
     jQuery('#team-assignment').hide();
     jQuery('#rotation-instructions').hide();
+  };
+
+  app.handlePhaseChange = function() {
+    console.log('Handling phase changes...');
+
+    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
   };
 
 
