@@ -187,42 +187,46 @@ EvoRoom.Mobile = function() {
 
     phases.fetch({success: fetchPhaseSuccess, error: fetchPhaseError}); // fetch phase object    
 
+
     // create users object and wake it up (sub to collection)
-    // if (app.user === null) {
-    //   var u = Sail.app.session.account.login; // grab username from Rollcall
-    //   var users = new EvoRoom.Model.Users(); // create a users collction object
+    if (app.user === null) {
+      var u = Sail.app.session.account.login; // grab username from Rollcall
+      var users = new EvoRoom.Model.Users(); // create a users collction object
 
-    //   // users collection fetched
-    //   var fetchSuccess = function(collection, response) {
-    //     console.log('Users collection found retrieved');
-    //     // check if users collection contains an object for our current user
-    //     var myUser = users.find(function(user) { return user.get('username') === u; });
+      // users collection fetched
+      var fetchUserSuccess = function(collection, response) {
+        console.log('Users collection found retrieved');
+        // check if users collection contains an object for our current user
+        var myUser = users.find(function(user) { return user.get('username') === u; });
         
-    //     if (myUser) {
-    //       console.log('There seems to be a users entry for us already :)');
-    //       app.user = myUser;
-    //       app.user.wake(Sail.app.config.wakeful.url);
-    //     } else {
-    //       console.log("No users object found for ", u, " creating...");
-    //       app.user = new EvoRoom.Model.User({username: u}); // create new user object
+        if (myUser) {
+          console.log('There seems to be a users entry for us already :)');
+          app.user = myUser;
+          app.user.wake(Sail.app.config.wakeful.url);
+          users.wake(Sail.app.config.wakeful.url);
+        } else {
+          console.log("No users object found for ", u, " creating...");
+          app.user = new EvoRoom.Model.User({username: u}); // create new user object
 
-    //       var saveSuccess = function(model, response) {
-    //         app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
-    //         users.add(app.user); // Necessary???? add user model to users collection ??????
-    //       };
+          var saveSuccess = function(model, response) {
+            app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
+            users.add(app.user); // Necessary???? add user model to users collection ??????
+            users.wake(Sail.app.config.wakeful.url);
+          };
 
-    //       app.user.save(null, {success: saveSuccess}); // save the user object to the database
-    //     }
-    //   };
+          app.user.save(null, {success: saveSuccess}); // save the user object to the database
+        }
+      };
 
-    //   // error fetching collection means something is wrong with the database or connection
-    //   var fetchError = function(collection, response) {
-    //     console.error('No users collection found - and we are dead!!!!');
-    //   };
+      // error fetching collection means something is wrong with the database or connection
+      var fetchUserError = function(collection, response) {
+        console.error('No users collection found - and we are dead!!!!');
+      };
 
-    //   users.fetch({success: fetchSuccess, error: fetchError}); // fetch users collection object
+      users.fetch({success: fetchUserSuccess, error: fetchUserError}); // fetch users collection object
 
-    // }
+    }
+
   };
 
   app.bindEventsToPageElements = function() {
