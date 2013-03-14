@@ -70,6 +70,10 @@ EvoRoom.Mobile = function() {
 
   app.restoreState = function () {
     console.log('restore UI state');
+
+    // Reading user object and deciding which screen to go to
+
+    // Reading phase object and calling functions that allow transitions to certain phases
   };
 
   app.events = {
