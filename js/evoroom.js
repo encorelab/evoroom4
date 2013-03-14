@@ -1,4 +1,4 @@
-/*jshint browser: true, devel: true, debug: true, strict: false, unused:false, undef:true */
+  /*jshint browser: true, devel: true, debug: true, strict: false, unused:false, undef:true */
 /*globals jQuery, _, Sail, EvoRoom, Rollcall, Wakeful */
 
 window.EvoRoom = window.EvoRoom || {};
@@ -161,7 +161,7 @@ EvoRoom.Mobile = function() {
         var myUser = users.find(function(user) { return user.get('username') === u; });
         
         if (myUser) {
-          console.log('There seems to be a users entry for us alread :)');
+          console.log('There seems to be a users entry for us already :)');
           app.user = myUser;
           app.user.wake(Sail.app.config.wakeful.url);
         } else {
@@ -190,14 +190,21 @@ EvoRoom.Mobile = function() {
   app.bindPageElements = function() {
     console.log('Binding page elements...');
 
-    jQuery('#log-in-success').click(function() {
+    jQuery('#log-in-success .small-button').click(function() {
       app.hidePageElements();
 
       // insert the grouping check here
 
-
-      jQuery('#team-assignment .small-button').show();
+      jQuery('#team-assignment').show();
     });
+
+    jQuery('#team-assignment .small-button').click(function() {
+      app.hidePageElements();
+
+      // check which rotation we're on, add the appropriate dynamic text
+
+      jQuery('#rotation-instructions').show();
+    });    
   };
 
   app.hidePageElements = function() {
@@ -206,6 +213,7 @@ EvoRoom.Mobile = function() {
     jQuery('#team-meeting').hide();
     jQuery('#log-in-success').hide();
     jQuery('#team-assignment').hide();
+    jQuery('#rotation-instructions').hide();
   };
 
 
