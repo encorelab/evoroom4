@@ -30,6 +30,8 @@ EvoRoom.Mobile = function() {
   app.group = null;       // maybe 
 
   app.init = function() {
+    jQuery('#evoroom').addClass('hide'); // hide everything except login screen
+
     Sail.verifyConfig(this.config, this.requiredConfig);
     
     Sail.modules
@@ -70,6 +72,10 @@ EvoRoom.Mobile = function() {
 
   app.restoreState = function () {
     console.log('restore UI state');
+
+    // Reading user object and deciding which screen to go to
+
+    // Reading phase object and calling functions that allow transitions to certain phases
   };
 
   app.events = {
@@ -96,19 +102,15 @@ EvoRoom.Mobile = function() {
 
     connected: function(ev) {
       console.log("Connected...");
-      // these can likely go back in ready() when it's working correctly
-      app.initModels();
-      app.bindPageElements();
-      jQuery('#log-in-success').show();
+      // FIXME: We might not even come through here once we take XMPP connection out.
     },
 
     // NB: this is currently not getting called!
     ready: function(ev) {
-      // TODO: maybe also wait until we're connected?
-      //       currently this just waits until CK.Model is initialized
       console.log("Ready!");
 
-      // Disable logout button
+      // Disable logout button to avoid crash of node-bosh-ws-xmpp bridge
+      // FIXME: unneccessary once XMPP is turned off
       jQuery('#logout-button').unbind();
       jQuery('#logout-button a').unbind();
       jQuery('#logout-button a').click( function() {
@@ -116,6 +118,15 @@ EvoRoom.Mobile = function() {
         window.location.reload();
       });
 
+      // init all models and collections needed an make them wakefull
+      app.initModels();
+      // return user to last screen according to user object and enable transitions according to phase object
+      app.restoreState();
+      // hock up event listener to buttons to allow interactions
+      app.bindEventsToPageElements();
+      jQuery('#log-in-success').show();
+
+      jQuery('#evoroom').removeClass('hide'); // unhide everything
     },
 
     'unauthenticated': function(ev) {
@@ -187,7 +198,7 @@ EvoRoom.Mobile = function() {
     }
   };
 
-  app.bindPageElements = function() {
+  app.bindEventsToPageElements = function() {
     console.log('Binding page elements...');
 
     jQuery('#log-in-success .small-button').click(function() {
