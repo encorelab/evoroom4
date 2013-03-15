@@ -9,11 +9,6 @@ EvoRoom.Mobile = function() {
   app.name = "EvoRoom.Mobile";
 
   app.requiredConfig = {
-    xmpp: {
-      domain: 'string',
-      port: 'number',
-      url: 'string'
-    },
     rollcall: {
       url: 'string'
     },
@@ -40,7 +35,6 @@ EvoRoom.Mobile = function() {
     Sail.modules
       // Enable multi-picker login for CommonKnowledge curnit - asking for run (must be linked to curnit)
       .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom'})
-      .load('Strophe.AutoConnector')
       .load('AuthStatusWidget', {indicatorContainer: '#logout-container'})
       .thenRun(function () {
         Sail.autobindEvents(app);
@@ -104,11 +98,6 @@ EvoRoom.Mobile = function() {
           app.trigger('ready');
         });
       });
-    },
-
-    connected: function(ev) {
-      console.log("Connected...");
-      // FIXME: We might not even come through here once we take XMPP connection out.
     },
 
     ready: function(ev) {
