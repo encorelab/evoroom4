@@ -1,5 +1,5 @@
 /*jshint browser: true, devel: true, debug: true, strict: false, undef:true, node:true */
-/*globals jQuery, EvoRoom, Rollcall */
+/*globals  Rollcall */
 
 var root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
