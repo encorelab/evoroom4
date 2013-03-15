@@ -35,6 +35,7 @@ EvoRoom.Mobile = function() {
     Sail.modules
       // Enable multi-picker login for CommonKnowledge curnit - asking for run (must be linked to curnit)
       .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom'})
+      .load('Wakeful.ConnStatusIndicator')
       .load('AuthStatusWidget', {indicatorContainer: '#logout-container'})
       .thenRun(function () {
         Sail.autobindEvents(app);
@@ -90,7 +91,7 @@ EvoRoom.Mobile = function() {
     authenticated: function(ev) {
       console.log('Authenticated...');
 
-      // now we call a class function (configure) and hand in the drowsy url and the run name so we don't need
+      // now we call a class function (init) and hand in the drowsy url and the run name so we don't need
       // to do this config again for each model instantiation
       EvoRoom.Model.init(app.config.drowsy.url, app.run.name)
       .done(function () {
