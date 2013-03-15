@@ -1,9 +1,23 @@
 /*jshint browser: true, devel: true, debug: true, strict: false, undef:true */
 /*globals jQuery, _, EvoRoom, Rollcall, Drowsy */
 
-window.EvoRoom = window.EvoRoom || {};
+var root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-EvoRoom.Model = (function() {
+if (typeof exports !== "undefined" && exports !== null) {
+	// we're in node
+	var $ = require('jquery');
+    var _ = require('underscore');
+    var Backbone = require('backbone');
+    Backbone.$ = $;
+    var Drowsy = require('backbone.drowsy').Drowsy;
+    var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
+} else {
+	// we're in a browser
+	root.EvoRoom = root.EvoRoom || {};
+	root = root.EvoRoom;
+}
+
+root.Model = (function() {
 	"use strict";
 
 	var model = {};
@@ -115,3 +129,5 @@ EvoRoom.Model = (function() {
 
   return model;
 })();
+
+
