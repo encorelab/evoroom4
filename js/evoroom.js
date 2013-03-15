@@ -28,9 +28,9 @@ EvoRoom.Mobile = function() {
   app.rollcall = null;
   app.phase = null;     // temp?
   app.user = null;
-  app.rollcall_groupname = null;
+  app.rollcallGroupName = null;
   app.group = null;       // maybe 
-  app.rollcall_metadata = null; // Static stuff we pull once from Rollcall like direction
+  app.rollcallMetadata = null; // static stuff we pull once from Rollcall like direction
 
   app.init = function() {
     jQuery('#evoroom').addClass('hide'); // hide everything except login screen
@@ -60,7 +60,7 @@ EvoRoom.Mobile = function() {
   };
 
   app.authenticate = function() {
-    // TODO: implement me... probalby just copy + modify code from washago?
+    // TODO: implement me... probably just copy + modify code from washago?
 
     // TODO: for now we're hard-coding a run name... need to get this from auth
     //this.config.run = {name: "ck-alpha1", id: 12};
@@ -68,9 +68,7 @@ EvoRoom.Mobile = function() {
       Rollcall.Authenticator.requestRun();
     } else {
       Rollcall.Authenticator.requestLogin();
-    }
-
-    
+    }    
   };
 
   app.restoreState = function () {
@@ -118,9 +116,9 @@ EvoRoom.Mobile = function() {
 
       Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
         // retrieve group name from Rollcall
-        app.rollcall_groupname = data.groups[0].name;
-        // Grab metadata from Rollcall
-        app.rollcall_metadata = data.metadata;
+        app.rollcallGroupName = data.groups[0].name;
+        // grab metadata from Rollcall
+        app.rollcallMetadata = data.metadata;
 
         // do the rest of the ready function ;)
         // Disable logout button to avoid crash of node-bosh-ws-xmpp bridge
@@ -136,7 +134,7 @@ EvoRoom.Mobile = function() {
         app.initModels();
         // return user to last screen according to user object and enable transitions according to phase object
         app.restoreState();
-        // hock up event listener to buttons to allow interactions
+        // hook up event listener to buttons to allow interactions
         app.bindEventsToPageElements();
 
         jQuery('#evoroom').removeClass('hide'); // unhide everything
@@ -171,7 +169,7 @@ EvoRoom.Mobile = function() {
   app.initModels = function() {
     console.log('Initializing models...');
 
-    // create phase (?) object and wake it up (sub to collection)
+    // create phase object and wake it up (sub to collection)
     var phases = new EvoRoom.Model.Phases();
 
     var fetchPhaseSuccess = function(collection, response) {
@@ -226,8 +224,8 @@ EvoRoom.Mobile = function() {
           users.wake(Sail.app.config.wakeful.url);
         };
 
-        app.user.set('group_name', app.rollcall_groupname);
-        app.user.set('direction', app.rollcall_metadata.direction);
+        app.user.set('group_name', app.rollcallGroupName);
+        app.user.set('direction', app.rollcallMetadata.direction);
 
         app.user.save(null, {success: saveSuccess}); // save the user object to the database
       };
@@ -245,6 +243,8 @@ EvoRoom.Mobile = function() {
 
   app.bindEventsToPageElements = function() {
     console.log('Binding page elements...');
+
+    jQuery(".jquery-radios").buttonset();
 
     // to be removed once teacher tablet is up and going
     jQuery('#start-rotation-1').click(function() {
@@ -265,7 +265,31 @@ EvoRoom.Mobile = function() {
       // check which rotation we're on, add the appropriate dynamic text?
 
       jQuery('#rotation-instructions').show();
-    });    
+    });
+
+    jQuery('#rotation-instructions .small-button').click(function() {
+      app.hidePageElements();
+
+      // check which rotation we're on, add the appropriate dynamic text?
+
+      jQuery('#organism-presence').show();
+    });
+
+    jQuery('#organism-presence .presence-choice-button').click(function() {
+      // update observations collection
+      jQuery('#organism-presence .small-button').show();
+    });
+    jQuery('#organism-presence .small-button').click(function() {
+      app.hidePageElements();
+      jQuery('#SOMETHING').show();
+    });
+    
+  };
+
+  app.handlePhaseChange = function() {
+    console.log('Handling phase changes...');
+
+    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
   };
 
   app.hidePageElements = function() {
@@ -275,12 +299,7 @@ EvoRoom.Mobile = function() {
     jQuery('#log-in-success').hide();
     jQuery('#team-assignment').hide();
     jQuery('#rotation-instructions').hide();
-  };
-
-  app.handlePhaseChange = function() {
-    console.log('Handling phase changes...');
-
-    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
+    jQuery('#organism-presence').hide();
   };
 
 

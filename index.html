@@ -39,22 +39,22 @@
 
 <!--         <button id="start-rotation-1">START ROTATION 1</button> -->
          
-        <div id="loading-page" class="text-box-medium" style="display: none">
-            <div class="title"><b>Please wait...</b></div>
-            <div class="content">Fetching data from server</div>
+        <div id="loading-page" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>Please wait...</b></div>
+            <div>Fetching data from server</div>
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
         
-        <div id="team-meeting" class="text-box-medium" style="display: none">
+        <div id="team-meeting" class="text-box-medium" style="display:none">
             <div class="title"><b>Please wait for all team members to arrive</b></div>
-            <div class="content">Once all team members have scanned in at the location you will receive additional information to proceed.</div>
+            <div>Once all team members have scanned in at the location you will receive additional information to proceed.</div>
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
 
         <!-- ORIENTATION PHASE -->
 
-        <div id="log-in-success" class="text-box-medium" style="display: none">
-            <div class="title-container">Log in successful</div>
+        <div id="log-in-success" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>Log in successful</b></div>
             <div class="body-container-medium">
                 <div>Welcome to the simulation lab. As part of your training to join a special team of rainforest ecologists to save the rain forest, we've prepared a number of exercises to test your knowledge, problem solving-skills and ability to work in a team-based environment.</div>
                 <br />
@@ -65,8 +65,8 @@
             <button class="small-button">Next</button>
         </div>
 
-        <div id="team-assignment" class="text-box-medium" style="display: none">
-            <div class="title-container">Welcome to the simulation lab</div>
+        <div id="team-assignment" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>Welcome to the simulation lab</b></div>
             <div class="body-container-medium">
                 <div>For this exercise, you will be working with people from various specialties as a team. Your team should have at least one expert from each of the specialty groups.</div>
                 <br />
@@ -82,21 +82,35 @@
         <!-- ROTATION 1 (/2?) -->
         <!-- maybe add a roation 1 class, rotation 2 class, etc -->
 
-        <div id="rotation-instructions" class="text-box-medium" style="display: none">
-            <div>
+        <div id="rotation-instructions" class="text-box-medium" style="display:none">
+            <div class="title-container">
                 <b>Instructions:</b> There are four different versions of Southeast Asia set at different times in this room: <span class="dynamic-text">200, 150, 100, and 50 mya</span>.
             </div>
             <div class="body-container-medium">
                 When you click &rsquo;Next&rsquo; you will be assigned an organism. Your task is to determine whether your organism is present at the time periods and if not, whether their ancestral forms are present. Once you are done, another organism will be assigned to you until all of the organisms are complete.
             </div>
-            <button class="small-button" style="display: none">Next</button>
+            <button class="small-button">Next</button>   <!-- style="display:none" -->
+        </div>
+
+        <div id="organism-presence" class="text-box-medium" style="display:none">
+            <div class="title-container">
+                <b>Time: </b><span class="year dynamic-text"></span>
+            </div>
+            <br />
+            <div>
+                <b>Organism: </b><span class="assigned-organism"></span>
+            </div>
+            <div class="organism-choice-box jquery-radios">
+                <p>Is the organism present here?<p>
+                <input type="radio" id="org-present" name="radio" class="presence-choice-button" /><label for="org-present">Yes</label>
+                <input type="radio" id="org-not-present" name="radio" class="presence-choice-button" /><label for="org-not-present">No</label>
+            </div>
+            <button class="small-button" style="display:none"><b>Done</b></button>
         </div>
 
 
 
-
-
-        <div class="text-box-medium" style="display: none">
+        <div class="text-box-medium" style="display:none">
             <div class="title-container">Welcome to the simulation lab</div>
             <div class="body-container-medium">
                 Lots of text lots of text lots of text Lots of text lots of text lots of text Lots of text lots of text lots of text 

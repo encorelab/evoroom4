@@ -31,7 +31,12 @@ body {
     margin-left: 30px;
 }
 
-/* ===================== HEADER STUFF ===================== */
+.organism-image {
+    height: 180px;
+    width: 180px;
+}
+
+/* ===================== HEADER ===================== */
 
 header {
     height: 40px;
@@ -55,7 +60,7 @@ header {
 }
 
 
-/* ====================== BODY STUFF ====================== */
+/* ====================== BODY ====================== */
 
 .text-box-large {
     position: absolute;
@@ -83,7 +88,6 @@ header {
 
 .title-container {
     margin-bottom: 20px;
-    font-weight: bold;
 }
 
 .body-container-large {
@@ -112,7 +116,14 @@ header {
     border-radius: 8px;     
 }
 
+#organism-presence .ui-button {
+    width: 80px;
+}
 
+#organism-presence .organism-choice-box {
+    margin-top: 100px;
+    text-align: center;
+}
 
 
 
