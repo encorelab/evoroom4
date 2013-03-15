@@ -13,7 +13,11 @@
   },
   "dependencies": {
     "http-proxy": "*",
-    "node-static": "*"
+    "node-static": "*",
+    "Backbone.Drowsy": "git://github.com/zuk/Backbone.Drowsy.git",
+    "jquery": "~1.8.3",
+    "underscore": "~1.4.4",
+    "backbone": "~0.9.10"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
