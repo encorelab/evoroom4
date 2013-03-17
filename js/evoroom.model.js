@@ -1,9 +1,26 @@
-/*jshint browser: true, devel: true, debug: true, strict: false, undef:true */
-/*globals jQuery, _, EvoRoom, Rollcall, Drowsy */
+/*jshint browser: true, devel: true, debug: true, strict: false, undef:true, node:true */
+/*globals jQuery, EvoRoom, Rollcall */
 
-window.EvoRoom = window.EvoRoom || {};
+var root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-EvoRoom.Model = (function() {
+if (typeof exports !== "undefined" && exports !== null) {
+	// we're in node
+	var jQuery = require('jquery');
+    var _ = require('underscore');
+    var Backbone = require('backbone');
+    Backbone.$ = jQuery;
+    var Drowsy = require('backbone.drowsy').Drowsy;
+    var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
+
+    var EvoRoom = {};
+} else {
+	// we're in a browser
+	root.EvoRoom = root.EvoRoom || {};
+	root = root.EvoRoom;
+	var EvoRoom = root.EvoRoom;
+}
+
+root.Model = (function() {
 	"use strict";
 
 	var model = {};
@@ -46,8 +63,8 @@ EvoRoom.Model = (function() {
 
 		model.db.collections(function(colls) {
 			var existingCollections = _.pluck(colls, 'name');
-			_.each(_.without(requiredCollections, existingCollections), function (col) {
-				console.log("Creating collection '" + col + "' under " + EvoRoom.Model.dbURL);
+			_.each(_.difference(requiredCollections, existingCollections), function (col) {
+				console.log("Creating collection '" + col + "' under " + model.dbURL);
 				dfs.push(model.db.createCollection(col));
 			});
 		});
@@ -115,3 +132,5 @@ EvoRoom.Model = (function() {
 
   return model;
 })();
+
+
