@@ -1,7 +1,5 @@
 /*jshint browser: true, devel: true, debug: true, strict: false, undef:true, node:true */
-/*globals jQuery, EvoRoom, Rollcall */
-
-var root = typeof exports !== "undefined" && exports !== null ? exports : this;
+/*globals  Rollcall */
 
 if (typeof exports !== "undefined" && exports !== null) {
 	// we're in node
@@ -13,14 +11,15 @@ if (typeof exports !== "undefined" && exports !== null) {
     var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
 
     var EvoRoom = {};
+
+    exports.EvoRoom = EvoRoom;
 } else {
-	// we're in a browser
-	root.EvoRoom = root.EvoRoom || {};
-	root = root.EvoRoom;
-	var EvoRoom = root.EvoRoom;
+	window.EvoRoom = window.EvoRoom || {};
+
+	var EvoRoom = window.EvoRoom;
 }
 
-root.Model = (function() {
+EvoRoom.Model = (function() {
 	"use strict";
 
 	var model = {};
