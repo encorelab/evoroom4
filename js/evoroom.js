@@ -21,9 +21,9 @@ EvoRoom.Mobile = function() {
   };
 
   app.rollcall = null;
-  app.phases = null;    // maybe not necessary?
+  app.phases = null;
   app.phase = null;
-  app.users = null;   // maybe not necessary?
+  app.users = null;
   app.user = null;
   app.rollcallGroupName = null;
   app.groups = null;
@@ -150,7 +150,7 @@ EvoRoom.Mobile = function() {
       app.phases = new EvoRoom.Model.Phases();
       // app.phases.wake(Sail.app.config.wakeful.url);
       // app.phases.on('add remove', somefunction (c));
-      var fetchPhaseSuccess = function(collection, response) {
+      var fetchPhasesSuccess = function(collection, response) {
         console.log('Retrieved phases collection...');
         if (collection.length === 1) {
           // PHASE model
@@ -162,15 +162,38 @@ EvoRoom.Mobile = function() {
           console.error('More or less than 1 phase object found in phases collection...');
         }
       };
-      var fetchPhaseError = function(collection, response) {
+      var fetchPhasesError = function(collection, response) {
         console.error('No phase found - and we are dead!!!');
       };
-      app.phases.fetch({success: fetchPhaseSuccess, error: fetchPhaseError});
+      app.phases.fetch({success: fetchPhasesSuccess, error: fetchPhasesError});
     } else {
       console.error('Phase model already exists...');
     }
 
-    // do the group one first?
+    // GROUPS collection
+    if (app.user === null) {
+      app.groups = new EvoRoom.Model.Users();
+      app.groups.wake(Sail.app.config.wakeful.url);   // do we actually need this?
+
+      var fetchGroupsSuccess = function(collection, response) {
+        console.log('Retrieved groups collection...');
+        // GROUP model
+        app.group = app.groups.find(function(group) { return group.get('darwin') === app.rollcallGroupName; });
+        if (app.group) {
+          app.group.wake(Sail.app.config.wakeful.url);
+          app.phase.on('change', app.updateGroupHTML);
+          app.updateGroupHTML();
+        } else {
+          console.log('This user hasnt been assigned a group');
+        }
+      };
+      var fetchGroupsError = function(collection, response) {
+        console.error('No groups collection found - and we are dead!!!');
+      };
+      app.groups.fetch({success: fetchGroupsSuccess, error: fetchGroupsError});
+    } else {
+      console.log('Group model already exists...');
+    }
 
     // USERS collection
     if (app.user === null) {
@@ -178,11 +201,11 @@ EvoRoom.Mobile = function() {
       app.users = new EvoRoom.Model.Users();    // create a users collction object
       app.users.wake(Sail.app.config.wakeful.url);
 
-      var fetchUserSuccess = function(collection, response) {
+      var fetchUsersSuccess = function(collection, response) {
         console.log('Retrieved users collection...');
         // check if users collection contains an object for our current user
         var myUser = app.users.find(function(user) { return user.get('username') === u; });
-        // USER collection
+        // USER model
         if (myUser) {
           console.log('There seems to be a users entry for us already :)');
           app.user = myUser;
@@ -194,20 +217,19 @@ EvoRoom.Mobile = function() {
           app.user.set('phase_data', {});
           app.user.set('created_at', new Date());
         }
-
         var saveSuccess = function(model, response) {
           app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
           app.user.on('change', app.updateUserHTML);
-          app.updateUserHTML();          
+          app.updateUserHTML();
         };
         app.user.set('group_name', app.rollcallGroupName);
         app.user.set('direction', app.rollcallMetadata.direction);
         app.user.save(null, {success: saveSuccess}); // save the user object to the database
       };
-      var fetchUserError = function(collection, response) {
+      var fetchUsersError = function(collection, response) {
         console.error('No users collection found - and we are dead!!!');
       };
-      app.users.fetch({success: fetchUserSuccess, error: fetchUserError});
+      app.users.fetch({success: fetchUsersSuccess, error: fetchUsersError});
     } else {
       console.error('User model already exists...');
     }
