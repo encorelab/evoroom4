@@ -21,11 +21,14 @@ EvoRoom.Mobile = function() {
   };
 
   app.rollcall = null;
-  app.phase = null;     // temp?
+  app.phases = null;
+  app.phase = null;
+  app.users = null;
   app.user = null;
   app.rollcallGroupName = null;
-  app.group = null;       // maybe 
-  app.rollcallMetadata = null; // static stuff we pull once from Rollcall like direction
+  app.groups = null;
+  app.group = null;
+  app.rollcallMetadata = null; // switch me to local?
 
   app.init = function() {
     jQuery('#evoroom').addClass('hide'); // hide everything except login screen
@@ -133,25 +136,8 @@ EvoRoom.Mobile = function() {
 
     'unauthenticated': function(ev) {
       app.authenticate();
-    },
-
-    sail: {
-      dummy: function(sev) {
-        console.log('received dummy sail event');
-      }
     }
   };
-
-
-  /* Outgoing events */
-  app.sendDummy = function(model) {
-    var sev;
-    sev = new Sail.Event('dummy', model.toJSON());
-    
-    Sail.app.groupchat.sendEvent(sev);
-    return true;
-  };
-
 
 
   /* Helper functions */
@@ -159,44 +145,67 @@ EvoRoom.Mobile = function() {
   app.initModels = function() {
     console.log('Initializing models...');
 
-    // create phase object and wake it up (sub to collection)
-    var phases = new EvoRoom.Model.Phases();
+    // PHASES collection
+    if (app.phase === null) {
+      app.phases = new EvoRoom.Model.Phases();
+      // app.phases.wake(Sail.app.config.wakeful.url);
+      // app.phases.on('add remove', somefunction (c));
+      var fetchPhasesSuccess = function(collection, response) {
+        console.log('Retrieved phases collection...');
+        if (collection.length === 1) {
+          // PHASE model
+          app.phase = app.phases.first();
+          app.phase.wake(Sail.app.config.wakeful.url);
+          app.phase.on('change', app.updatePhaseHTML);
+          app.updatePhaseHTML();
+        } else {
+          console.error('More or less than 1 phase object found in phases collection...');
+        }
+      };
+      var fetchPhasesError = function(collection, response) {
+        console.error('No phase found - and we are dead!!!');
+      };
+      app.phases.fetch({success: fetchPhasesSuccess, error: fetchPhasesError});
+    } else {
+      console.error('Phase model already exists...');
+    }
 
-    var fetchPhaseSuccess = function(collection, response) {
-      console.log('Retrieved phase object...');
-
-      if (collection.length === 1) {
-        app.phase = collection.models[0];
-        app.phase.wake(Sail.app.config.wakeful.url);
-        app.phase.on('change', app.handlePhaseChange);
-        app.phase.trigger('change');
-
-        collection.wake(Sail.app.config.wakeful.url);         // do we need this?
-
-      } else {
-        console.error('More or less than 1 phase object found in phases collection');
-      }
-    };
-
-    // error fetching collection means something is wrong with the database or connection
-    var fetchPhaseError = function(collection, response) {
-      console.error('No phase found - and we are dead!!!!');
-    };
-
-    phases.fetch({success: fetchPhaseSuccess, error: fetchPhaseError}); // fetch phase object    
-
-
-    // create users object and wake it up (sub to collection)
+    // GROUPS collection
     if (app.user === null) {
-      var u = Sail.app.session.account.login; // grab username from Rollcall
-      var users = new EvoRoom.Model.Users(); // create a users collction object
+      app.groups = new EvoRoom.Model.Users();
+      app.groups.wake(Sail.app.config.wakeful.url);   // do we actually need this?
 
-      // users collection fetched
-      var fetchUserSuccess = function(collection, response) {
-        console.log('Users collection found retrieved');
+      var fetchGroupsSuccess = function(collection, response) {
+        console.log('Retrieved groups collection...');
+        // GROUP model
+        app.group = app.groups.find(function(group) { return group.get('darwin') === app.rollcallGroupName; });
+        if (app.group) {
+          app.group.wake(Sail.app.config.wakeful.url);
+          app.phase.on('change', app.updateGroupHTML);
+          app.updateGroupHTML();
+        } else {
+          console.log('This user hasnt been assigned a group');
+        }
+      };
+      var fetchGroupsError = function(collection, response) {
+        console.error('No groups collection found - and we are dead!!!');
+      };
+      app.groups.fetch({success: fetchGroupsSuccess, error: fetchGroupsError});
+    } else {
+      console.log('Group model already exists...');
+    }
+
+    // USERS collection
+    if (app.user === null) {
+      var u = Sail.app.session.account.login;   // grab username from Rollcall
+      app.users = new EvoRoom.Model.Users();    // create a users collction object
+      app.users.wake(Sail.app.config.wakeful.url);
+
+      var fetchUsersSuccess = function(collection, response) {
+        console.log('Retrieved users collection...');
         // check if users collection contains an object for our current user
-        var myUser = users.find(function(user) { return user.get('username') === u; });
-        
+        var myUser = app.users.find(function(user) { return user.get('username') === u; });
+        // USER model
         if (myUser) {
           console.log('There seems to be a users entry for us already :)');
           app.user = myUser;
@@ -208,25 +217,21 @@ EvoRoom.Mobile = function() {
           app.user.set('phase_data', {});
           app.user.set('created_at', new Date());
         }
-
         var saveSuccess = function(model, response) {
           app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
-          users.wake(Sail.app.config.wakeful.url);
+          app.user.on('change', app.updateUserHTML);
+          app.updateUserHTML();
         };
-
         app.user.set('group_name', app.rollcallGroupName);
         app.user.set('direction', app.rollcallMetadata.direction);
-
         app.user.save(null, {success: saveSuccess}); // save the user object to the database
       };
-
-      // error fetching collection means something is wrong with the database or connection
-      var fetchUserError = function(collection, response) {
-        console.error('No users collection found - and we are dead!!!!');
+      var fetchUsersError = function(collection, response) {
+        console.error('No users collection found - and we are dead!!!');
       };
-
-      users.fetch({success: fetchUserSuccess, error: fetchUserError}); // fetch users collection object
-
+      app.users.fetch({success: fetchUsersSuccess, error: fetchUsersError});
+    } else {
+      console.error('User model already exists...');
     }
 
   };
@@ -251,17 +256,11 @@ EvoRoom.Mobile = function() {
 
     jQuery('#team-assignment .small-button').click(function() {
       app.hidePageElements();
-
-      // check which rotation we're on, add the appropriate dynamic text?
-
       jQuery('#rotation-instructions').show();
     });
 
     jQuery('#rotation-instructions .small-button').click(function() {
       app.hidePageElements();
-
-      // check which rotation we're on, add the appropriate dynamic text?
-
       jQuery('#organism-presence').show();
     });
 
@@ -276,10 +275,25 @@ EvoRoom.Mobile = function() {
     
   };
 
-  app.handlePhaseChange = function() {
-    console.log('Handling phase changes...');
+  app.updatePhaseHTML = function() {
+    console.log('Hooking up phase model to UI elements...');
 
     jQuery('#phase-number-container').text(app.phase.get('phase_number'));
+  };
+
+  app.updateGroupHTML = function() {
+    console.log('Hooking up group model to UI elements...');
+
+    // this will likely suffer from sync issues - will need to nest group inside user in modelInit
+    _.each(app.group.get(app.user.get('group_name')), function(m) {
+      console.log('member:',m);
+    });
+  };
+
+  app.updateUserHTML = function() {
+    console.log('Hooking up user model to UI elements...');
+
+    jQuery('#team-name-container').text(app.user.get('group_name'));
   };
 
   app.hidePageElements = function() {
