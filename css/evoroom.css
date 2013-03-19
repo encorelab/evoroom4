@@ -60,7 +60,7 @@ header {
 }
 
 
-/* ====================== BODY ====================== */
+/* ====================== BODY - GENERAL ====================== */
 
 .text-box-large {
     position: absolute;
@@ -100,20 +100,50 @@ header {
     overflow-y: scroll;
 }
 
-.small-button {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    margin-left: -70px;
-    width: 140px;
-    height: 60px;
+.button {
     font-size: 28px;
     font-weight: bold;
     color: white;
     background: url('');
     background-color: #007ADF;
     border: 1px solid #007ADF;
-    border-radius: 8px;     
+    border-radius: 8px;    
+}
+
+.small-button {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    margin-left: -70px;
+    width: 140px;
+    height: 60px;   
+}
+
+
+/* ====================== BODY - SPECIFIC ====================== */
+
+.guide-button {
+    position: absolute;
+    bottom: 240px;
+    left: 50%;
+    margin-left: -70px;
+    width: 140px;
+    height: 60px;
+}
+
+.participant-button {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    margin-left: -100px;
+    width: 200px;
+    height: 60px;
+}
+
+.time-choice-button {
+    margin: 10px;
+    width: 200px;
+    height: 60px;
 }
 
 #organism-presence .ui-button {

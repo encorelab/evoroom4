@@ -25,9 +25,10 @@ EvoRoom.Mobile = function() {
   app.phase = null;
   app.users = null;
   app.user = null;
-  app.rollcallGroupName = null;
   app.groups = null;
   app.group = null;
+  app.rollcallGroupName = null;
+  app.rollcallGroupMembers = null;
   app.rollcallMetadata = null; // switch me to local?
 
   app.init = function() {
@@ -47,7 +48,7 @@ EvoRoom.Mobile = function() {
         return true;
       });
 
-    // Create a Rollcall instance so that sail.app has access to it later on
+    // create a Rollcall instance so that sail.app has access to it later on
     app.rollcall = new Rollcall.Client(app.config.rollcall.url);
 
     // configure the toasts
@@ -70,7 +71,7 @@ EvoRoom.Mobile = function() {
   };
 
   app.restoreState = function () {
-    console.log('Restoring UI state...');
+    console.log("Restoring UI state...");
 
     // Reading user object and deciding which screen to go to
     
@@ -88,11 +89,11 @@ EvoRoom.Mobile = function() {
     },
 
     'ui.initialized': function(ev) {
-      console.log('ui.initialized!');
+      console.log("ui.initialized!");
     },    
 
     authenticated: function(ev) {
-      console.log('Authenticated...');
+      console.log("Authenticated...");
 
       // now we call a class function (init) and hand in the drowsy url and the run name so we don't need
       // to do this config again for each model instantiation
@@ -107,12 +108,11 @@ EvoRoom.Mobile = function() {
     ready: function(ev) {
       console.log("Ready!");
 
-      Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/"+Sail.app.session.account.login+".json", "GET", {}, function(data) {
+      Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/" + Sail.app.session.account.login + ".json", "GET", {}, function(data) {
         // retrieve group name from Rollcall
         app.rollcallGroupName = data.groups[0].name;
         // grab metadata from Rollcall
         app.rollcallMetadata = data.metadata;
-
         // do the rest of the ready function ;)
         // Disable logout button to avoid crash of node-bosh-ws-xmpp bridge
         // FIXME: unneccessary once XMPP is turned off
@@ -123,14 +123,18 @@ EvoRoom.Mobile = function() {
           window.location.reload();
         });
 
-        // init all models and collections needed an make them wakefull
-        app.initModels();
-        // return user to last screen according to user object and enable transitions according to phase object
-        app.restoreState();
-        // hook up event listener to buttons to allow interactions
-        app.bindEventsToPageElements();
+        Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + app.rollcallGroupName + ".json", "GET", {}, function(data) {
+          // create the all_members
+          app.rollcallGroupMembers = data.members;
+          // init all models and collections needed an make them wakefull
+          app.initModels();
+          // return user to last screen according to user object and enable transitions according to phase object
+          app.restoreState();
+          // hook up event listener to buttons to allow interactions
+          app.bindEventsToPageElements();
 
-        jQuery('#evoroom').removeClass('hide'); // unhide everything
+          jQuery('#evoroom').removeClass('hide'); // unhide everything
+        });
       });
     },
 
@@ -151,7 +155,7 @@ EvoRoom.Mobile = function() {
       // app.phases.wake(Sail.app.config.wakeful.url);
       // app.phases.on('add remove', somefunction (c));
       var fetchPhasesSuccess = function(collection, response) {
-        console.log('Retrieved phases collection...');
+        console.log("Retrieved phases collection...");
         if (collection.length === 1) {
           // PHASE model
           app.phase = app.phases.first();
@@ -159,40 +163,41 @@ EvoRoom.Mobile = function() {
           app.phase.on('change', app.updatePhaseHTML);
           app.updatePhaseHTML();
         } else {
-          console.error('More or less than 1 phase object found in phases collection...');
+          console.error("More or less than 1 phase object found in phases collection...");
         }
       };
       var fetchPhasesError = function(collection, response) {
-        console.error('No phase found - and we are dead!!!');
+        console.error("No phase found - and we are dead!!!");
       };
       app.phases.fetch({success: fetchPhasesSuccess, error: fetchPhasesError});
     } else {
-      console.error('Phase model already exists...');
+      console.error("Phase model already exists...");
     }
 
     // GROUPS collection
-    if (app.user === null) {
+    if (app.group === null) {
       app.groups = new EvoRoom.Model.Users();
       app.groups.wake(Sail.app.config.wakeful.url);   // do we actually need this?
 
       var fetchGroupsSuccess = function(collection, response) {
-        console.log('Retrieved groups collection...');
+        console.log("Retrieved groups collection...");
         // GROUP model
-        app.group = app.groups.find(function(group) { return group.get('darwin') === app.rollcallGroupName; });
+        app.group = app.groups.find(function(group) { return group.get('group_name') === app.rollcallGroupName; });
         if (app.group) {
+          app.group.set('all_members', app.rollcallGroupMembers);
           app.group.wake(Sail.app.config.wakeful.url);
-          app.phase.on('change', app.updateGroupHTML);
+          app.group.on('change', app.updateGroupHTML);
           app.updateGroupHTML();
         } else {
-          console.log('This user hasnt been assigned a group');
+          console.log('This user hasnt been assigned a group in Rollcall...');
         }
       };
       var fetchGroupsError = function(collection, response) {
-        console.error('No groups collection found - and we are dead!!!');
+        console.error("No users collection found - and we are dead!!!");
       };
       app.groups.fetch({success: fetchGroupsSuccess, error: fetchGroupsError});
     } else {
-      console.log('Group model already exists...');
+      console.log("Group model already exists...");
     }
 
     // USERS collection
@@ -207,15 +212,14 @@ EvoRoom.Mobile = function() {
         var myUser = app.users.find(function(user) { return user.get('username') === u; });
         // USER model
         if (myUser) {
-          console.log('There seems to be a users entry for us already :)');
+          console.log("There seems to be a users entry for us already :)");
           app.user = myUser;
           app.user.set('modified_at', new Date());
         } else {
-          console.log("No users object found for ", u, " creating...");
+          console.log("No users object found for ", u, ", creating...");
           app.user = new EvoRoom.Model.User({username: u}); // create new user object
-          app.user.set('user_phase', '');
+          app.user.set('user_phase', 'orientation');
           app.user.set('phase_data', {});
-          app.user.set('created_at', new Date());
         }
         var saveSuccess = function(model, response) {
           app.user.wake(Sail.app.config.wakeful.url); // make user object wakeful
@@ -227,30 +231,87 @@ EvoRoom.Mobile = function() {
         app.user.save(null, {success: saveSuccess}); // save the user object to the database
       };
       var fetchUsersError = function(collection, response) {
-        console.error('No users collection found - and we are dead!!!');
+        console.error("No users collection found - and we are dead!!!");
       };
       app.users.fetch({success: fetchUsersSuccess, error: fetchUsersError});
     } else {
-      console.error('User model already exists...');
+      console.error("User model already exists...");
     }
 
+  };
+
+  app.updatePhaseHTML = function() {
+    console.log('Updating phase model related UI elements...');
+
+    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
+  };
+
+  app.updateGroupHTML = function() {
+    console.log('Updating group model related UI elements...');
+
+    // 
+    _.each(app.group.get('all_members'), function(m) {
+      console.log('member',m.display_name);
+
+      var memberDiv = jQuery('<div />');
+      // assign the needed classes
+      memberDiv.addClass('indented-text');
+      // insert the username to be displayed
+      memberDiv.text(m.display_name);
+      // add the div to the members container
+      jQuery('#team-members-container').append(memberDiv);      
+    });
+  };
+
+  app.updateUserHTML = function() {
+    console.log('Updating user model related UI elements...');
+
+    jQuery('#team-name-container').text(app.user.get('group_name'));
+    // TODO change group listing to dynamic based on who's in the room? (replacing stuff in updateGroupHTML)
+    jQuery('.time').text(app.user.get('phase_data').time);
+
+    // rotation 1
+    if (app.user.get('user_phase') === "orientation") {
+      jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
+      jQuery('.time-choice-1').text("200 mya");
+      jQuery('.time-choice-2').text("150 mya");
+      jQuery('.time-choice-3').text("100 mya");
+      jQuery('.time-choice-4').text("50 mya");
+    }
+    // rotation 2
+    else if (app.user.get('user_phase') === "rotation 2") {           // this is likely the wrong phase to key off
+      jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
+      jQuery('.time-choice-1').text("25 mya");
+      jQuery('.time-choice-2').text("10 mya");
+      jQuery('.time-choice-3').text("5 mya");
+      jQuery('.time-choice-4').text("2 mya");
+    } else {
+      console.log("Not in user phase orientation or other...");
+    }
+    
+  };
+
+  app.hidePageElements = function() {
+    console.log('Hiding page elements...');
+    jQuery('#loading-page').hide();
+    jQuery('#team-meeting').hide();
+    jQuery('#log-in-success').hide();
+    jQuery('#team-assignment').hide();
+    jQuery('#rotation-instructions').hide();
+    jQuery('#participant-instructions').hide();
+    jQuery('#guide-instructions-1').hide();
+    jQuery('#guide-instructions-2').hide();
+    jQuery('#organism-presence').hide();
   };
 
   app.bindEventsToPageElements = function() {
     console.log('Binding page elements...');
 
+    // required for the organism-presence buttons
     jQuery(".jquery-radios").buttonset();
-
-    // to be removed once teacher tablet is up and going
-    jQuery('#start-rotation-1').click(function() {
-
-    });
 
     jQuery('#log-in-success .small-button').click(function() {
       app.hidePageElements();
-
-      // insert the grouping check here?
-
       jQuery('#team-assignment').show();
     });
 
@@ -259,7 +320,29 @@ EvoRoom.Mobile = function() {
       jQuery('#rotation-instructions').show();
     });
 
-    jQuery('#rotation-instructions .small-button').click(function() {
+    jQuery('#rotation-instructions .guide-button').click(function() {
+      app.user.setPhaseData('role', 'guide');
+      app.hidePageElements();
+      jQuery('#guide-instructions-1').show();
+    });
+    jQuery('#rotation-instructions .participant-button').click(function() {
+      app.user.setPhaseData('role', 'participant');
+      app.hidePageElements();
+      jQuery('#participant-instructions').show();
+    });
+
+    jQuery('#guide-instructions-1 .time-choice-button').click(function(ev) {
+      var time = jQuery(ev.target).text();
+      app.user.setPhaseData('time', time);
+      app.hidePageElements();
+      jQuery('#guide-instructions-2').show();      
+    });    
+    jQuery('#guide-instructions-1 .small-button').click(function() {
+      app.hidePageElements();
+      jQuery('#rotation-instructions').show();
+    });
+
+    jQuery('#participant-instructions .small-button').click(function() {
       app.hidePageElements();
       jQuery('#organism-presence').show();
     });
@@ -274,38 +357,6 @@ EvoRoom.Mobile = function() {
     });
     
   };
-
-  app.updatePhaseHTML = function() {
-    console.log('Hooking up phase model to UI elements...');
-
-    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
-  };
-
-  app.updateGroupHTML = function() {
-    console.log('Hooking up group model to UI elements...');
-
-    // this will likely suffer from sync issues - will need to nest group inside user in modelInit
-    _.each(app.group.get(app.user.get('group_name')), function(m) {
-      console.log('member:',m);
-    });
-  };
-
-  app.updateUserHTML = function() {
-    console.log('Hooking up user model to UI elements...');
-
-    jQuery('#team-name-container').text(app.user.get('group_name'));
-  };
-
-  app.hidePageElements = function() {
-    console.log('Hiding page elements...');
-    jQuery('#loading-page').hide();
-    jQuery('#team-meeting').hide();
-    jQuery('#log-in-success').hide();
-    jQuery('#team-assignment').hide();
-    jQuery('#rotation-instructions').hide();
-    jQuery('#organism-presence').hide();
-  };
-
 
 };
 

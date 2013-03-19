@@ -36,8 +36,6 @@
     </header>
 
     <div id="evoroom">
-
-<!--         <button id="start-rotation-1">START ROTATION 1</button> -->
          
         <div id="loading-page" class="text-box-medium" style="display:none">
             <div class="title-container"><b>Please wait...</b></div>
@@ -51,7 +49,8 @@
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
 
-        <!-- ORIENTATION PHASE -->
+
+        <!-- ORIENTATION PHASE (PHASE 0)-->
 
         <div id="log-in-success" class="text-box-medium" style="display:none">
             <div class="title-container"><b>Log in successful</b></div>
@@ -62,7 +61,7 @@
                 <br />
                 <div>You will be collectively creating a cladogram and determine how the species of Borneo came to be in their current form.</div>
             </div>
-            <button class="small-button">Next</button>
+            <button class="small-button button">Next</button>
         </div>
 
         <div id="team-assignment" class="text-box-medium" style="display:none">
@@ -76,25 +75,74 @@
                 <div>Team members:</div>
                 <div id="team-members-container"></div>
             </div>
-            <button class="small-button">Next</button>
+            <button class="small-button button">Next</button>
         </div>
-
-        <!-- ROTATION 1 (/2?) -->
-        <!-- maybe add a roation 1 class, rotation 2 class, etc -->
 
         <div id="rotation-instructions" class="text-box-medium" style="display:none">
             <div class="title-container">
-                <b>Instructions:</b> There are four different versions of Southeast Asia set at different times in this room: <span class="dynamic-text">200, 150, 100, and 50 mya</span>.
+                <b>Instructions:</b> There are four different versions of Southeast Asia set at different times in this room: <span class="time-periods-text dynamic-text"></span>.
             </div>
             <div class="body-container-medium">
-                When you click &rsquo;Next&rsquo; you will be assigned an organism. Your task is to determine whether your organism is present at the time periods and if not, whether their ancestral forms are present. Once you are done, another organism will be assigned to you until all of the organisms are complete.
+                If you have been preassigned as a guide for any of these four time periods, please select the "Guide" button. Otherwise, please select the "Participant" button.
             </div>
-            <button class="small-button">Next</button>   <!-- style="display:none" -->
+            <button class="guide-button button">Guide</button>
+            <button class="participant-button button">Participant</button>
         </div>
+
+        <div id="participant-instructions" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>Instructions: </b>Once the activity begins, a "Next" button will appear on this screen</div>
+            <div class="body-container-medium">
+                <div>When you click "Next" you will be assigned an organism. Your task is to determine whether your organism is present at the time periods and if not, whether its ancestral forms are present</div>
+                <div>When you are done, another organism will be assigned to you until all of the organisms are complete.</div>
+            </div>
+            <button class="small-button button" style="display:none">Next</button>
+        </div>
+
+        <div id="guide-instructions-1" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>Instructions: </b>Please select the time period for which you have been assigned as a guide</div>
+            <div class="body-container-medium">
+                <!-- filled by updateUserHTML -->
+                <table>
+                    <tr>
+                        <td>
+                            <button class="time-choice-1 time-choice-button button"></button>
+                        </td>
+                        <td>
+                            <button class="time-choice-2 time-choice-button button"></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="time-choice-3 time-choice-button button"></button>
+                        </td>
+                        <td>
+                            <button class="time-choice-4 time-choice-button button"></button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <button class="small-button button">Back</button>
+        </div>
+
+        <div id="guide-instructions-2" class="text-box-medium" style="display:none">
+            <div class="title-container"><b>You've been selected as a guide for:</b></div>
+
+            <div class="body-container-medium">
+                <div class="time dynamic-text"></div>
+                <br />
+                <div>Please go to the station and help your peers to determine whether their organism is present at your time period. If not, help them find the organism's ancestral form.</div>
+                <br />
+                <div>Once the activity begins, a "Next" button will appear. This gives you access to a specialty field guide that has been created to assist you with this task.</div>
+            </div>
+            <button class="small-button button" style="display:none">Next</button>
+        </div>
+
+        <!-- ROTATION 1 (PHASE 1/3) -->
+        <!-- maybe add a roation 1 class, rotation 2 class, etc -->        
 
         <div id="organism-presence" class="text-box-medium" style="display:none">
             <div class="title-container">
-                <b>Time: </b><span class="year dynamic-text"></span>
+                <b>Time: </b><span class="time dynamic-text"></span>
             </div>
             <br />
             <div>
@@ -105,7 +153,7 @@
                 <input type="radio" id="org-present" name="radio" class="presence-choice-button" /><label for="org-present">Yes</label>
                 <input type="radio" id="org-not-present" name="radio" class="presence-choice-button" /><label for="org-not-present">No</label>
             </div>
-            <button class="small-button" style="display:none"><b>Done</b></button>
+            <button class="small-button button" style="display:none"><b>Done</b></button>
         </div>
 
 
@@ -124,7 +172,7 @@
                 Lots of text lots of text lots of text Lots of text lots of text lots of text Lots of text lots of text lots of text 
                 Lots of text lots of text lots of text Lots of text lots of text lots of text Lots of text lots of text lots of text 
             </div>
-            <button class="small-button">Next</button>
+            <button class="small-button button">Next</button>
         </div>
 
 
