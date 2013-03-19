@@ -55,7 +55,7 @@ EvoRoom.Model.init(config.drowsy.url, DATABASE).done(function () {
 
 function reactToPhaseChange(phase) {
   var phasename = phase.get('foo');  // for debugging later phase_name
-  console.log("Phase is now: ", phase.get('phase_name'));
+  console.log("Phase is now: ", phasename);
 
   if (phasename === "rotation 1") {
     console.log("Pahse rotation 1 entered. Start to assign animals to students!");
