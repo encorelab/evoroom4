@@ -83,11 +83,9 @@ EvoRoom.Model = (function() {
  		};
 
 		model.User = model.db.Document('users').extend({
-			/* define any document methods here */
-		});
-		model.User = model.db.Document('users').extend({
 			setPhaseData: function(phaseKey, value) {
-				var pd = this.get('phase_data');
+				// var pd = this.get('phase_data');
+				var pd = _.clone(this.get('phase_data'));
 				pd[phaseKey] = value;
 				this.set('phase_data', pd);
 			}
