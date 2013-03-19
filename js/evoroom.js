@@ -302,6 +302,8 @@ EvoRoom.Mobile = function() {
     jQuery('#guide-instructions-1').hide();
     jQuery('#guide-instructions-2').hide();
     jQuery('#organism-presence').hide();
+    jQuery('#ancestor-choice').hide();
+    jQuery('#ancestor-description').hide();
   };
 
   app.bindEventsToPageElements = function() {
@@ -322,11 +324,13 @@ EvoRoom.Mobile = function() {
 
     jQuery('#rotation-instructions .guide-button').click(function() {
       app.user.setPhaseData('role', 'guide');
+      app.user.save();
       app.hidePageElements();
       jQuery('#guide-instructions-1').show();
     });
     jQuery('#rotation-instructions .participant-button').click(function() {
       app.user.setPhaseData('role', 'participant');
+      app.user.save();
       app.hidePageElements();
       jQuery('#participant-instructions').show();
     });
@@ -334,6 +338,7 @@ EvoRoom.Mobile = function() {
     jQuery('#guide-instructions-1 .time-choice-button').click(function(ev) {
       var time = jQuery(ev.target).text();
       app.user.setPhaseData('time', time);
+      app.user.save();
       app.hidePageElements();
       jQuery('#guide-instructions-2').show();      
     });    
@@ -347,15 +352,28 @@ EvoRoom.Mobile = function() {
       jQuery('#organism-presence').show();
     });
 
-    jQuery('#organism-presence .presence-choice-button').click(function() {
-      // update observations collection
+    // ROTATIONS
+
+    jQuery('#organism-presence .presence-choice-button').click(function() {       
       jQuery('#organism-presence .small-button').show();
     });
     jQuery('#organism-presence .small-button').click(function() {
       app.hidePageElements();
-      jQuery('#SOMETHING').show();
+      if (jQuery(':radio:checked').data('choice') === "yes") {
+        // set up new assigned-organism
+        // jQuery('#organism-presence')?
+        alert('you hit yes');
+      } else {
+        jQuery('#ancestor-choice').show();
+      }
     });
     
+
+
+      // jQuery.get('assets/species_descriptions/fig_tree_test.html', function(data) {
+      //   jQuery('.organism-description').html(data);
+      //   jQuery('#sample-organism-description').show();
+      // });
   };
 
 };

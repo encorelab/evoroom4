@@ -4,7 +4,7 @@ body {
 
 #evoroom {
   background-color: #12120C;
-    background-image: url('/images/bkgd_wText.jpg');
+    background-image: url('/assets/images/bkgd_wText.jpg');
     background-repeat: no-repeat;
     width: 800px;
     height: 1096px;
@@ -144,6 +144,11 @@ header {
     margin: 10px;
     width: 200px;
     height: 60px;
+}
+
+.large-year-text {
+    font-size: 26px;
+    text-align: center;
 }
 
 #organism-presence .ui-button {
