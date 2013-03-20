@@ -268,16 +268,6 @@
 	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
 	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
 	},
-"mengaris_tree":{
-	"200 mya":["lycophytes","cycads","none"],
-	"150 mya":["araucariaceae","cycads","none"],
-	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
-	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
-	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
-	},
 "pitcher_plant":{
 	"200 mya":["lycophytes","cycads","none"],
 	"150 mya":["araucariaceae","cycads","none"],
@@ -289,16 +279,6 @@
 	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
 	},
 "rafflesia":{
-	"200 mya":["lycophytes","cycads","none"],
-	"150 mya":["araucariaceae","cycads","none"],
-	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
-	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
-	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
-	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
-	},
-"tetrastigma":{
 	"200 mya":["lycophytes","cycads","none"],
 	"150 mya":["araucariaceae","cycads","none"],
 	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
