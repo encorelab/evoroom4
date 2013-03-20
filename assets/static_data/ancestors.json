@@ -1,0 +1,318 @@
+{"bornean_orangutan":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"mitered_leaf_monkey":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"muellers_gibbon":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"proboscis_monkey":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"sumatran_orangutan":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"white_fronted_langur":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["purgatorius","multituberculata","miacids"],
+	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
+	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
+	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
+	"2 mya":["hylobatidae","orangutan","presbytis"]
+	},
+"blue_headed_pitta":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"garnet_pitta":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"helmeted_hornbill":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"malabar_grey_hornbill":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"great_argus_pheasant":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"rhinoceros_hornbill":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["enantiornithes","yanornis","pterosaurs"],
+	"50 mya":["passeriformes","bucerotidae","phasianidae"],
+	"25 mya":["passeriformes","bucerotidae","phasianidae"],
+	"10 mya":["pitta","bucerotidae","pheasant"],
+	"5 mya":["passeriformes","bucerotidae","pheasant"],
+	"2 mya":["passeriformes","bucerotidae","pheasant"]
+	},
+"borneo_porcupine":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","eomanis"],
+	"25 mya":["common_pangolin","paleolagus","oligocene_rodents"],
+	"10 mya":["felidae","old_world_porcupine","common_pangolin"],
+	"5 mya":["old_world_porcupine","asiavorator","common_pangolin"],
+	"2 mya":["old_world_porcupine","asiavorator","common_pangolin"]
+	},
+"civet":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","miacids"],
+	"25 mya":["oligocene_rodents","felidae","asiavorator"],
+	"10 mya":["viverridae","old_world_porcupine","felidae"],
+	"5 mya":["viverridae","panthera","felidae"],
+	"2 mya":["viverridae","panthera","clouded_leopard"]
+	},
+"common_porcupine":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","eomanis"],
+	"25 mya":["common_pangolin","paleolagus","oligocene_rodents"],
+	"10 mya":["felidae","old_world_porcupine","common_pangolin"],
+	"5 mya":["old_world_porcupine","asiavorator","common_pangolin"],
+	"2 mya":["old_world_porcupine","asiavorator","common_pangolin"]
+	},
+"leopard_cat":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","miacids"],
+	"25 mya":["oligocene_rodents","felidae","asiavorator"],
+	"10 mya":["viverridae","old_world_porcupine","felidae"],
+	"5 mya":["viverridae","panthera","felidae"],
+	"2 mya":["viverridae","panthera","clouded_leopard"]
+	},
+"malayan_tapir":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["heptodon","perissodactyls","eomanis"],
+	"25 mya":["first_tapir","perissodactyls","common_pangolin"],
+	"10 mya":["first_tapir","rhinocerotoids","palaeolagus"],
+	"5 mya":["first_tapir","rhinocerotoids","palaeolagus"],
+	"2 mya":["first_tapir","rhinocerotoids","palaeolagus"]
+	},
+"sunda_pangolin":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","eomanis"],
+	"25 mya":["common_pangolin","paleolagus","oligocene_rodents"],
+	"10 mya":["felidae","old_world_porcupine","common_pangolin"],
+	"5 mya":["old_world_porcupine","asiavorator","common_pangolin"],
+	"2 mya":["old_world_porcupine","asiavorator","common_pangolin"]
+	},
+"sumatran_rhinoceros":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["heptodon","perissodactyls","eomanis"],
+	"25 mya":["first_tapir","perissodactyls","common_pangolin"],
+	"10 mya":["first_tapir","rhinocerotoids","palaeolagus"],
+	"5 mya":["first_tapir","rhinocerotoids","palaeolagus"],
+	"2 mya":["first_tapir","rhinocerotoids","palaeolagus"]
+	},
+"sunda_clouded_leopard":{
+	"200 mya":["hadrocodium","theropod","thecodonts"],
+	"150 mya":["archaeopteryx","crusafonta","yangchuanosaurus"],
+	"100 mya":["multituberculata","eomaia","pterosaurs"],
+	"50 mya":["multituberculata","gomphos_elkema","miacids"],
+	"25 mya":["oligocene_rodents","felidae","asiavorator"],
+	"10 mya":["viverridae","old_world_porcupine","felidae"],
+	"5 mya":["viverridae","panthera","felidae"],
+	"2 mya":["viverridae","panthera","clouded_leopard"]
+	},
+"ants":{
+	"200 mya":["cupedidae","anisopodidae","none"],
+	"150 mya":["chrysomeloidea","mesokristensenia","none"],
+	"100 mya":["mastotermitidae","early_sphecoid_wasps","empididae"],
+	"50 mya":["chrysomeloidea","mesokristensenia","empididae"],
+	"25 mya":["mesokristensenia","styporaphidia","empididae"],
+	"10 mya":["mesokristensenia","styporaphidia","empididae"],
+	"5 mya":["mesokristensenia","styporaphidia","empididae"],
+	"2 mya":["mesokristensenia","styporaphidia","empididae"]
+	},
+"fig_wasp":{
+	"200 mya":["cupedidae","anisopodidae","none"],
+	"150 mya":["chrysomeloidea","mesokristensenia","none"],
+	"100 mya":["mastotermitidae","early_sphecoid_wasps","empididae"],
+	"50 mya":["chrysomeloidea","mesokristensenia","empididae"],
+	"25 mya":["mesokristensenia","styporaphidia","empididae"],
+	"10 mya":["mesokristensenia","styporaphidia","empididae"],
+	"5 mya":["mesokristensenia","styporaphidia","empididae"],
+	"2 mya":["mesokristensenia","styporaphidia","empididae"]
+	},
+"termites":{
+	"200 mya":["cupedidae","anisopodidae","none"],
+	"150 mya":["chrysomeloidea","mesokristensenia","none"],
+	"100 mya":["mastotermitidae","early_sphecoid_wasps","empididae"],
+	"50 mya":["chrysomeloidea","mesokristensenia","empididae"],
+	"25 mya":["mesokristensenia","styporaphidia","empididae"],
+	"10 mya":["mesokristensenia","styporaphidia","empididae"],
+	"5 mya":["mesokristensenia","styporaphidia","empididae"],
+	"2 mya":["mesokristensenia","styporaphidia","empididae"]
+	},
+"fig_tree":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"forest_durian":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"ginger":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"jambu_tree":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"pitcher_plant":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"rafflesia":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	},
+"titan_arum":{
+	"200 mya":["lycophytes","cycads","none"],
+	"150 mya":["araucariaceae","cycads","none"],
+	"100 mya":["williamsonia","ribbonwood_tree","cycadeoidea_marylandica"],
+	"50 mya":["lycophytes","pinaceae","cycadeoidea_marylandica"],
+	"25 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"10 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"5 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"],
+	"2 mya":["cycadeoidea_marylandica","ginkgophyta","williamsonia"]
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

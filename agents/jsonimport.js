@@ -31,6 +31,10 @@ new mongodb.Db('evo4-march-2013', server, {w: 1}).open(function (error, client) 
     if (err) console.warn(err.message);
     if (err && err.message.indexOf('E11000 ') !== -1) {
       // this _id was already inserted in the database
+    } else {
+      console.log("Thanks for importing data with jsonimport...");
+      console.log("... see you later!");
+      process.exit(0);
     }
   });
 });
