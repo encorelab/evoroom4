@@ -36,6 +36,13 @@ body {
     text-align: center;
 }
 
+.guide-text {
+    color: #007ADF;
+}
+.highlighter-text {
+    color: #007ADF;                                     /* le sigh */
+}
+
 .organism-image {
     height: 180px;
     width: 180px;
@@ -165,9 +172,6 @@ header {
     margin-left: -70px;
     width: 140px;
     height: 60px;
-}
-#rotation-instructions .guide-text {
-    color: #F7F7F7;
 }
 #rotation-instructions .participant-button {
     position: absolute;

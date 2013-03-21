@@ -112,6 +112,9 @@ EvoRoom.Mobile = function() {
     ready: function(ev) {
       console.log("Ready!");
 
+      // grab all the stuff that won't be changing (ancestors, guide_organisms, etc.)
+      app.fetchStaticData();
+
       Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/" + Sail.app.session.account.login + ".json", "GET", {}, function(data) {
         // retrieve group name from Rollcall
         app.rollcallGroupName = data.groups[0].name;
@@ -130,8 +133,6 @@ EvoRoom.Mobile = function() {
         Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + app.rollcallGroupName + ".json", "GET", {}, function(data) {
           // create the all_members
           app.rollcallGroupMembers = data.members;
-          // grab all the stuff that won't be changing (ancestors, OTHER)
-          app.fetchStaticData();
           // init all models and collections needed an make them wakefull
           app.initModels();
           // return user to last screen according to user object and enable transitions according to phase object
@@ -268,8 +269,7 @@ EvoRoom.Mobile = function() {
 
       var fetchObservationsSuccess = function(collection, response) {
         console.log("Retrieved observations collection...");
-        // OBSERVATION model
-        app.createNewObservation();   // TODO - how will this interact with restoreState? Maybe needs an if to see if an unpublished obs exists?
+
       };
       var fetchObservationsError = function(collection, response) {
         console.error("No users collection found - and we are dead!!!");
@@ -283,7 +283,9 @@ EvoRoom.Mobile = function() {
   app.createNewObservation = function() {
     app.observation = new EvoRoom.Model.Observation();
     app.observation.set('username',app.user.get('username'));
-    app.observation.set('observed_organism','none');
+    app.observation.set('assigned_organism',app.user.get('current_organism'));
+    app.observation.set('observed_organism','not chosen');
+    app.observation.set('time',app.user.get('phase_data').time);
     // app.observation.set('group_name', app.rollcallObservationName);
     app.observation.wake(Sail.app.config.wakeful.url);
     app.observation.save();
@@ -318,7 +320,7 @@ EvoRoom.Mobile = function() {
       // insert the username to be displayed
       memberDiv.text(m.display_name);
       // add the div to the members container
-      jQuery('#team-members-container').append(memberDiv);      
+      jQuery('.team-members-container').append(memberDiv);      
     });
   };
 
@@ -370,6 +372,7 @@ EvoRoom.Mobile = function() {
     jQuery('#ancestor-choice').hide();
     jQuery('#ancestor-description').hide();
     jQuery('#guide-choice').hide();
+    jQuery('#rotation-complete').hide();
   };
 
   app.clearPageElements = function() {
@@ -394,6 +397,7 @@ EvoRoom.Mobile = function() {
     });
 
     jQuery('#rotation-instructions .guide-button').click(function() {
+      // TODO: add me back in!
       // var ok = confirm("Do you want to choose to be a guide?");
       // if (ok) {
         app.user.setPhaseData('role', 'guide');
@@ -408,11 +412,8 @@ EvoRoom.Mobile = function() {
       // var ok = confirm("Do you want to choose to be a participant?");
       // if (ok) {
         app.user.setPhaseData('role', 'participant');
-        if (app.user.get('direction') === "forward") {
-          app.user.setPhaseData('time', '200 mya');
-        } else {
-          app.user.setPhaseData('time', '50 mya');
-        }
+        app.user.setPhaseData('time','');                 // TODO - remove me to so restoreState works
+        app.user.setPhaseData('assigned_times',[]);       // TODO - remove me to so restoreState works
         app.user.save();
         app.hidePageElements();
         jQuery('#participant-instructions').show();
@@ -428,16 +429,13 @@ EvoRoom.Mobile = function() {
     });    
     jQuery('#guide-instructions-1 .small-button').click(function() {
       app.hidePageElements();
-      app.phase.set('phase_number', '1');
       jQuery('#rotation-instructions').show();
     });
 
     jQuery('#participant-instructions .small-button').click(function() {
       app.hidePageElements();
-      app.phase.set('phase_number', '1');
-      app.assignOrganism();
       jQuery('#assigned-organism-container').show();
-      jQuery('#organism-presence').show();
+      app.rotationStepForward();
     });
 
     ////////////////////////// ROTATIONS ////////////////////////////
@@ -448,13 +446,10 @@ EvoRoom.Mobile = function() {
     });
     jQuery('#organism-presence .small-button').click(function() {
       if (jQuery(':radio:checked').data('choice') === "yes") {
-        app.observation.set('observed_organism',app.observation.get('current_organism'));
+        app.observation.set('observed_organism',app.user.get('current_organism'));
         app.observation.save();
-        app.clearPageElements();
-        app.hidePageElements();
-        // assignOrganism();
-        // change time
-        // jQuery('#organism-presence');
+        app.rotationStepForward();
+
       } else if (jQuery(':radio:checked').data('choice') === "no") {
         app.setupAncestorTable(app.user.get('current_organism'));
         app.clearPageElements();
@@ -466,32 +461,11 @@ EvoRoom.Mobile = function() {
     });
 
     jQuery('#ancestor-choice .small-button').click(function() {
-      if (app.observation.get('observed_organism') !== "none") {
+      if (app.observation.get('observed_organism') !== "not chosen") {
         app.observation.save();
-        app.hidePageElements();
-        jQuery('#organism-presence').show();        
-      } else if (app.observation.get('observed_organism') === "organism_is_present") {
-        app.observation.set('observed_organism',app.observation.get('current_organism'));
-        app.observation.save();
-        app.clearPageElements();
-        app.hidePageElements();
-        // START HERE - abstract this all and figure out how to handle going to next time cleanly
-        // also do buttons for ancestor-choice
-        // and do the dynamic group members present?
+        app.rotationStepForward();
       } else {
         alert("Which of the following is most likely the organism's ancestor or predecessor?\n\nPlease make a selection.");
-      }
-    });
-
-    // used by participant and guide
-    jQuery('#ancestor-description .small-button').click(function() {
-      app.hidePageElements();
-      if (app.user.get('phase_data').role === "participant") {
-        jQuery('#ancestor-choice').show();
-      } else if (app.user.get('phase_data').role === "guide") {
-        jQuery('#guide-choice').show();
-      } else {
-        console.error('Something wrong with the click bindings?');
       }
     });
 
@@ -503,22 +477,70 @@ EvoRoom.Mobile = function() {
       jQuery('#guide-choice').show();
     });
 
+    // BOTH //
+
+    jQuery('#ancestor-description .small-button').click(function() {
+      app.hidePageElements();
+      if (app.user.get('phase_data').role === "participant") {
+        jQuery('#ancestor-choice').show();
+      } else if (app.user.get('phase_data').role === "guide") {
+        jQuery('#guide-choice').show();
+      } else {
+        console.error('Something wrong with the click bindings?');
+      }
+    });
+
+    jQuery('#rotation-complete .small-button').click(function() {
+
+    });
+
+
   };
 
 
 
   /************** Helper functions **************/
 
-  app.assignOrganism = function() {
-    // take the first org out of the assigned_orgs array and put it into current_organism
-    var orgArray = app.user.get('phase_data').assigned_organisms;
-    if (orgArray) {
-      app.user.set('current_organism',orgArray[0]);
-      orgArray.shift();   // removes first element (like an inverse pop)      
-    } else {
-      console.error('No assigned_organisms received from the agent!');
+  app.rotationStepForward = function() {
+    app.clearPageElements();
+    app.hidePageElements();
+    // if there are still times to do for this org, change time and remove that time from the array
+    if (app.user.get('phase_data').assigned_times && app.user.get('phase_data').assigned_times.length > 0) {
+      app.user.setPhaseData('time',app.user.get('phase_data').assigned_times[0]);
+      app.user.get('phase_data').assigned_times.shift();
+      app.user.save();
+      app.createNewObservation();
+      jQuery('#organism-presence').show();      
+    }
+
+    // else reset the time array and change organisms (if there are orgs left)
+    else {
+      if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length > 0) {
+        if (app.user.get('direction') === "forward") {
+          app.user.setPhaseData('assigned_times', ["200 mya", "150 mya", "100 mya", "50 mya"]);
+        } else {
+          app.user.setPhaseData('assigned_times', ["50 mya", "100 mya", "150 mya", "200 mya"]);
+        }
+        // set current org and time
+        app.user.setPhaseData('time',app.user.get('phase_data').assigned_times[0]);
+        app.user.set('current_organism',app.user.get('phase_data').assigned_organisms[0]);
+
+        app.user.save();
+        // remove an org and time
+        app.user.get('phase_data').assigned_times.shift();
+        app.user.get('phase_data').assigned_organisms.shift();
+
+        app.createNewObservation();
+        jQuery('#organism-presence').show();        
+      } else {
+        console.log('Rotation complete!');
+        jQuery('#assigned-organism-container').hide();
+        app.hidePageElements();
+        jQuery('#rotation-complete').show();
+      }
     }
   };
+
 
   app.setupAncestorTable = function(organism) {
     var k = 0;
@@ -527,7 +549,7 @@ EvoRoom.Mobile = function() {
     var time = app.user.get('phase_data').time;
 
     var dropdownTd = jQuery('<td class="organism-boxes"><div><b>Selection</b></div></td>');          // TODO check the dropdown on the tablet
-    var dropdown = '<select class="organism-selector-dropdown"><option value="none">...</option>';    
+    var dropdown = '<select class="organism-selector-dropdown"><option value="not chosen">...</option>';    
 
     jQuery('.ancestor-information-table').html('');
     table = jQuery('.ancestor-information-table');
@@ -553,6 +575,8 @@ EvoRoom.Mobile = function() {
           jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '.html', function(data) {
             jQuery('.ancestor-description-body').html(data);
             jQuery('.ancestor-description-body').children(":first").css('display', 'inline');     //compensating for an early mistake in how the fetched html is formatted
+            // jQuery('.guide-text').css('color', '#F7F7F7');
+
             app.hidePageElements();
             jQuery('#ancestor-description').show();
           });
@@ -577,7 +601,9 @@ EvoRoom.Mobile = function() {
     });
 
     // finish the table
-    dropdown = dropdown + '<option value="organism_is_present">I changed my mind, my assigned organism is actually present</option></select>';
+    dropdown += '<option value="';
+    dropdown += app.user.get('current_organism');
+    dropdown += '">I changed my mind, my assigned organism is actually present</option></select>';
     dropdown = jQuery(dropdown);
     dropdownTd.append(dropdown);
     tr.append(dropdownTd);
