@@ -131,6 +131,7 @@ header {
 }
 
 .organism-table td {
+    width: 50%;
     border: 1px dotted #949494;
 }
 
@@ -206,5 +207,9 @@ header {
 }
 #ancestor-description .body-container-medium {
     height: 340px;
+}
+
+#guide-choice .body-container-large {
+    height: 700px;
 }
 
