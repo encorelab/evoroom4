@@ -1,4 +1,4 @@
-/*jshint node: true, strict: false, devel: true, debug: true, unused:false, undef:true */
+/*jshint node: true, strict: false, devel: true, debug: true, unused:false, undef:true, loopfunc:true */
 // variables to store static data from MongoDB
 var organism_groups;
 var user_specializations;
@@ -97,6 +97,17 @@ var reactToPhaseChange = function (phase) {
     console.log("Resulting user and their assigned organisms");
     console.log(users_with_assigned_organisms);
 
+    // write organisms array into users
+    _.each(users.models, function (user) {
+      var username = user.get('username');
+      var phase_data = user.get('phase_data');
+      var assigned_organisms = users_with_assigned_organisms[username];
+      if (assigned_organisms) {
+        phase_data.assigned_organisms = assigned_organisms;
+        user.set('phase_data', phase_data);
+        user.save();
+      }
+    });
   }
 };
 
