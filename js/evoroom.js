@@ -478,10 +478,11 @@ EvoRoom.Mobile = function() {
       }
     });
 
-      // jQuery.get('assets/ancestor_descriptions/fig_tree_test.html', function(data) {
-      //   jQuery('.ancestor-description').html(data);
-      //   jQuery('#ancestor-description').show();
-      // });
+    jQuery('#ancestor-description .small-button').click(function() {
+      app.hidePageElements();
+      jQuery('#ancestor-choice').show();
+    });
+
   };
 
 
@@ -491,8 +492,12 @@ EvoRoom.Mobile = function() {
   app.assignOrganism = function() {
     // take the first org out of the assigned_orgs array and put it into current_organism
     var orgArray = app.user.get('phase_data').assigned_organisms;
-    app.user.set('current_organism',orgArray[0]);
-    orgArray.shift();   // removes first element (like an inverse pop)
+    if (orgArray) {
+      app.user.set('current_organism',orgArray[0]);
+      orgArray.shift();   // removes first element (like an inverse pop)      
+    } else {
+      console.error('No assigned_organisms received from the agent!');
+    }
   };
 
   app.setupAncestorTable = function(organism) {
@@ -501,7 +506,7 @@ EvoRoom.Mobile = function() {
     var table;
     var time = app.user.get('phase_data').time;
 
-    var dropdownTd = jQuery('<td class="organism-boxes"></td>');          // TODO check the dropdown on the tablet
+    var dropdownTd = jQuery('<td class="organism-boxes"><div><b>Selection</b></div></td>');          // TODO check the dropdown on the tablet
     var dropdown = '<select class="organism-selector-dropdown"><option value="none">...</option>';    
 
     jQuery('.ancestor-information-table').html('');
@@ -516,34 +521,24 @@ EvoRoom.Mobile = function() {
       img.addClass('organism-image');
       var td = jQuery('<td />');
       td.addClass('organism-boxes');
-      //td.addClass('box'+k);
 
-      // for the first ancestor table
-      // if (selector === "partial") {
-      //   img.click(function() { 
-      //     ancestorChosenString = jQuery(this).data('organism');
-      //     app.hidePageElements();
+      img.click(function() {
+        var chosenAncestor = jQuery(this).data('organism');
 
-      //     // jQuery('#ancestor-information-details .chosen-organism').text(convertString(ancestorChosenString));
-      //     // jQuery('#ancestor-information-details .ancestor-description').text(.app.ancestorsText[ancestorChosenString]);
-      //     // jQuery('#ancestor-information-details').show();
-      //   });
-      // }
-      // // for the second ancestor table
-      // else if (selector === "full") {
-      //   img.click(function() { 
-      //     ancestorChosenString = jQuery(this).data('organism');
-      //     app.hidePageElements();
+        if (chosenAncestor !== "none"){
+          jQuery('.ancestor-organism-image').attr('src', '/assets/images/' + chosenAncestor + '_icon.png');     // AWK
+          chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
+          
+          jQuery('.ancestor-organism-text').text(app.convertToHumanReadable(chosenAncestor));
+          jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '.html', function(data) {
+            jQuery('.ancestor-description-body').html(data);
+            jQuery('.ancestor-description-body').children(":first").css('display', 'inline');     //compensating for an early mistake in how the fetched html is formatted
+            app.hidePageElements();
+            jQuery('#ancestor-description').show();
+          });
+        }
 
-      //     // send event with guessed ancestor and its antecedant
-      //     // Sail.app.submitOrganismObservation(ancestorChosenString, app.user.get(''));
-
-      //     // jQuery('#observe-organisms').show();
-      //   });
-      // }
-      // else {
-      //   console.log('error binding click in ancestor tables - missing selector');
-      // }
+      });
 
       td.append(img);
       td.append('<div>' + app.convertToHumanReadable(org) + '</div>');
@@ -571,7 +566,7 @@ EvoRoom.Mobile = function() {
     }
     // adding the event listener here since the element doesn't exist when we define our other handlers
     jQuery('.organism-selector-dropdown').change(function() {
-      app.observation.observed_organism = jQuery('.organism-selector-dropdown').val();
+      app.observation.set('observed_organism',jQuery('.organism-selector-dropdown').val());
     });    
   };
 
