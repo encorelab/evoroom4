@@ -42,7 +42,7 @@ EvoRoom.Mobile = function() {
     
     Sail.modules
       // Enable multi-picker login for CommonKnowledge curnit - asking for run (must be linked to curnit)
-      .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: 'EvoRoom'})
+      .load('Rollcall.Authenticator', {mode: 'picker', askForRun: true, curnit: app.config.curnit})
       .load('Wakeful.ConnStatusIndicator')
       .load('AuthStatusWidget', {indicatorContainer: '#logout-container'})
       .thenRun(function () {
