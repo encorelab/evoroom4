@@ -6,7 +6,7 @@
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
 	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "mitered_leaf_monkey":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
@@ -16,7 +16,7 @@
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
 	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "muellers_gibbon":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
@@ -25,8 +25,8 @@
 	"50 mya":["purgatorius","multituberculata","miacids"],
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
-	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"5 mya":["propliopithecus","colobinae","common_gibbon"],
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "proboscis_monkey":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
@@ -36,7 +36,7 @@
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
 	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "sumatran_orangutan":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
@@ -46,7 +46,7 @@
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
 	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "white_fronted_langur":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
@@ -56,7 +56,7 @@
 	"25 mya":["old_world_monkey","new_world_monkey","purgatorius"],
 	"10 mya":["colobinae","dryopithecus","new_world_monkey"],
 	"5 mya":["propliopithecus","colobinae","new_world_monkey"],
-	"2 mya":["hylobatidae","orangutan","presbytis"]
+	"2 mya":["common_gibbon","orangutan","presbytis"]
 	},
 "blue_headed_pitta":{
 	"200 mya":["hadrocodium","theropod","thecodonts"],
