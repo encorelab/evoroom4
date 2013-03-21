@@ -129,7 +129,7 @@
         </div>
 
         <div id="guide-instructions-2" class="text-box-medium" style="display:none">
-            <div class="title-container"><b>You've been selected as a guide for:</b></div>
+            <div class="title-container"><b>Instructions: </b>You've been selected as a guide for:</div>
 
             <div class="body-container-medium">
                 <div class="large-year-text time dynamic-text"></div>
@@ -144,7 +144,7 @@
 
         <!-- ROTATION (PHASE 1/3) -->
         <!-- maybe add a roation 1 class, rotation 2 class, etc -->        
-
+        <!-- PARTICIPANT -->
         <div id="organism-presence" class="text-box-medium" style="display:none">
             <div class="title-container">
                 <div><b>Time: </b><span class="time dynamic-text"></span></div>
@@ -166,25 +166,39 @@
                 <br />
                 <div><b>Instructions: </b>Which of the following is most likely the organism&rsquo;s ancestor? Click on each organism to read more about it. Select your choice from the drop down menu.</div>  
             </div>
-
             <div class="body-container-medium">
                 <table class="organism-table ancestor-information-table"></table>
             </div>
             <button class="small-button button"><b>Done</b></button>
         </div>
 
-
         <div id="ancestor-description" class="text-box-medium" style="display:none">
+            <div class="ancestor-organism-container">
+                <img class="ancestor-organism-image" />
+            </div>
             <div class="title-container">
                 <div><b>Time: </b><span class="time dynamic-text"></span></div>
-                <div><b>Organism: </b><span class="organism"></span></div>
+                <div><b>Organism: </b><span class="ancestor-organism-text"></span></div>
             </div>
-            <div class="body-container-medium ancestor-description">
-                
+            <div class="body-container-medium">
+                <b>Description:</b><span class="ancestor-description-body"></span>
             </div>
             <button class="small-button button">Back</button>
         </div>
-        
+
+        <!-- GUIDE -->
+        <div id="guide-choice" class="text-box-large" style="display:none">
+            <div class="title-container">
+                <div><b>Time: </b><span class="time dynamic-text"></span></div>
+                <div><b>Instructions: </b>Choose an animal or plant</div>  
+            </div>
+            <div class="body-container-large">
+                <table class="organism-table guide-information-table"></table>
+            </div>
+        </div>
+
+
+
     </div>
 
 </body>
