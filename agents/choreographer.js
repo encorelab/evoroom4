@@ -25,7 +25,7 @@ var DATABASE = 'evo4-march-2013';
 
 // reacting to changes in PHASES Model
 var reactToPhaseChange = function (phase) {
-  var phasename = phase.get('foo');  // for debugging later phase_name
+  var phasename = phase.get('phase_name');  // for debugging later phase_name
   console.log("Phase is now: ", phasename);
   var users_with_assigned_organisms = {};
 
