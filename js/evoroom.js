@@ -259,7 +259,7 @@ EvoRoom.Mobile = function() {
   app.initObservationModels = function() {
     // OBSERVATIONS collection
     if (app.observation === null) {
-      app.observations = new EvoRoom.Model.Users();
+      app.observations = new EvoRoom.Model.Observations();
       app.observations.wake(Sail.app.config.wakeful.url);   // do we actually need this?
 
       var fetchObservationsSuccess = function(collection, response) {
