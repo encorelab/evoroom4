@@ -7,8 +7,8 @@ if (typeof exports !== "undefined" && exports !== null) {
     var _ = require('underscore');
     var Backbone = require('backbone');
     Backbone.$ = jQuery;
-    var Drowsy = require('backbone.drowsy').Drowsy;
-    var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
+    var Drowsy = require('Backbone.Drowsy').Drowsy;
+    var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
 
     var EvoRoom = {};
 

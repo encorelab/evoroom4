@@ -11,8 +11,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = jQuery;
 // setting up Drowsy and Wakeful
-var Drowsy = require('backbone.drowsy').Drowsy;
-var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
+var Drowsy = require('Backbone.Drowsy').Drowsy;
+var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
 // read config.json
 var fs = require('fs');
 var config = JSON.parse(fs.readFileSync('./config.json'));
@@ -25,7 +25,7 @@ var DATABASE = 'evo4-march-2013';
 
 // reacting to changes in PHASES Model
 var reactToPhaseChange = function (phase) {
-  var phasename = phase.get('foo');  // for debugging later phase_name
+  var phasename = phase.get('phase_name');  // for debugging later phase_name
   console.log("Phase is now: ", phasename);
   var users_with_assigned_organisms = {};
 
