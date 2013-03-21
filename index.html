@@ -49,6 +49,9 @@
             <img class="loader-gif" src="loader.gif" alt="Loader image indicating waiting">
         </div>
 
+        <div id="assigned-organism-container" style="display:none">
+            <img class="organism-image" />
+        </div>
 
         <!-- ORIENTATION PHASE (PHASE 0)-->
 
@@ -145,7 +148,7 @@
         <div id="organism-presence" class="text-box-medium" style="display:none">
             <div class="title-container">
                 <div><b>Time: </b><span class="time dynamic-text"></span></div>
-                <div><b>Organism: </b><span class="assigned-organism"></span></div>
+                <div><b>Organism: </b><span class="assigned-organism-text"></span></div>
             </div>
             <div class="organism-choice-box jquery-radios">
                 <p>Is the organism present here?<p>
@@ -158,11 +161,13 @@
         <div id="ancestor-choice" class="text-box-large" style="display:none">
             <div class="title-container">
                 <div><b>Time: </b><span class="time dynamic-text"></span></div>
-                <div><b>Organism: </b><span class="chosen-organism"></span></div>
-                <div><b>Present: </b>No</div>
+                <div><b>Organism: </b><span class="assigned-organism-text"></span></div>
+                <div><b>Present: </b>No</b></div>
+                <br />
+                <div><b>Instructions: </b>Which of the following is most likely the organism&rsquo;s ancestor? Click on each organism to read more about it. Select your choice from the drop down menu.</div>  
             </div>
-            <div class="body-container-large">
-                <div><b>Instructions: </b>Which of the following is most likely the organism&rsquo;s ancestor? Click on each organism to read more about it. Select your choice from the drop down menu.</div>
+
+            <div class="body-container-medium">
                 <table class="organism-table ancestor-information-table"></table>
             </div>
             <button class="small-button button"><b>Done</b></button>
