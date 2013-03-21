@@ -22,6 +22,7 @@ EvoRoom.Mobile = function() {
 
   app.rollcall = null;
   app.ancestors = null;
+  app.guideOrganisms = null;
   app.phases = null;
   app.phase = null;
   app.users = null;
@@ -155,6 +156,9 @@ EvoRoom.Mobile = function() {
     jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/ancestors", function(data) {
       app.ancestors = data[0];
     });
+    jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/guide_organisms", function(data) {
+      app.guideOrganisms = data[0];
+    });    
   };
 
   app.initModels = function() {
@@ -321,8 +325,8 @@ EvoRoom.Mobile = function() {
   app.updateUserHTML = function() {
     console.log('Updating user model related UI elements...');
 
-    jQuery('#team-name-container').text(app.user.get('group_name'));
-    // TODO change group listing to dynamic based on who's in the room? (replacing stuff in updateObservationHTML)
+    jQuery('#team-name-container').text(app.user.get('group_name'));    // TODO change group listing to dynamic based on who's in the room? (replacing stuff in updateObservationHTML)
+    
     jQuery('.time').text(app.user.get('phase_data').time);
 
     if (app.user.get('current_organism')) {
@@ -365,6 +369,7 @@ EvoRoom.Mobile = function() {
     jQuery('#organism-presence .small-button').hide();
     jQuery('#ancestor-choice').hide();
     jQuery('#ancestor-description').hide();
+    jQuery('#guide-choice').hide();
   };
 
   app.clearPageElements = function() {
@@ -435,8 +440,8 @@ EvoRoom.Mobile = function() {
       jQuery('#organism-presence').show();
     });
 
-    // ROTATIONS
-    // PARTICIPANT
+    ////////////////////////// ROTATIONS ////////////////////////////
+    // PARTICIPANT //
 
     jQuery('#organism-presence .presence-choice-button').click(function() {       
       jQuery('#organism-presence .small-button').show();
@@ -478,10 +483,26 @@ EvoRoom.Mobile = function() {
       }
     });
 
-      // jQuery.get('assets/ancestor_descriptions/fig_tree_test.html', function(data) {
-      //   jQuery('.ancestor-description').html(data);
-      //   jQuery('#ancestor-description').show();
-      // });
+    // used by participant and guide
+    jQuery('#ancestor-description .small-button').click(function() {
+      app.hidePageElements();
+      if (app.user.get('phase_data').role === "participant") {
+        jQuery('#ancestor-choice').show();
+      } else if (app.user.get('phase_data').role === "guide") {
+        jQuery('#guide-choice').show();
+      } else {
+        console.error('Something wrong with the click bindings?');
+      }
+    });
+
+    // GUIDE //
+
+    jQuery('#guide-instructions-2 .small-button').click(function() {
+      app.setupGuideTable();
+      app.clearPageElements();
+      jQuery('#guide-choice').show();
+    });
+
   };
 
 
@@ -491,8 +512,12 @@ EvoRoom.Mobile = function() {
   app.assignOrganism = function() {
     // take the first org out of the assigned_orgs array and put it into current_organism
     var orgArray = app.user.get('phase_data').assigned_organisms;
-    app.user.set('current_organism',orgArray[0]);
-    orgArray.shift();   // removes first element (like an inverse pop)
+    if (orgArray) {
+      app.user.set('current_organism',orgArray[0]);
+      orgArray.shift();   // removes first element (like an inverse pop)      
+    } else {
+      console.error('No assigned_organisms received from the agent!');
+    }
   };
 
   app.setupAncestorTable = function(organism) {
@@ -501,7 +526,7 @@ EvoRoom.Mobile = function() {
     var table;
     var time = app.user.get('phase_data').time;
 
-    var dropdownTd = jQuery('<td class="organism-boxes"></td>');          // TODO check the dropdown on the tablet
+    var dropdownTd = jQuery('<td class="organism-boxes"><div><b>Selection</b></div></td>');          // TODO check the dropdown on the tablet
     var dropdown = '<select class="organism-selector-dropdown"><option value="none">...</option>';    
 
     jQuery('.ancestor-information-table').html('');
@@ -516,34 +541,24 @@ EvoRoom.Mobile = function() {
       img.addClass('organism-image');
       var td = jQuery('<td />');
       td.addClass('organism-boxes');
-      //td.addClass('box'+k);
 
-      // for the first ancestor table
-      // if (selector === "partial") {
-      //   img.click(function() { 
-      //     ancestorChosenString = jQuery(this).data('organism');
-      //     app.hidePageElements();
+      img.click(function() {
+        var chosenAncestor = jQuery(this).data('organism');
 
-      //     // jQuery('#ancestor-information-details .chosen-organism').text(convertString(ancestorChosenString));
-      //     // jQuery('#ancestor-information-details .ancestor-description').text(.app.ancestorsText[ancestorChosenString]);
-      //     // jQuery('#ancestor-information-details').show();
-      //   });
-      // }
-      // // for the second ancestor table
-      // else if (selector === "full") {
-      //   img.click(function() { 
-      //     ancestorChosenString = jQuery(this).data('organism');
-      //     app.hidePageElements();
+        if (chosenAncestor !== "none"){
+          jQuery('.ancestor-organism-image').attr('src', '/assets/images/' + chosenAncestor + '_icon.png');     // AWK
+          chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
+          
+          jQuery('.ancestor-organism-text').text(app.convertToHumanReadable(chosenAncestor));
+          jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '.html', function(data) {
+            jQuery('.ancestor-description-body').html(data);
+            jQuery('.ancestor-description-body').children(":first").css('display', 'inline');     //compensating for an early mistake in how the fetched html is formatted
+            app.hidePageElements();
+            jQuery('#ancestor-description').show();
+          });
+        }
 
-      //     // send event with guessed ancestor and its antecedant
-      //     // Sail.app.submitOrganismObservation(ancestorChosenString, app.user.get(''));
-
-      //     // jQuery('#observe-organisms').show();
-      //   });
-      // }
-      // else {
-      //   console.log('error binding click in ancestor tables - missing selector');
-      // }
+      });
 
       td.append(img);
       td.append('<div>' + app.convertToHumanReadable(org) + '</div>');
@@ -571,9 +586,60 @@ EvoRoom.Mobile = function() {
     }
     // adding the event listener here since the element doesn't exist when we define our other handlers
     jQuery('.organism-selector-dropdown').change(function() {
-      app.observation.observed_organism = jQuery('.organism-selector-dropdown').val();
-    });    
+      app.observation.set('observed_organism',jQuery('.organism-selector-dropdown').val());
+    });
   };
+
+  app.setupGuideTable = function() {
+    var k = 0;
+    var tr;
+    var table;
+    var time = app.user.get('phase_data').time;   
+
+    jQuery('.guide-information-table').html('');
+    table = jQuery('.guide-information-table');
+
+    _.each(app.guideOrganisms[time], function(org) {
+      k++;
+      var img = jQuery('<img />');
+      img.data('organism', org);
+      img.attr('src', '/assets/images/' + org + '_icon.png');
+      img.addClass('organism'+k);
+      img.addClass('organism-image');
+      var td = jQuery('<td />');
+      td.addClass('organism-boxes');
+
+      img.click(function() {
+        var chosenAncestor = jQuery(this).data('organism');
+        jQuery('.ancestor-organism-image').attr('src', '/assets/images/' + chosenAncestor + '_icon.png');
+        chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
+        
+        jQuery('.ancestor-organism-text').text(app.convertToHumanReadable(chosenAncestor));
+        jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '_guide.html', function(data) {
+          jQuery('.ancestor-description-body').html(data);
+          jQuery('.ancestor-description-body').children(":first").css('display', 'inline');     //compensating for an early mistake in how the fetched html is formatted
+          app.hidePageElements();
+          jQuery('#ancestor-description').show();
+        });
+
+      });
+
+      td.append(img);
+      td.append('<div>' + app.convertToHumanReadable(org) + '</div>');
+      // checking if the tr should be closed (if row is full)
+      if (k%2 !== 0) {
+        tr = jQuery('<tr />');
+      }
+      tr.append(td);
+      if (k%2 === 0) {
+        table.append(tr);
+      }
+    });
+
+    if (k%2 !== 0) {
+      table.append(tr);
+    }
+  }; 
 
   app.convertToHumanReadable = function(str) {
     str = str[0].toUpperCase() + str.slice(1);

@@ -31,6 +31,11 @@ body {
     margin-left: 30px;
 }
 
+.large-year-text {
+    font-size: 26px;
+    text-align: center;
+}
+
 .organism-image {
     height: 180px;
     width: 180px;
@@ -62,18 +67,6 @@ header {
 
 
 /* ====================== BODY - GENERAL ====================== */
-
-#assigned-organism-container {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    z-index: 1;
-}
-
-#assigned-organism-container .organism-image {
-    width: 290px;
-    height: 290px;
-}
 
 .text-box-large {
     position: absolute;
@@ -138,6 +131,7 @@ header {
 }
 
 .organism-table td {
+    width: 50%;
     border: 1px dotted #949494;
 }
 
@@ -153,7 +147,18 @@ header {
 
 /* ====================== BODY - SPECIFIC ====================== */
 
-.guide-button {
+#assigned-organism-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: 1;
+}
+#assigned-organism-container .organism-image {
+    width: 290px;
+    height: 290px;
+}
+
+#rotation-instructions .guide-button {
     position: absolute;
     bottom: 240px;
     left: 50%;
@@ -161,12 +166,10 @@ header {
     width: 140px;
     height: 60px;
 }
-
-.guide-text {
+#rotation-instructions .guide-text {
     color: #F7F7F7;
 }
-
-.participant-button {
+#rotation-instructions .participant-button {
     position: absolute;
     bottom: 80px;
     left: 50%;
@@ -175,21 +178,15 @@ header {
     height: 60px;
 }
 
-.time-choice-button {
+#guide-instructions-1 .time-choice-button {
     margin: 10px;
     width: 200px;
     height: 60px;
 }
 
-.large-year-text {
-    font-size: 26px;
-    text-align: center;
-}
-
 #organism-presence .ui-button {
     width: 80px;
 }
-
 #organism-presence .organism-choice-box {
     margin-top: 100px;
     text-align: center;
@@ -199,4 +196,20 @@ header {
     font-size: 18px;
 }
 
+#ancestor-description .ancestor-organism-container {
+    margin-top: -50px;
+    margin-bottom: -20px;
+    text-align: center;
+}
+#ancestor-description .ancestor-organism-image {
+    width: 180px;
+    height: 180px;
+}
+#ancestor-description .body-container-medium {
+    height: 340px;
+}
+
+#guide-choice .body-container-large {
+    height: 700px;
+}
 

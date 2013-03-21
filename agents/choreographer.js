@@ -11,8 +11,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = jQuery;
 // setting up Drowsy and Wakeful
-var Drowsy = require('backbone.drowsy').Drowsy;
-var Wakeful = require('backbone.drowsy/wakeful').Wakeful;
+var Drowsy = require('Backbone.Drowsy').Drowsy;
+var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
 // read config.json
 var fs = require('fs');
 var config = JSON.parse(fs.readFileSync('./config.json'));
