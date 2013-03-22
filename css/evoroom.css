@@ -223,6 +223,9 @@ header {
     height: 55px;
 }
 
+#note-response #question-title {
+
+}
 #note-response .note-button {
     position: absolute;
     bottom: 50px;
@@ -240,3 +243,7 @@ header {
     width: 454px;
     height: 300px;
 }
+
+
+
+/**** EXPLANATION ****/
