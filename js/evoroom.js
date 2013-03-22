@@ -33,6 +33,7 @@ EvoRoom.Mobile = function() {
   app.observation = null;
   app.rollcallGroupName = null;
   app.rollcallGroupMembers = null;
+  app.rollcallMetadata = null;
   app.rollcallMetadata = null; // switch me to local?
 
   app.init = function() {
@@ -133,6 +134,7 @@ EvoRoom.Mobile = function() {
         Sail.app.rollcall.request(Sail.app.rollcall.url + "/groups/" + app.rollcallGroupName + ".json", "GET", {}, function(data) {
           // create the all_members
           app.rollcallGroupMembers = data.members;
+          app.rollcallGroupMetadata = data.metadata;
           // init all models and collections needed an make them wakefull
           app.initModels();
           // return user to last screen according to user object and enable transitions according to phase object
@@ -205,6 +207,8 @@ EvoRoom.Mobile = function() {
           console.log("No group found for this user, creating...");
           app.group = new EvoRoom.Model.Group({group_name: gn});
           app.group.set('all_members', app.rollcallGroupMembers);
+          app.group.set('meetup_location_1',app.rollcallGroupMetadata.meetup_location_1);
+          app.group.set('meetup_location_2',app.rollcallGroupMetadata.meetup_location_2);
         }
         app.group.wake(Sail.app.config.wakeful.url);
         app.group.on('change', app.updateGroupHTML);
@@ -265,7 +269,7 @@ EvoRoom.Mobile = function() {
     // OBSERVATIONS collection
     if (app.observation === null) {
       app.observations = new EvoRoom.Model.Observations();
-      app.observations.wake(Sail.app.config.wakeful.url);   // do we actually need this?
+      app.observations.wake(Sail.app.config.wakeful.url);
 
       var fetchObservationsSuccess = function(collection, response) {
         console.log("Retrieved observations collection...");
@@ -304,13 +308,67 @@ EvoRoom.Mobile = function() {
   app.updatePhaseHTML = function() {
     console.log('Updating phase model related UI elements...');
 
-    jQuery('#phase-number-container').text(app.phase.get('phase_number'));
+    var phase = app.phase.get('phase_number');
+    jQuery('#phase-number-container').text(phase);
+
+    if (phase === 1) {
+      jQuery('#participant-instructions .small-button').show();
+      jQuery('#guide-instructions .small-button').show();
+
+      jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
+      jQuery('.time-choice-1').text("200 mya");
+      jQuery('.time-choice-2').text("150 mya");
+      jQuery('.time-choice-3').text("100 mya");
+      jQuery('.time-choice-4').text("50 mya");
+
+
+    } else if (phase === 2) {
+      app.hidePageElements();
+      jQuery('#rotation-complete').show();
+      jQuery('#rotation-complete .small-button').show();
+
+
+      if (app.group.get('meetup_location_1') === "200 mya") {
+        jQuery('.large-year-text').text("200 mya and 150 mya");
+      } else if (app.group.get('meetup_location_1') === "150 mya") {
+        jQuery('.large-year-text').text("150 mya and 100 mya");
+      } else if (app.group.get('meetup_location_1') === "100 mya") {
+        jQuery('.large-year-text').text("100 mya and 50 mya");
+      } else {
+        console.error('Unknown meetup_location_1');
+      }      
+
+    } else if (phase === 3) {
+
+
+      jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
+      jQuery('.time-choice-1').text("25 mya");
+      jQuery('.time-choice-2').text("10 mya");
+      jQuery('.time-choice-3').text("5 mya");
+      jQuery('.time-choice-4').text("2 mya");
+
+    } else if (phase === 4) {
+
+
+
+      if (app.group.get('meetup_location_2') === "25 mya") {
+        jQuery('.large-year-text').text("25 mya and 10 mya");
+      } else if (app.group.get('meetup_location_1') === "10 mya") {
+        jQuery('.large-year-text').text("10 mya and 5 mya");
+      } else if (app.group.get('meetup_location_1') === "5 mya") {
+        jQuery('.large-year-text').text("5 mya and 2 mya");
+      } else {
+        console.error('Unknown meetup_location_2');
+      }      
+
+    } else {
+      console.error('Unknown phase - this probably really bad!');
+    }
   };
 
   app.updateGroupHTML = function() {
     console.log('Updating group model related UI elements...');
 
-    // TODO - make this dynamic with current_members - might have to change the way members are structured
     _.each(app.group.get('all_members'), function(m) {
       console.log('member',m.display_name);
 
@@ -322,38 +380,20 @@ EvoRoom.Mobile = function() {
       // add the div to the members container
       jQuery('.team-members-container').append(memberDiv);      
     });
+
   };
 
   app.updateUserHTML = function() {
     console.log('Updating user model related UI elements...');
 
-    jQuery('#team-name-container').text(app.user.get('group_name'));    // TODO change group listing to dynamic based on who's in the room? (replacing stuff in updateObservationHTML)
-    
-    jQuery('.time').text(app.user.get('phase_data').time);
+    jQuery('#team-name-container').text(app.user.get('group_name'));
 
+    // ROTATIONS    
+    jQuery('.time').text(app.user.get('phase_data').time);
     if (app.user.get('current_organism')) {
       jQuery('.assigned-organism-text').text(app.convertToHumanReadable(app.user.get('current_organism')));
       jQuery('#assigned-organism-container .organism-image').attr('src', '/assets/images/' + app.user.get('current_organism') + '_icon.png');
-    }    
-
-    // rotation 1
-    if (app.user.get('user_phase') === "orientation") {
-      jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
-      jQuery('.time-choice-1').text("200 mya");
-      jQuery('.time-choice-2').text("150 mya");
-      jQuery('.time-choice-3').text("100 mya");
-      jQuery('.time-choice-4').text("50 mya");
-    }
-    // rotation 2
-    else if (app.user.get('user_phase') === "rotation 2") {           // this is likely the wrong phase to key off
-      jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
-      jQuery('.time-choice-1').text("25 mya");
-      jQuery('.time-choice-2').text("10 mya");
-      jQuery('.time-choice-3').text("5 mya");
-      jQuery('.time-choice-4').text("2 mya");
-    } else {
-      console.log("Not in user phase orientation or other...");
-    }
+    } 
     
   };
 
@@ -373,6 +413,7 @@ EvoRoom.Mobile = function() {
     jQuery('#ancestor-description').hide();
     jQuery('#guide-choice').hide();
     jQuery('#rotation-complete').hide();
+    jQuery('#meetup-instructions').hide();
   };
 
   app.clearPageElements = function() {
@@ -438,6 +479,7 @@ EvoRoom.Mobile = function() {
       app.rotationStepForward();
     });
 
+
     ////////////////////////// ROTATIONS ////////////////////////////
     // PARTICIPANT //
 
@@ -491,9 +533,18 @@ EvoRoom.Mobile = function() {
     });
 
     jQuery('#rotation-complete .small-button').click(function() {
-
+      app.hidePageElements();
+      jQuery('#meetup-instructions').show();
     });
 
+
+    ////////////////////////// MEETUPS ////////////////////////////
+
+    jQuery('#meetup-instructions .question-button').click(function() {
+      if (ev.target === "1") {
+        console.log('bkla');
+      }
+    });
 
   };
 
@@ -534,6 +585,7 @@ EvoRoom.Mobile = function() {
         jQuery('#organism-presence').show();        
       } else {
         console.log('Rotation complete!');
+        app.user.setPhaseData('complete',true);
         jQuery('#assigned-organism-container').hide();
         app.hidePageElements();
         jQuery('#rotation-complete').show();

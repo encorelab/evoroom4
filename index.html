@@ -96,6 +96,7 @@
             <div class="title-container"><b>Instructions: </b>Once the activity begins, a "Next" button will appear on this screen</div>
             <div class="body-container-medium">
                 <div>When you click "Next" you will be assigned an organism. Your task is to determine whether your organism is present at the time periods and if not, whether its ancestral forms are present</div>
+                <br />
                 <div>When you are done, another organism will be assigned to you until all of the organisms are complete.</div>
             </div>
             <button class="small-button button">Next</button>
@@ -108,20 +109,12 @@
                 <!-- filled by updateUserHTML -->
                 <table>
                     <tr>
-                        <td>
-                            <button class="time-choice-1 time-choice-button button"></button>
-                        </td>
-                        <td>
-                            <button class="time-choice-2 time-choice-button button"></button>
-                        </td>
+                        <td><button class="time-choice-1 time-choice-button button"></button></td>
+                        <td><button class="time-choice-2 time-choice-button button"></button></td>
                     </tr>
                     <tr>
-                        <td>
-                            <button class="time-choice-3 time-choice-button button"></button>
-                        </td>
-                        <td>
-                            <button class="time-choice-4 time-choice-button button"></button>
-                        </td>
+                        <td><button class="time-choice-3 time-choice-button button"></button></td>
+                        <td><button class="time-choice-4 time-choice-button button"></button></td>
                     </tr>
                 </table>
             </div>
@@ -142,8 +135,9 @@
              <!-- style="display:none" -->
         </div>
 
-        <!-- ROTATION (PHASE 1/3) -->
-        <!-- maybe add a roation 1 class, rotation 2 class, etc -->        
+
+        <!-- //////////// ROTATION (PHASE 1/3) //////////// -->
+        <!-- maybe add a rotation 1 class, rotation 2 class, etc -->        
         <!-- PARTICIPANT -->
         <div id="organism-presence" class="text-box-medium" style="display:none">
             <div class="title-container">
@@ -203,7 +197,7 @@
                 <span class="highlighted-text"><b>Your portion of the cladogram task is complete</b><span>
             </div>
             <div class="body-container-large">
-                <div><b>Instructions: </b>You just helped compllete a survey of the organisms at <span class="time-periods-text dynamic-text"></span>. When everyone is done, you will review this information in your teams.</div>
+                <div><b>Instructions: </b>You just helped complete a survey of the organisms at <span class="time-periods-text dynamic-text"></span>. When everyone is done, you will review this information in your teams.</div>
                 <br />
                 <div>Find your team members and meet up at:</div>
                 <div class="large-year-text time dynamic-text"></div>
@@ -213,8 +207,30 @@
                 <br />
                 <div>If you are the first in your team to finish, take this time to review the cladogram.</div>
             </div>
-            <button class="small-button button"><b>Next</b></button>
+            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
         </div>
+
+
+        <!-- //////////// MEETUP (PHASE 2/4) //////////// -->
+
+        <div id="meetup-instructions" class="text-box-medium" style="display:none">
+            <div class="title-container">
+                <div><b>Instructions: </b>As a team, you will compare the environmental differences:</div>
+                <div class="large-year-text dynamic-text"></div>
+            </div>
+            <div>There are three questions to complete. We have also provided you with additional information about these time periods.</div>
+            <br />
+            <div>Please assign specific roles amongst yourselves for this task. For example, each person in the team could serve as a scribe for one of the questions and another could look up information.</div>
+            <div style="text-align:center">
+                <button class="q1-button question-button button">Question 1</button>
+                <button class="q2-button question-button button">Question 2</button>
+                <button class="q3-button question-button button">Question 3</button>
+                <button class="info-button question-button button">Information</button>
+            </div>
+
+        </div>
+
+
 
     </div>
 
