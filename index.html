@@ -36,7 +36,7 @@
     </header>
 
     <div id="evoroom">
-         
+        <button id="fake-explanation">What up?</button>
         <div id="loading-page" class="text-box-medium" style="display:none">
             <div class="title-container"><b>Please wait...</b></div>
             <div>Fetching data from server</div>
@@ -242,8 +242,56 @@
             <button class="done-button note-button button"><b>Done</b></button>
         </div>
 
+ 
+        <!-- //////////// EXPLANATION / OPEN INQUIRY (PHASE 5) //////////// -->
+        <div id="explanation-introduction" class="text-box-medium" style="display:none">
+            <div class="title-container">
+                <span class="highlighted-text"><b>All questions submitted</b><span>
+            </div>
+            <div class="body-container-medium">
+                <div><b>Instructions: </b>Blah blah, blah. Stuff do, go make.</div>
+                <br />
+            </div> 
+            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+        </div>
 
-        <!-- //////////// EXPLANATION (PHASE 6?) //////////// -->
+        <div id="explanation-wait" class="text-box-medium" style="display:none">
+            <div class="body-container-large">
+                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
+                
+                <div><b>Introduction: </b> La la la</div>
+                <br />
+                <div>Na na na na</div>
+                <br />
+                <div>If you are the first in your team to finish, take this time to review the cladogram.</div>
+            </div>
+            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+        </div>
+
+        <div id="explanation-create" class="text-box-large" style="display:none">
+            <div class="body-container-large">
+                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
+                
+                <div><b>Introduction: </b> La la la. A lot of it and it should fill some lines here and be longish and at time <span class="time-periods-text dynamic-text">some organism</span></div>
+                <br />
+                <div>
+                    <form>
+                        <p><input type="checkbox" name="evolutionary-force" value="adaptation" /><span>Adaptation</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="bottleneck" /><span>Bottleneck</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="coevolution" /><span>Coevolution</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="founder-effect" /><span>Founder effect</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="gene-flow" /><span>Gene flow</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="natural-selection" /><span>Natural selection</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="reproductive-isolation" /><span>Reproductive isolation</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="sexual-selection" /><span>Sexual selection</span></p>
+                        <p><input type="checkbox" name="evolutionary-force" value="other" /><span>Other</span></p>
+                    </form>
+                </div>
+                <br />
+                <div><input type="file" name="photo-from-device" id="photo-from-device" class="" /></div>
+            </div>
+            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+        </div>
 
     </div>
 
