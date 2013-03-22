@@ -265,7 +265,39 @@ EvoRoom.Mobile = function() {
       app.users.fetch({success: fetchUsersSuccess, error: fetchUsersError});
     } else {
       console.error("User model already exists...");
-    }  
+    }
+
+    // NOTES collection
+    if (app.note === null) {
+      app.notes = new EvoRoom.Model.Notes();
+      app.notes.wake(Sail.app.config.wakeful.url);
+
+      var fetchNotesSuccess = function(collection, response) {
+        console.log("Retrieved notes collection...");
+      };
+      var fetchNotesError = function(collection, response) {
+        console.error("No users collection found - and we are dead!!!");
+      };
+      app.notes.fetch({success: fetchNotesSuccess, error: fetchNotesError});
+    } else {
+      console.log("Note model already exists...");
+    }
+
+    // EXPLANATIONS collection
+    if (app.explanation === null) {
+      app.explanations = new EvoRoom.Model.Explanations();
+      app.explanations.wake(Sail.app.config.wakeful.url);
+
+      var fetchExplanationsSuccess = function(collection, response) {
+        console.log("Retrieved explanations collection...");
+      };
+      var fetchExplanationsError = function(collection, response) {
+        console.error("No users collection found - and we are dead!!!");
+      };
+      app.explanations.fetch({success: fetchExplanationsSuccess, error: fetchExplanationsError});
+    } else {
+      console.log("Explanation model already exists...");
+    }
 
   };
 
@@ -287,42 +319,6 @@ EvoRoom.Mobile = function() {
     }
   };
 
-  app.initNoteModels = function() {
-    // NOTES collection
-    if (app.note === null) {
-      app.notes = new EvoRoom.Model.Notes();
-      app.notes.wake(Sail.app.config.wakeful.url);
-
-      var fetchNotesSuccess = function(collection, response) {
-        console.log("Retrieved notes collection...");
-      };
-      var fetchNotesError = function(collection, response) {
-        console.error("No users collection found - and we are dead!!!");
-      };
-      app.notes.fetch({success: fetchNotesSuccess, error: fetchNotesError});
-    } else {
-      console.log("Note model already exists...");
-    }
-  };
-
-  app.initExplanationModels = function() {
-    // EXPLANATIONS collection
-    if (app.explanation === null) {
-      app.explanations = new EvoRoom.Model.Explanations();
-      app.explanations.wake(Sail.app.config.wakeful.url);
-
-      var fetchExplanationsSuccess = function(collection, response) {
-        console.log("Retrieved explanations collection...");
-      };
-      var fetchExplanationsError = function(collection, response) {
-        console.error("No users collection found - and we are dead!!!");
-      };
-      app.explanations.fetch({success: fetchExplanationsSuccess, error: fetchExplanationsError});
-    } else {
-      console.log("Explanation model already exists...");
-    }
-  }
-
   app.createNewObservation = function() {
     app.observation = new EvoRoom.Model.Observation();
     app.observation.set('username',app.user.get('username'));
@@ -339,6 +335,7 @@ EvoRoom.Mobile = function() {
     app.note.set('username',app.user.get('username'));
     app.note.set('group_name',app.group.get('group_name'));
     app.note.set('body','');
+    app.note.set('published',false);
     app.note.wake(Sail.app.config.wakeful.url);
     app.note.on('change', app.updateUserHTML);
     app.note.save();
@@ -349,6 +346,7 @@ EvoRoom.Mobile = function() {
     app.explanation = new EvoRoom.Model.Explanation();
     app.explanation.set('username',app.user.get('username'));
     // more sets
+    app.explanation.set('published',false);
     app.explanation.wake(Sail.app.config.wakeful.url);
     // app.explanation.on('change', ???);
     app.explanation.save();
@@ -414,7 +412,7 @@ EvoRoom.Mobile = function() {
       }      
 
     } else {
-      console.error('Unknown phase - this probably really bad!');
+      console.error('Unknown phase - this is probably really bad!');
     }
   };
 
@@ -447,7 +445,8 @@ EvoRoom.Mobile = function() {
     }
 
     // MEETUPS
-    if (app.note) {
+    if (app.note && app.note.get('question')) {
+      jQuery('#note-response .note-entry').val(""); 
       jQuery('#question-text').html('');
       var qHTML = jQuery('<span />');
       if (app.note.get('question') === "Question 1") {
@@ -462,7 +461,7 @@ EvoRoom.Mobile = function() {
       } else {
         console.error('Unknown question type!');
       }
-    }
+    } // START HERE - how do we bring back the note
 
     
   };
@@ -613,26 +612,24 @@ EvoRoom.Mobile = function() {
 
     jQuery('#meetup-instructions .question-button').click(function(ev) {
       // if (rotation1) - or does this not go here?
-      if (jQuery(ev.target).hasClass('q1-button')) {
-        app.createNewNote();
-        app.note.set('question','Question 1');
-        app.note.set('time',app.group.get('meetup_location_1'));
-      } else if (jQuery(ev.target).hasClass('q2-button')) {
-        app.createNewNote();
-        app.note.set('question','Question 2');
-        app.note.set('time',app.group.get('meetup_location_1'));
-      } else if (jQuery(ev.target).hasClass('q3-button')) {
-        app.createNewNote();
-        app.note.set('question','Question 3');
-        app.note.set('time',app.group.get('meetup_location_1'));
-      } else if (jQuery(ev.target).hasClass('info-button')) {
+
+      if (jQuery(ev.target).hasClass('info-button')) {
+        console.log('show guide screen here');
         // show the guide screen - still called guide?
       } else {
-        console.log("What button do you think youre pressing?!");
+        app.createNewNote();
+        app.note.set('time',app.group.get('meetup_location_1'));
+        if (jQuery(ev.target).hasClass('q1-button')) {
+          app.note.set('question','Question 1');
+        } else if (jQuery(ev.target).hasClass('q2-button')) {
+          app.note.set('question','Question 2');
+        } else if (jQuery(ev.target).hasClass('q3-button')) {
+          app.note.set('question','Question 3');
+        }
+        app.note.save();
+        app.hidePageElements();
+        jQuery('#note-response').show();
       }
-      app.note.save();
-      app.hidePageElements();
-      jQuery('#note-response').show();      
     });
 
     jQuery('#note-response .back-button').click(function() {
@@ -640,9 +637,21 @@ EvoRoom.Mobile = function() {
       jQuery('#meetup-instructions').show();
     });
     jQuery('#note-response .done-button').click(function() {
-      // save note
+      app.note.set('published',true);
+      app.note.save();
       app.hidePageElements();
-      jQuery('#meetup-instructions').show();
+      var notesCompleted = false;
+
+      // START HERE - this isn't the right thing to check
+      var myGroupNotes = app.notes.filter(function(n) { return n.get('group_name') === app.user.get('group_name'); });
+      notesCompleted = _.all(myGroupNotes, function(n) { return n.get('published'); });
+
+      if (notesCompleted) {
+        jQuery('#rotation-instructions').show();          // TODO - this is going to need a lot of work to deal with the different phases
+      } else {
+        jQuery('#meetup-instructions').show();
+      }
+      
     });
 
 
