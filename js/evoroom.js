@@ -321,7 +321,7 @@ EvoRoom.Mobile = function() {
     } else {
       console.log("Explanation model already exists...");
     }
-  }
+  };
 
   app.createNewObservation = function() {
     app.observation = new EvoRoom.Model.Observation();
@@ -485,6 +485,9 @@ EvoRoom.Mobile = function() {
     jQuery('#rotation-complete').hide();
     jQuery('#meetup-instructions').hide();
     jQuery('#note-response').hide();
+    jQuery('#explanation-introduction').hide();
+    jQuery('#explanation-wait').hide();
+    jQuery('#explanation-create').hide();
   };
 
   app.clearPageElements = function() {
@@ -649,6 +652,21 @@ EvoRoom.Mobile = function() {
 
 
     ////////////////////////// EXPLANATION ////////////////////////////
+    // fake entrance
+    jQuery('#fake-explanation').click( function() {
+      app.hidePageElements();
+      jQuery('#explanation-create').show();
+    });
+
+    jQuery('#explanation-introduction button').click( function() {
+      app.hidePageElements();
+      jQuery('#explanation-wait').show();
+    }); 
+
+    jQuery('#explanation-wait button').click( function() {
+      app.hidePageElements();
+      jQuery('#explanation-create').show();
+    });    
 
   };
 
