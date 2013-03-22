@@ -39,7 +39,7 @@ body {
 .guide-text {
     color: #007ADF;
 }
-.highlighter-text {
+.highlighted-text {
     color: #007ADF;                                     /* le sigh */
 }
 
@@ -221,4 +221,22 @@ header {
     margin-top: 18px;
     width: 300px;
     height: 55px;
+}
+
+#note-response .note-button {
+    position: absolute;
+    bottom: 50px;
+    width: 140px;
+    height: 60px;
+}
+#note-response .back-button {
+    left: 70px;
+}
+#note-response .done-button {
+    right: 70px;
+}
+#note-response .note-entry {
+    margin-top: 15px;
+    width: 454px;
+    height: 300px;
 }

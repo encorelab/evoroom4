@@ -31,6 +31,10 @@ EvoRoom.Mobile = function() {
   app.group = null;
   app.observations = null;
   app.observation = null;
+  app.notes = null;
+  app.note = null;
+  app.explanations = null;
+  app.explanation = null;
   app.rollcallGroupName = null;
   app.rollcallGroupMembers = null;
   app.rollcallMetadata = null;
@@ -273,7 +277,6 @@ EvoRoom.Mobile = function() {
 
       var fetchObservationsSuccess = function(collection, response) {
         console.log("Retrieved observations collection...");
-
       };
       var fetchObservationsError = function(collection, response) {
         console.error("No users collection found - and we are dead!!!");
@@ -281,8 +284,44 @@ EvoRoom.Mobile = function() {
       app.observations.fetch({success: fetchObservationsSuccess, error: fetchObservationsError});
     } else {
       console.log("Observation model already exists...");
-    }      
+    }
   };
+
+  app.initNoteModels = function() {
+    // NOTES collection
+    if (app.note === null) {
+      app.notes = new EvoRoom.Model.Notes();
+      app.notes.wake(Sail.app.config.wakeful.url);
+
+      var fetchNotesSuccess = function(collection, response) {
+        console.log("Retrieved notes collection...");
+      };
+      var fetchNotesError = function(collection, response) {
+        console.error("No users collection found - and we are dead!!!");
+      };
+      app.notes.fetch({success: fetchNotesSuccess, error: fetchNotesError});
+    } else {
+      console.log("Note model already exists...");
+    }
+  };
+
+  app.initExplanationModels = function() {
+    // EXPLANATIONS collection
+    if (app.explanation === null) {
+      app.explanations = new EvoRoom.Model.Explanations();
+      app.explanations.wake(Sail.app.config.wakeful.url);
+
+      var fetchExplanationsSuccess = function(collection, response) {
+        console.log("Retrieved explanations collection...");
+      };
+      var fetchExplanationsError = function(collection, response) {
+        console.error("No users collection found - and we are dead!!!");
+      };
+      app.explanations.fetch({success: fetchExplanationsSuccess, error: fetchExplanationsError});
+    } else {
+      console.log("Explanation model already exists...");
+    }
+  }
 
   app.createNewObservation = function() {
     app.observation = new EvoRoom.Model.Observation();
@@ -290,16 +329,29 @@ EvoRoom.Mobile = function() {
     app.observation.set('assigned_organism',app.user.get('current_organism'));
     app.observation.set('observed_organism','not chosen');
     app.observation.set('time',app.user.get('phase_data').time);
-    // app.observation.set('group_name', app.rollcallObservationName);
+    // app.observation.set('group_name', app.rollcallTHISAINTRIGHTObservationName);
     app.observation.wake(Sail.app.config.wakeful.url);
     app.observation.save();
+  };
 
-    // var saveSuccess = function(model, response) {
-    //   app.observation.wake(Sail.app.config.wakeful.url); // make observation object wakeful
-    //   app.observation.on('change', app.updateUserHTML);
-    //   app.updateUserHTML();
-    // };
-    // app.observation.save(null, {success: saveSuccess}); // save the observation object to the database    
+  app.createNewNote = function() {
+    app.note = new EvoRoom.Model.Note();
+    app.note.set('username',app.user.get('username'));
+    app.note.set('group_name',app.group.get('group_name'));
+    app.note.set('body','');
+    app.note.wake(Sail.app.config.wakeful.url);
+    app.note.on('change', app.updateUserHTML);
+    app.note.save();
+  };
+
+  app.createNewExplanation = function() {
+    // also initExplanationModels
+    app.explanation = new EvoRoom.Model.Explanation();
+    app.explanation.set('username',app.user.get('username'));
+    // more sets
+    app.explanation.wake(Sail.app.config.wakeful.url);
+    // app.explanation.on('change', ???);
+    app.explanation.save();
   };
 
 
@@ -371,7 +423,6 @@ EvoRoom.Mobile = function() {
 
     _.each(app.group.get('all_members'), function(m) {
       console.log('member',m.display_name);
-
       var memberDiv = jQuery('<div />');
       // assign the needed classes
       memberDiv.addClass('indented-text');
@@ -393,7 +444,26 @@ EvoRoom.Mobile = function() {
     if (app.user.get('current_organism')) {
       jQuery('.assigned-organism-text').text(app.convertToHumanReadable(app.user.get('current_organism')));
       jQuery('#assigned-organism-container .organism-image').attr('src', '/assets/images/' + app.user.get('current_organism') + '_icon.png');
-    } 
+    }
+
+    // MEETUPS
+    if (app.note) {
+      jQuery('#question-text').html('');
+      var qHTML = jQuery('<span />');
+      if (app.note.get('question') === "Question 1") {
+        qHTML.html("<b>1. </b>What are the major differences between the two time periods?");
+        jQuery('#question-text').append(qHTML);
+      } else if (app.note.get('question') === "Question 2") {
+        qHTML.html("<div><b>2. </b>What species appeared in this time period that wasn't there before?</div><div style='color:#A6AAAD'>Consider climate, habitat, animals, plants.</div>");      // TODO MOAR TEXT
+        jQuery('#question-text').append(qHTML);
+      } else if (app.note.get('question') === "Question 3") {
+        qHTML.html("<b>3. </b>What evolutionary processes might have occurred during this time period? How were these processes related to the climate, habitats or other species at the time?");
+        jQuery('#question-text').append(qHTML);
+      } else {
+        console.error('Unknown question type!');
+      }
+    }
+
     
   };
 
@@ -414,6 +484,7 @@ EvoRoom.Mobile = function() {
     jQuery('#guide-choice').hide();
     jQuery('#rotation-complete').hide();
     jQuery('#meetup-instructions').hide();
+    jQuery('#note-response').hide();
   };
 
   app.clearPageElements = function() {
@@ -540,11 +611,40 @@ EvoRoom.Mobile = function() {
 
     ////////////////////////// MEETUPS ////////////////////////////
 
-    jQuery('#meetup-instructions .question-button').click(function() {
-      if (ev.target === "1") {
-        console.log('bkla');
+    jQuery('#meetup-instructions .question-button').click(function(ev) {
+      // if (rotation1) - or does this not go here?
+      if (jQuery(ev.target).hasClass('q1-button')) {
+        app.createNewNote();
+        app.note.set('question','Question 1');
+        app.note.set('time',app.group.get('meetup_location_1'));
+      } else if (jQuery(ev.target).hasClass('q2-button')) {
+        app.createNewNote();
+        app.note.set('question','Question 2');
+        app.note.set('time',app.group.get('meetup_location_1'));
+      } else if (jQuery(ev.target).hasClass('q3-button')) {
+        app.createNewNote();
+        app.note.set('question','Question 3');
+        app.note.set('time',app.group.get('meetup_location_1'));
+      } else if (jQuery(ev.target).hasClass('info-button')) {
+        // show the guide screen - still called guide?
+      } else {
+        console.log("What button do you think youre pressing?!");
       }
+      app.note.save();
+      app.hidePageElements();
+      jQuery('#note-response').show();      
     });
+
+    jQuery('#note-response .back-button').click(function() {
+      app.hidePageElements();
+      jQuery('#meetup-instructions').show();
+    });
+    jQuery('#note-response .done-button').click(function() {
+      // save note
+      app.hidePageElements();
+      jQuery('#meetup-instructions').show();
+    });
+
 
   };
 
