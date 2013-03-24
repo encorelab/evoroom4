@@ -908,7 +908,7 @@ EvoRoom.Mobile = function() {
       console.log("Upload to Pikachu SUCCEEDED!");
       console.log(xhr.getAllResponseHeaders());
       var pikachuPath = app.config.pikachu.url + data.url;
-      var pikachu = {'pikachuPath':pikachuPath}
+      var pikachu = {'pikachuPath':pikachuPath};
       app.user.setPhaseData('explanation', pikachu);
       app.user.save();
     }
