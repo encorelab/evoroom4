@@ -360,6 +360,7 @@ EvoRoom.Mobile = function() {
     console.log('Updating phase model related UI elements...');
 
     var phase = app.phase.get('phase_number');
+    phase = parseInt(phase, 10);
     jQuery('#phase-number-container').text(phase);
 
     if (phase === 1) {
