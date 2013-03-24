@@ -4,21 +4,22 @@ var fs = require('fs');
 var mongodb = require ('mongodb');
 
 var myArgs = require('optimist').argv,
-     help = '\nUsage: \n\n    jsonimport.js  <target_collection>  <path/filename.json> \n\n';
+     help = '\nUsage: \n\n    jsonimport.js  <database_name>  <target_collection>  <path/filename.json> \n\n';
 
 if ((myArgs.h)||(myArgs.help)) {
   console.log(help);
   process.exit(0);
 }
 
-var collection_name = myArgs._[0];
-var filename = './' + myArgs._[1];
+var database_name = myArgs._[0];
+var collection_name = myArgs._[1];
+var filename = './' + myArgs._[2];
 
 var file_to_import = JSON.parse(fs.readFileSync(filename));
 
 var server = new mongodb.Server("127.0.0.1", 27017, {});
 
-new mongodb.Db('evo4-march-2013', server, {w: 1}).open(function (error, client) {
+new mongodb.Db(database_name, server, {w: 1}).open(function (error, client) {
   if (error) throw error;
   var collection = new mongodb.Collection(client, collection_name);
 

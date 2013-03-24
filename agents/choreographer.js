@@ -4,6 +4,16 @@ var organism_groups;
 var user_specializations;
 var users = null;
 var phases = null;
+
+// grab information from user
+var myArgs = require('optimist').argv,
+     help = '\nUsage: \n\n    node agents/choreographer.js  <database_name>  \n\n';
+if ((myArgs.h)||(myArgs.help)) {
+  console.log(help);
+  process.exit(0);
+}
+var DATABASE = myArgs._[0];
+
 // S3 dependencies
 var jQuery = require('jquery');
 var _ = require('underscore');
@@ -20,7 +30,7 @@ var config = JSON.parse(fs.readFileSync('./config.json'));
 var EvoRoom = {};
 EvoRoom.Model = require('../js/evoroom.model.js').EvoRoom.Model;
 
-var DATABASE = 'evo4-march-2013';
+// var DATABASE = 'evo4-march-2013';
 
 
 // reacting to changes in PHASES Model
@@ -29,8 +39,8 @@ var reactToPhaseChange = function (phase) {
   console.log("Phase is now: ", phasename);
   var users_with_assigned_organisms = {};
 
-  if (phasename === "rotation 1") {
-    console.log("Phase rotation 1 entered. Start to assign animals to students!");
+  if (phasename === "rotation 1" || phasename === "rotation 2") {
+    console.log("Phase "+phasename+" entered. Start to assign animals to students!");
     
     // Look up students that are present and marked as participants from users collection
     var participant_names = [];
@@ -128,7 +138,14 @@ whenObj.done(function (og_result, us_result) {
 
       phases.on('change add', reactToPhaseChange);
       phases.on('reset', function () {
-        _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
+        if (phases.models.length === 0) {
+          var p = new EvoRoom.Model.Phase();
+          p.set('phase_name', "orientation");
+          p.set('phase_number', 1);
+          p.save();
+        } else {
+          _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
+        }
       });
 
       phases.fetch();
