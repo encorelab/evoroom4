@@ -141,7 +141,7 @@ whenObj.done(function (og_result, us_result) {
         if (phases.models.length === 0) {
           var p = new EvoRoom.Model.Phase();
           p.set('phase_name', "orientation");
-          p.set('phase_number', "1");
+          p.set('phase_number', 1);
           p.save();
         } else {
           _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
