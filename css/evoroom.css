@@ -224,7 +224,13 @@ header {
 }
 
 #note-response #question-title {
-
+    margin-top: 20px;
+}
+#note-response .note-entry {
+    font-size: 20px;
+    margin-top: 15px;
+    width: 454px;
+    height: 300px;
 }
 #note-response .note-button {
     position: absolute;
@@ -238,11 +244,7 @@ header {
 #note-response .done-button {
     right: 70px;
 }
-#note-response .note-entry {
-    margin-top: 15px;
-    width: 454px;
-    height: 300px;
-}
+
 
 
 
