@@ -17,7 +17,8 @@ EvoRoom.Mobile = function() {
     },
     wakeful: {
       url: 'string'
-    }
+    },
+    curnit: 'string'
   };
 
   app.rollcall = null;
