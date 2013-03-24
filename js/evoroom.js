@@ -18,6 +18,9 @@ EvoRoom.Mobile = function() {
     wakeful: {
       url: 'string'
     },
+    pikachu: {
+      url: 'string'
+    },
     curnit:'string'
   };
 
@@ -120,6 +123,9 @@ EvoRoom.Mobile = function() {
 
       // grab all the stuff that won't be changing (ancestors, guide_organisms, etc.)
       app.fetchStaticData();
+
+      // setup picture upload service
+      app.initPikachu();
 
       Sail.app.rollcall.request(Sail.app.rollcall.url + "/users/" + Sail.app.session.account.login + ".json", "GET", {}, function(data) {
         // retrieve group name from Rollcall
@@ -285,7 +291,7 @@ EvoRoom.Mobile = function() {
     }
 
     // EXPLANATIONS collection
-    if (app.explanation === null) {
+    if (app.explanations === null) {
       app.explanations = new EvoRoom.Model.Explanations();
       app.explanations.wake(Sail.app.config.wakeful.url);
 
@@ -676,6 +682,9 @@ EvoRoom.Mobile = function() {
 
     jQuery('#explanation-wait button').click( function() {
       app.hidePageElements();
+      // create new Explanation or use unpublished one
+      //explanation
+
       jQuery('#explanation-create').show();
     });    
 
@@ -856,6 +865,53 @@ EvoRoom.Mobile = function() {
     str = str[0].toUpperCase() + str.slice(1);
     str = str.replace(/_/g, " ");
     return str;
+  };
+
+  app.initPikachu = function() {
+    var pikachuFile = jQuery('#pikachu-file');
+    // var uploadInput = jQuery('#upload');
+
+    pikachuFile.on('change', function () { 
+      if (pikachuFile.val()) {
+        //uploadInput.removeAttr('disabled');
+        app.uploadToPikachu(pikachuFile);
+      }
+    });
+
+    // uploadInput.on('click', function () {
+    //   upload();
+    // });
+  };
+
+  app.uploadToPikachu = function(fileInput) {
+    var file = fileInput[0].files.item(0);
+
+    var formData = new FormData();
+    formData.append('file', file);
+
+    jQuery.ajax({
+        url: app.config.pikachu.url,
+        type: 'POST',
+        success: success,
+        error: failure,
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+
+    function failure(err) {
+      console.error("UPLOAD TO PIKACHU FAILED!", err);
+    }
+
+    function success(data, status, xhr) {
+      console.log("Upload to Pikachu SUCCEEDED!");
+      console.log(xhr.getAllResponseHeaders());
+      var pikachuPath = app.config.pikachu.url + data.url;
+      var pikachu = {'pikachuPath':pikachuPath}
+      app.user.setPhaseData('explanation', pikachu);
+      app.user.save();
+    }
   };
 
 };
