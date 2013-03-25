@@ -246,33 +246,34 @@
         <!-- //////////// EXPLANATION / OPEN INQUIRY (PHASE 5) //////////// -->
         <div id="explanation-instructions" class="text-box-medium" style="display:none">
             <div class="title-container">
-                <span class="highlighted-text"><b>All questions submitted</b><span>
+                <span class="highlighted-text"><b>All questions submitted!</b><span>
             </div>
             <div class="body-container-medium">
-                <div><b>Instructions: </b>Blah blah, blah. Stuff do, go make.</div>
+                <div><b>Instructions: </b>Go up to the cladogram and take a look at the organisms in your specialty (e.g., birds, primates, other mammals, plants and insects). An organism will be assigned to you and your task is to follow its evolution from 200 mya to present day.</div>
                 <br />
+                <div>Your teacher will take you "back in time" so that you can collect evidence related to your organism's evolution, e.g. by writing a note, taking a photo, interviewing colleagues.</div>
             </div> 
-            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+            <button class="small-button button"><b>Next</b></button>
         </div>
-        <!-- START HERE -->
-        <div id="explanation-wait" class="text-box-medium" style="display:none">
+
+        <div id="explanation-organism-assigned" class="text-box-medium" style="display:none">
             <div class="body-container-large">
-                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
-                
-                <div><b>Introduction: </b> La la la</div>
+                <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">Pulled from Rollcall? Also needs the img in the top corner</span></div>
+                <div><b>Introduction: </b>While you're waiting for your teacher to take you "back in time" go to the cladogram and survey important time periods for your organism.</div>
                 <br />
-                <div>Na na na na</div>
+                <div>Think about:</div>
                 <br />
-                <div>If you are the first in your team to finish, take this time to review the cladogram.</div>
+                <div>1. When was the most interesting point in time for your species and</div>
+                <br />
+                <div>2. What adaptation and evolutionary forces do you think are at play at the different time periods? Consider interactions with other organisms.</div>
             </div>
             <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
         </div>
 
-        <div id="explanation-create" class="text-box-large" style="display:none">
+        <div id="explanation-response" class="text-box-large" style="display:none">
             <div class="body-container-large">
-                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
-                
-                <div><b>Introduction: </b> La la la. A lot of it and it should fill some lines here and be longish and at time <span class="time-periods-text dynamic-text">some organism</span></div>
+                <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">some organism</span></div>
+                <div><b>Instructions: </b>For your organism, what evolutionary forces do you think are at play between <span class="time-periods-text dynamic-text"></span></div>
                 <br />
                 <div>
                     <form>
@@ -289,8 +290,11 @@
                 </div>
                 <br />
                 <div><input type="file" name="pikachu-file" id="pikachu-file" class="" /></div>
+                <br />
+                <div>Integrate your thinking and <b>briefly</b> explain</div>
+                <textarea class="explanation-entry"></textarea>
             </div>
-            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+            <button class="small-button button"><b>Done</b></button>
         </div>
 
     </div>

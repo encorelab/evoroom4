@@ -245,7 +245,9 @@ header {
     right: 70px;
 }
 
-
-
-
-/**** EXPLANATION ****/
+#explanation-response .explanation-entry {
+    font-size: 20px;
+    margin-top: 15px;
+    width: 454px;
+    height: 300px;
+}

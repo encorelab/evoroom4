@@ -472,7 +472,7 @@ EvoRoom.Mobile = function() {
     });
 
     // MOVING TO ROTATION 2 OR EXPLANATION
-    if (app.group.get('notes_completed_meetup_1') > 2) {
+    if (app.phase && app.group.get('notes_completed_meetup_1') > 2) {
       app.hidePageElements();
       if (app.phase.get('phase_number') === 2) {
         jQuery('#rotation-instructions').show();
@@ -481,9 +481,7 @@ EvoRoom.Mobile = function() {
       } else {
         console.error('About to be very stuck - check updateGroupHTML');
       }
-      
-      
-    } 
+    }
 
   };
 
@@ -539,8 +537,8 @@ EvoRoom.Mobile = function() {
     jQuery('#meetup-instructions').hide();
     jQuery('#note-response').hide();
     jQuery('#explanation-instructions').hide();
-    jQuery('#explanation-wait').hide();
-    jQuery('#explanation-create').hide();
+    jQuery('#explanation-organism-assigned').hide();
+    jQuery('#explanation-response').hide();
   };
 
   app.clearPageElements = function() {
@@ -734,12 +732,10 @@ EvoRoom.Mobile = function() {
       notesCompleted++;
       app.group.set('notes_completed_meetup_1',notesCompleted);
       app.group.save();
-      if (notesCompleted > 2) {
-        // jQuery('#rotation-instructions').show();
-      } else {
-
+      if (notesCompleted < 3) {
         jQuery('#meetup-instructions').show();
       }
+      // else gets handled by updateGroupHTML
       
     });
 
@@ -750,30 +746,35 @@ EvoRoom.Mobile = function() {
     // fake entrance
     jQuery('#fake-explanation').click( function() {
       app.hidePageElements();
-      jQuery('#explanation-wait').show();
+      jQuery('#explanation-organism-assigned').show();
     });
 
     jQuery('#explanation-instructions button').click( function() {
       app.hidePageElements();
-      jQuery('#explanation-wait').show();
+      jQuery('#explanation-organism-assigned').show();
     });
 
-    jQuery('#explanation-wait button').click( function() {
+    jQuery('#explanation-organism-assigned button').click( function() {
       app.hidePageElements();
       // create new Explanation or use unpublished one
-      //explanation
+      // explanation
       app.createNewExplanation(function () {
         // some setup depending on time?
-        jQuery('#explanation-create').show();
+        jQuery('#explanation-response').show();
       });
     });
 
-    jQuery('#explanation-create button').click( function() {
-      app.explanation.set('published', true);
-      app.explanation.save();
-
-      app.hidePageElements();
-      jQuery('#explanation-wait').show();
+    jQuery('#explanation-response .small-button').click( function() {
+      if (!app.explanation.get('pikachu_file')) {
+        alert('Please include at least one source photo.');
+      } else if (jQuery('.explanation-entry').val() === "") {
+        alert('Please explain your thinking. Point form notes are sufficient');
+      } else {
+        app.explanation.set('published', true);
+        app.explanation.save();
+        app.hidePageElements();
+        jQuery('#explanation-organism-assigned').show();        
+      }
     });
   };
 
