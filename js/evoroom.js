@@ -43,6 +43,7 @@ EvoRoom.Mobile = function() {
   app.rollcallGroupMembers = null;
   app.rollcallMetadata = null;
   app.rollcallMetadata = null; // switch me to local?
+  app.rotationNumber = 1;
   app.keyCount = 0;
 
   app.autoSaveTimer = window.setTimeout(function() { console.log("timer activated"); } ,10);
@@ -304,6 +305,9 @@ EvoRoom.Mobile = function() {
           app.phase = app.phases.first();
           app.phase.wake(Sail.app.config.wakeful.url);
           app.phase.on('change', app.updatePhaseHTML);
+          if (app.phase.get('phase_number') > 3) {
+            app.rotationNumber = 2;
+          }
           app.updatePhaseHTML();
         } else {
           console.error("More or less than 1 phase object found in phases collection...");
@@ -379,7 +383,10 @@ EvoRoom.Mobile = function() {
     phase = parseInt(phase, 10);
     jQuery('#phase-number-container').text(phase);
 
-    if (phase === 1) {
+    if (phase === 0) {
+
+
+    } else if (phase === 1) {
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions .small-button').show();
 
@@ -391,7 +398,7 @@ EvoRoom.Mobile = function() {
 
 
     } else if (phase === 2) {
-      // might be a very bad idea to put these here
+      // might be a very bad idea to put these shows here
       app.hidePageElements();
       jQuery('#rotation-complete').show();
       jQuery('#rotation-complete .small-button').show();
@@ -408,6 +415,8 @@ EvoRoom.Mobile = function() {
 
 
     } else if (phase === 3) {
+      app.group.set('notes_completed_meetup_1', 0, {silent: true});
+      app.group.save(null, {silent: true});
 
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
@@ -415,9 +424,8 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
 
+
     } else if (phase === 4) {
-
-
 
       if (app.group.get('meetup_location_2') === "25 mya") {
         jQuery('.large-year-text').text("25 mya and 10 mya");
@@ -427,7 +435,8 @@ EvoRoom.Mobile = function() {
         jQuery('.large-year-text').text("5 mya and 2 mya");
       } else {
         console.error('Unknown meetup_location_2');
-      }      
+      }
+
 
     } else {
       console.error('Unknown phase - this is probably really bad!');
@@ -449,6 +458,20 @@ EvoRoom.Mobile = function() {
       jQuery('.team-members-container').append(memberDiv);      
     });
 
+    // MOVING TO ROTATION 2 OR EXPLANATION
+    if (app.group.get('notes_completed_meetup_1') > 2) {
+      app.hidePageElements();
+      if (app.phase.get('phase_number') === 2) {
+        jQuery('#rotation-instructions').show();
+      } else if (app.phase.get('phase_number') === 4) {
+        jQuery('#explanation-instructions').show();
+      } else {
+        console.error('About to be very stuck - check updateGroupHTML');
+      }
+      
+      
+    } 
+
   };
 
   app.updateUserHTML = function() {
@@ -464,12 +487,6 @@ EvoRoom.Mobile = function() {
     }
 
     // MEETUPS
-
-    //var myNotes = app.notes.filter(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false; });
-
-    // if this user
-    //if (app.note.get('username') === app.user.get('username'))
-
     if (app.note && app.note.get('question')) {
       jQuery('#note-response .note-entry').val(""); 
       jQuery('#question-text').html('');
@@ -508,7 +525,7 @@ EvoRoom.Mobile = function() {
     jQuery('#rotation-complete').hide();
     jQuery('#meetup-instructions').hide();
     jQuery('#note-response').hide();
-    jQuery('#explanation-introduction').hide();
+    jQuery('#explanation-instructions').hide();
     jQuery('#explanation-wait').hide();
     jQuery('#explanation-create').hide();
   };
@@ -550,8 +567,8 @@ EvoRoom.Mobile = function() {
       // var ok = confirm("Do you want to choose to be a participant?");
       // if (ok) {
         app.user.setPhaseData('role', 'participant');
-        app.user.setPhaseData('time','');                 // TODO - remove me to so restoreState works
-        app.user.setPhaseData('assigned_times',[]);       // TODO - remove me to so restoreState works
+        app.user.setPhaseData('time','');                 // TODO - remove me so restoreState works
+        app.user.setPhaseData('assigned_times',[]);       // TODO - remove me so restoreState works
         app.user.save();
         app.hidePageElements();
         jQuery('#participant-instructions').show();
@@ -705,9 +722,9 @@ EvoRoom.Mobile = function() {
       app.group.set('notes_completed_meetup_1',notesCompleted);
       app.group.save();
       if (notesCompleted > 2) {
-        jQuery('#rotation-instructions').show();
+        // jQuery('#rotation-instructions').show();
       } else {
-        // setup some HTML stuff for this page
+
         jQuery('#meetup-instructions').show();
       }
       
@@ -723,7 +740,7 @@ EvoRoom.Mobile = function() {
       jQuery('#explanation-create').show();
     });
 
-    jQuery('#explanation-introduction button').click( function() {
+    jQuery('#explanation-instructions button').click( function() {
       app.hidePageElements();
       jQuery('#explanation-wait').show();
     }); 
@@ -754,6 +771,7 @@ EvoRoom.Mobile = function() {
       jQuery('#organism-presence').show();      
     }
 
+    // START HERE (need to copy assigned_organisms so that there are some to do for r2)
     // else reset the time array and change organisms (if there are orgs left)
     else {
       if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length > 0) {
@@ -767,7 +785,7 @@ EvoRoom.Mobile = function() {
         app.user.set('current_organism',app.user.get('phase_data').assigned_organisms[0]);
 
         app.user.save();
-        // remove an org and time
+        // remove an org and a time
         app.user.get('phase_data').assigned_times.shift();
         app.user.get('phase_data').assigned_organisms.shift();
 
