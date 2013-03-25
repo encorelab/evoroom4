@@ -24,7 +24,8 @@
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-contrib": "~0.4.0",
-    "grunt-contrib-csslint": "~0.1.0"
+    "grunt-contrib-csslint": "~0.1.0",
+    "grunt-jsonlint": "~1.0.0"
   },
   "author": "ENCORE Lab",
   "license": "MIT"
