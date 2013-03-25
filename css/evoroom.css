@@ -245,6 +245,17 @@ header {
     right: 70px;
 }
 
+#clickable-rainforest-image {
+    position: absolute;
+    top: 420px;
+    left: 0;
+    height: 400px;
+}
+
+#information-lookup-overview .time-period-image {
+    margin-top: 15px;
+}
+
 #explanation-response .explanation-entry {
     font-size: 20px;
     margin-top: 15px;

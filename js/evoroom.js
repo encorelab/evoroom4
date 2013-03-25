@@ -433,17 +433,15 @@ EvoRoom.Mobile = function() {
 
 
     } else if (phase === 4) {
-
       if (app.group.get('meetup_location_2') === "25 mya") {
         jQuery('.large-year-text').text("25 mya and 10 mya");
-      } else if (app.group.get('meetup_location_1') === "10 mya") {
+      } else if (app.group.get('meetup_location_2') === "10 mya") {
         jQuery('.large-year-text').text("10 mya and 5 mya");
-      } else if (app.group.get('meetup_location_1') === "5 mya") {
+      } else if (app.group.get('meetup_location_2') === "5 mya") {
         jQuery('.large-year-text').text("5 mya and 2 mya");
       } else {
         console.error('Unknown meetup_location_2');
       }
-
 
     } else if (phase === 5) {
       // explanation stuff goes here
@@ -536,6 +534,9 @@ EvoRoom.Mobile = function() {
     jQuery('#rotation-complete').hide();
     jQuery('#meetup-instructions').hide();
     jQuery('#note-response').hide();
+    jQuery('#information-lookup-overview').hide();
+    jQuery('#information-lookup-year').hide();
+    jQuery('#clickable-rainforest-image').hide();    
     jQuery('#explanation-instructions').hide();
     jQuery('#explanation-organism-assigned').hide();
     jQuery('#explanation-response').hide();
@@ -607,7 +608,6 @@ EvoRoom.Mobile = function() {
 
     ////////////////////////// ROTATIONS ////////////////////////////
     // PARTICIPANT //
-
     jQuery('#organism-presence .presence-choice-button').click(function() {       
       jQuery('#organism-presence .small-button').show();
     });
@@ -637,7 +637,6 @@ EvoRoom.Mobile = function() {
     });
 
     // GUIDE //
-
     jQuery('#guide-instructions-2 .small-button').click(function() {
       app.setupGuideTable();
       app.clearPageElements();
@@ -645,7 +644,6 @@ EvoRoom.Mobile = function() {
     });
 
     // BOTH //
-
     jQuery('#ancestor-description .small-button').click(function() {
       app.hidePageElements();
       if (app.user.get('phase_data').role === "participant") {
@@ -666,11 +664,9 @@ EvoRoom.Mobile = function() {
     ////////////////////////// MEETUPS ////////////////////////////
 
     jQuery('#meetup-instructions .question-button').click(function(ev) {
-      // if (rotation1) - or does this not go here?
-
       if (jQuery(ev.target).hasClass('info-button')) {
-        console.log('show guide screen here');
-        // show the guide screen - still called guide?
+        app.hidePageElements();
+        jQuery('#information-lookup-overview').show();
       } else {
         var myNote = null;
         if (jQuery(ev.target).hasClass('q1-button')) {
@@ -736,10 +732,22 @@ EvoRoom.Mobile = function() {
         jQuery('#meetup-instructions').show();
       }
       // else gets handled by updateGroupHTML
-      
     });
 
+    jQuery('#information-lookup-overview .small-button').click(function() {
+      app.hidePageElements();
+      jQuery('#meetup-instructions').show();
+    });
+    jQuery('#information-lookup-overview .time-period-image').click(function() {
+      app.hidePageElements();
+      jQuery('#information-lookup-year').show();
+      jQuery('#clickable-rainforest-image').show();
+    });
 
+    jQuery('#information-lookup-year .small-button').click(function() {
+      app.hidePageElements();
+      jQuery('#information-lookup-overview').show();
+    });
 
 
     ////////////////////////// EXPLANATION ////////////////////////////
