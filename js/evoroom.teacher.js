@@ -68,32 +68,36 @@ window.EvoRoom.Teacher = function () {
     }
   };
 
-  app.initModels = function() {
+  app.setupModels = function() {
     console.log('Initializing models...');
 
     var phases = new EvoRoom.Model.Phases();
     phases.fetch().done(function () {
       app.phase = phases.first();
+      app.phase.on('change', app.phaseChanged);
       app.phase.wake(app.config.wakeful.url);
-    });
 
-    app.users = new EvoRoom.Model.Users();
-    app.users.wake(app.config.wakeful.url);
-    app.users.fetch();
+      app.users = new EvoRoom.Model.Users();
+      app.users.on('change', app.userChanged);
+      app.users.on('reset', function(users) { users.each(app.userChanged); });
+      app.users.wake(app.config.wakeful.url);
+      app.users.fetch().done(function () {
+        app.phaseChanged(app.phase);
+      });
+    });
   };
   
   app.events = {
     initialized: function(ev) {
-      app.authenticate();
+      app.loadStaticData().done(function () {
+        app.authenticate();
+      });
     },
   
     authenticated: function(ev) {
       console.log('Authenticated...');
 
-      // now we call a class function (init) and hand in the drowsy url and the run name so we don't need
-      // to do this config again for each model instantiation
-      EvoRoom.Model.init(app.config.drowsy.url, app.run.name)
-      .done(function () {
+      EvoRoom.Model.init(app.config.drowsy.url, app.run.name).done(function () {
         Wakeful.loadFayeClient(app.config.wakeful.url).done(function () {
           app.trigger('ready');
         });
@@ -101,10 +105,10 @@ window.EvoRoom.Teacher = function () {
     },
   
     ready: function(ev) {
-      jQuery('button, input[type=submit], input[type=reset], input[type=button]').button();
+      //jQuery('button, input[type=submit], input[type=reset], input[type=button]').button();
       jQuery(".teacher-dashboard").css('visibility', 'visible');
 
-      app.initModels();
+      app.setupModels();
       app.makeInteractive();
       
       // app.groupchat.addParticipantJoinedHandler(function(who, stanza) {
@@ -119,274 +123,130 @@ window.EvoRoom.Teacher = function () {
   
     unauthenticated: function(ev) {
       app.authenticate();
-    },
-    
-    sail: {
-      orient: function(sev) {
-        jQuery('button[value="'+sev.payload.time_period+'"]').addClass('teacher-button-done');
-      },
-      
-      observations_start: function(sev) {
-        if (sev.payload.rotation === 1) {
-          jQuery('.step-1-2 button.start_rotation_1')
-            .addClass('teacher-button-done')  
-            .addClass('teacher-button-faded');
-            //.attr('disabled','disabled');
-            
-          jQuery('.indicator.step-1-2').addClass('done')
-            .prevAll().addClass('done');
-        } else {
-          jQuery('.step-1-4 button.start_rotation_2')
-            .addClass('teacher-button-done')
-            .addClass('teacher-button-faded');
-            //.attr('disabled','disabled');
-          jQuery('.indicator.step-1-4').addClass('done')
-            .prevAll().addClass('done');
-        }
-      },
-      
-      homework_assignment: function(sev) {
-        if (sev.payload.day === 1) {
-          jQuery('.step-1-6 button.assign_homework_1')
-            .addClass('teacher-button-done')
-            .addClass('teacher-button-faded');
-            //.attr('disabled','disabled');
-          jQuery('.indicator.step-1-6').addClass('done')
-            .prevAll().addClass('done');
-        } //else {
-           // TODO
-        //}
-      },
-      
-      state_change: function(sev) {
-        EvoRoom.Teacher.gotUpdatedUserState(sev.origin, sev.payload.to);
-      },
-      
-      notes_completion: function(sev) {
-        EvoRoom.Teacher.doneFeatures[sev.origin] = true;
-        EvoRoom.Teacher.refreshDataForUser(sev.origin);
-      },
-      
-      transition_animation: function(sev) {
-        jQuery('button.start_pre_transition').removeClass('teacher-button-primed');
-        jQuery('button.start_transition').removeClass('teacher-button-faded');
-        jQuery('button.start_transition').addClass('teacher-button-primed');
-      }
     }
   };
-  
-  app.gotUpdatedUserData = function(user) {
-    if (!EvoRoom.Teacher.users) {
-      EvoRoom.Teacher.users = {};
-    }
     
-    var username = user.account.login;
-    var state = user.metadata.state || "OUTSIDE";
-    
-    console.log("got updated data for: ", username, user);
-    
-    EvoRoom.Teacher.users[username] = user;
-    
-    var marker = EvoRoom.Teacher.studentMarker(user);
-    marker.attr('title', state + " ("+user.metadata.current_rotation+")");
-    
-    if (user.metadata.day === 2) { // day 2
-      if (EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
-        jQuery('.step-2-2 button.start_feature_observations').removeClass('teacher-button-faded');
-        jQuery('.step-2-2 button.start_feature_observations').addClass('teacher-button-primed');
-      } else {
-        jQuery('.step-2-2 button.start_feature_observations').removeClass('teacher-button-primed');
-      }
 
-      if (_.all(EvoRoom.Teacher.users, function(user, username) {return EvoRoom.Teacher.doneFeatures[username] === true;}) && EvoRoom.Teacher.checkAllUsersInState('OBSERVING_PAST_FEATURES')) {
-        jQuery('button.start_pre_transition').removeClass('teacher-button-faded');
-        jQuery('button.start_pre_transition').addClass('teacher-button-primed');
-        jQuery('button.start_transition').removeClass('teacher-button-faded');
-      } else {
-        jQuery('button.start_pre_transition').removeClass('teacher-button-primed');
-        jQuery('button.start_transition').removeClass('teacher-button-primed');
-      }
-      
-      if (EvoRoom.Teacher.checkAllUsersInState('BRAINSTORMING')) {
-        jQuery('.step-2-5 .buttons button').removeClass('teacher-button-faded');
-        jQuery('.assign_homework_2').removeClass('teacher-button-faded');
-      }
-      
-      switch (state) {
-        case "OUTSIDE":
-          jQuery('.step-2-0 .students').append(marker);
-          break;
-        case "ORIENTATION":
-          jQuery('.step-2-1 .students').append(marker);
-          break;
-        case "OBSERVING_PAST_FEATU =ES":
-          if (EvoRoom.Teacher.doneFeatures[username] === true) {
-            jQuery('.step-2-3 .students').append(marker);
-          } else {
-            jQuery('.step-2-2 .students').append(marker);
-          }
-          break;
-        case "OBSERVING_PRESENT":
-          jQuery('.step-2-4 .students').append(marker);
-          break;
-         case 'BRAINSTORMING':
-          jQuery('.step-2-5 .students').append(marker);
-          break;
-        case 'DONE':
-          jQuery('.step-2-6 .students').append(marker);
-          break;
-      }
-      
-      // end of day 2
-    } else { // day 1
-    
-      if (EvoRoom.Teacher.checkAllUsersInRotation(1) && EvoRoom.Teacher.checkAllUsersInState('ORIENTATION')) {
-        jQuery('.step-1-2 button.start_rotation_1').removeClass('teacher-button-faded');
-        jQuery('.step-1-2 button.start_rotation_1').addClass('teacher-button-primed');
-      } else {
-        jQuery('.step-1-2 button.start_rotation_1').removeClass('teacher-button-primed');
-      }
-    
-      if (EvoRoom.Teacher.checkAllUsersInRotation(1) && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
-        jQuery('.step-1-4 button.start_rotation_2').removeClass('teacher-button-faded');
-        jQuery('.step-1-4 button.start_rotation_2').addClass('teacher-button-primed');
-      } else {
-        jQuery('.step-1-4 button.start_rotation_2').removeClass('teacher-button-primed');
-      }
-    
-      if (EvoRoom.Teacher.checkAllUsersInRotation(2) && EvoRoom.Teacher.checkAllUsersInState('WAITING_FOR_GROUP_TO_FINISH_MEETUP')) {
-        jQuery('.step-1-6 button.assign_homework_1').removeClass('teacher-button-faded');
-        jQuery('.step-1-6 button.assign_homework_1').addClass('teacher-button-primed');
-      } else {
-        jQuery('.step-1-6 button.assign_homework_1').removeClass('teacher-button-primed');
-      }
-    
-      switch (state) {
-        case "OUTSIDE":
-          jQuery('.step-1-0 .students').append(marker);
-          break;
-        case "ORIENTATION":
-          jQuery('.step-1-1 .students').append(marker);
-          break;
-        case "OBSERVING_PAST":
-          if (user.metadata.current_rotation === 1) {
-            jQuery('.step-1-2 .students').append(marker);
-          } else if (user.metadata.current_rotation === 2) {
-            jQuery('.step-1-4 .students').append(marker);
-          }
-          break;
-        case "MEETUP":
-        case "WAITING_FOR_MEETUP_START":
-        case "WAITING_FOR_GROUP_TO_FINISH_MEETUP":
-          if (user.metadata.current_rotation === 1) {
-            jQuery('.step-1-3 .students').append(marker);
-          } else {
-            jQuery('.step-1-5 .students').append(marker);
-          }
-          break;
-        case "OUTSIDE":
-          if (user.metadata.current_rotation === 2) {
-            jQuery('.step-1-6 .students').append(marker);
-          }
-          break;
-        case 'WAITING_FOR_LOCATION_ASSIGNMENT':
-        case 'GOING_TO_ASSIGNED_LOCATION':
-          switch(user.metadata.current_task) {
-            case 'meetup':
-              if (user.metadata.current_rotation === 1) {
-                jQuery('.step-1-3 .students').append(marker);
-              } else {
-                jQuery('.step-1-5 .students').append(marker);
-              }
-              break;
-            case 'observe_past_presence':
-              if (user.metadata.current_rotation === 1) {
-                jQuery('.step-1-2 .students').append(marker);
-              } else {
-                jQuery('.step-1-4 .students').append(marker);
-              }
-              break;
-          }
-          break;
-      }
-      
-      // end of day 1
-    }
-    
-    jQuery('#'+username).effect("highlight", {}, 800);
-    //jQuery('.student').after(" "); // FIXME: hack -- inserts too many spaces right now, but needed for white-space wrap
-  };
+  app.loadStaticData = function () {
+    app.staticData = {};
 
-  
-  app.makeInteractive = function() {
-    jQuery('.step-1-1 .buttons button, .step-2-5 .buttons button').each(function() {
-      var val = jQuery(this).val();
-      jQuery(this).click(function() {
-        var sev = new Sail.Event('orient', {
-          time_period: val
-        });
-        app.groupchat.sendEvent(sev);
+    var datafiles = {
+      'phase_definitions': 'assets/static_data/phase_definitions.json'
+    };
+
+    var loads = _.collect(datafiles, function (url, key) {
+      return jQuery.get(url, function (data) {
+        app.staticData[key] = data;
       });
     });
-    
-    jQuery('.start_rotation_1').click(function () {
-      var sev = new Sail.Event('observations_start', {rotation: 1});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    jQuery('.start_rotation_2').click(function () {
-      var sev = new Sail.Event('observations_start', {rotation: 2});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    jQuery('.assign_homework_1').click(function () {
-      var sev = new Sail.Event('homework_assignment', {day: 1});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    
-    // day 2
-    
-    jQuery('.start_feature_observations').click(function () {
-      var sev = new Sail.Event('feature_observations_start', {});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    jQuery('.start_pre_transition').click(function () {
-      var sev = new Sail.Event('transition_animation', {});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    jQuery('.start_transition').click(function () {
-      var sev = new Sail.Event('transition_to_present', {});
-      app.groupchat.sendEvent(sev);
-    });
-    
-    jQuery('.assign_homework_2').click(function () {
-      var sev = new Sail.Event('homework_assignment', {day: 1});
-      app.groupchat.sendEvent(sev);
+
+    return jQuery.when.apply(jQuery, loads);
+  };
+
+  app.lookupPhaseDefinitionByName = function(name) {
+    return _.find(app.staticData.phase_definitions, function (p) {
+      return p.name == name;
     });
   };
-  
-  app.studentMarker = function(user) {
-    var username = user.get('username');
-    var phase = user.get('user_phase');
-    var marker = jQuery('#'+username);
-    
-    if (marker.length < 1) {
-      marker = jQuery("<span class='student' id='"+username+"' title='"+phase+"'>"+username+"</span>");
+
+  app.lookupPhaseDefinitionByNumber = function(number) {
+    return _.find(app.staticData.phase_definitions, function (p) {
+      return p.number == number;
+    });
+  };
+
+  // find or create element in parent matching the selector;
+  // if element doesn't exist in parent, create it with the given html
+  function foc(parent, selector, html) {
+        var el = jQuery(parent).find(selector);
+        if (el.length) {
+            return el;
+        } else {
+            el = jQuery(html);
+            jQuery(parent).append(el);
+            return el;
+        }
     }
-    
-    if (user.groups && user.groups[0]) {
-      var teamName = user.groups[0].name;
-      if (teamName) {
-        marker.addClass('team-'+teamName);
+
+  app.updateProgressbar = function() {
+    _.each(app.staticData.phase_definitions, function (pd) {
+      var cssClass = 'phase-'+pd.name;
+      var prog = foc('.progressbar', '.'+cssClass ,'<div class="indicator">');
+      
+      prog.addClass('phase-'+pd.number);
+      prog.addClass('phase-'+pd.name);
+      prog.text(pd.number+". "+pd.title);
+
+      if (app.phase.get('phase_number') == pd.number) {
+        prog.addClass('current');
+      } else {
+        prog.removeClass('current');
       }
-    } else {
-      EvoRoom.Teacher.refreshDataForUser(username);
-    }
+    });
+  };
+
+  app.phaseChanged = function(phase) {
+    app.updateProgressbar();
+
+    jQuery('tr.phase')
+      .removeClass('teacher-button-done');
+
+    jQuery('tr.phase-'+phase.get('phase_number')+' button.start-phase')
+      .removeClass('teacher-phase-primed')
+      .removeClass('teacher-button-faded')
+      .addClass('teacher-button-done');
+
+    jQuery('tr.phase')
+      .removeClass('current');
+    jQuery('tr.phase-'+phase.get('phase_number'))
+      .addClass('current');
+
+    app.users.each(function (u) {
+      app.userChanged(u);
+    });
+  };
+
+  app.userChanged = function (user) {
+    var username = user.get('username');
+    var phaseName = user.get('user_phase') || app.phase.get('phase_name');
+    var marker = jQuery('#'+username);
+
+    var phaseDef = app.lookupPhaseDefinitionByName(phaseName);
     
-    return marker;
+    if (marker.length === 0) {
+      marker = jQuery("<span class='student' id='"+username+"'>"+username+"</span>");
+      marker.addClass('team-'+user.get('group_name'));
+    }
+
+    jQuery('tr.phase-'+phaseDef.number+' .students').append(marker);
+
+    app.updatePhaseReady();
+  };
+
+  app.updatePhaseReady = function () {
+    jQuery('button.start-phase')
+      .removeClass('teacher-button-primed');
+
+    if (app.users.length > 0 && app.phase.get('phase_number') < 1) {
+      jQuery('.phase-rotation_1 button.start-phase')
+        .removeClass('teacher-button-faded')
+        .removeClass('teacher-button-done')
+        .addClass('teacher-button-primed');
+    }
+  };
+  
+  app.makeInteractive = function() {
+    jQuery('button.start-phase').click(function (ev) {
+      var button = jQuery(ev.target);
+      var phaseName = button.parents('.phase').eq(0).data('phase');
+
+      var pd = app.lookupPhaseDefinitionByName(phaseName);
+
+      app.phase.save({
+        phase_name: pd.name,
+        phase_number: pd.number
+      });
+    });
   };
 };
 

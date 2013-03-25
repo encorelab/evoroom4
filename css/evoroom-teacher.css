@@ -1,6 +1,6 @@
 body {
   background-color: #12120C;
-  background-image: url('/assets/images/bkgd.png');
+  background-image: url('/assets/images/bkgd_horizontal.png');
   background-repeat: repeat;
   font-family: Verdana, sans-serif;
 }
@@ -18,7 +18,7 @@ header .progressbar {
 
 header .progressbar .indicator {
     display: inline-block;
-    width: 103px;
+    min-width: 130px;
     height: 30px;
     text-align: center;
     padding-top: 10px;
@@ -29,6 +29,7 @@ header .progressbar .indicator {
     background-repeat: no-repeat;
     background-position:center;
     color: #808080;
+    white-space: nowrap;
 }
 
 header .done {
@@ -98,16 +99,49 @@ header .hide {
   min-width: 40%;
 }
 
+button {
+  color: black;
+  cursor: pointer;
+  border: 2px;
+  display: inline-block;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 19px;
+  -webkit-transition: box-shadow 2s;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  background-color: rgb(64, 179, 79)
+}
+
+button:active {
+  background-color: rgb(204, 269, 109)
+}
+
 .teacher-button-done {
-  background-color: rgb(64, 179, 79)!important;
+  background-color: rgb(64, 179, 79);
+  opacity: 0.5;
+}
+
+tr.current .teacher-button-done {
+  opacity: 1.0;
 }
 
 .teacher-button-primed {
-  background-color: #ff4;
+  box-shadow: #ff4 0px 0px 9px 4px;
+  color: #ff4;
+  border: 2px solid #ff4;
 }
 
 .teacher-button-faded {
   opacity: 0.5;
+  background-color: #eee;
+}
+
+tr.phase.current {
+  background-color: rgba(255,255,200,0.4) !important;
+}
+
+tr.phase.current th {
+  color: black !important;
 }
 
 .student {

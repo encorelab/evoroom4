@@ -26,17 +26,11 @@
 <body>
     <header>
         <div class="progressbar">
-            <div class="indicator step-0">0. Orientation</div>
-            <div class="indicator step-1">1. Rotation I</div>
-            <div class="indicator step-2">2. Meetup I</div>
-            <div class="indicator step-3">3. Rotation II</div>
-            <div class="indicator step-4">4. Meetup II</div>
-            <div class="indicator step-5">5. Complete</div>
         </div>
     </header>
     
-    <table id="teacher-dashboard-day-1" class="teacher-dashboard" style="visibility: hidden">
-        <tr class="phase phase-orientation" data-phase="orientation">
+    <table class="teacher-dashboard" style="visibility: hidden">
+        <tr class="phase phase-0 phase-orientation" data-phase="orientation">
             <th>0. Orientation</th>
             <td class="buttons">
                 
@@ -45,7 +39,7 @@
             </td>
         </tr>
         
-        <tr class="phase phase-rotation_1" data-phase="rotation_1">
+        <tr class="phase phase-1 phase-rotation_1" data-phase="rotation_1">
             <th>1. Rotation I</th>
             <td class="buttons">
                 <button class="start-phase teacher-button-faded">Start Rotation I</button>
@@ -54,16 +48,16 @@
             </td>
         </tr>
         
-        <tr class="phase phase-meetup_1" data-phase="meetup_1">
+        <tr class="phase phase-2 phase-meetup_1" data-phase="meetup_1">
             <th>2. Meetup I</th>
             <td class="buttons">
-                <button class="start-phase teacher-button-faded">Start Rotation I</button>
+                <button class="start-phase teacher-button-faded">Start Meetup I</button>
             </td>
             <td class="students" colspan="2">
             </td>
         </tr>
         
-        <tr class="phase phase-rotation_2" data-phase="rotation_2">
+        <tr class="phase phase-3 phase-rotation_2" data-phase="rotation_2">
             <th>3. Rotation II</th>
             <td class="buttons">
                 <button class="start-phase teacher-button-faded">Start Rotation II</button>
@@ -72,7 +66,7 @@
             </td>
         </tr>
         
-        <tr class="phase phase-meetup_2" data-phase="meetup_2">
+        <tr class="phase phase-4 phase-meetup_2" data-phase="meetup_2">
             <th>4. Meetup II</th>
             <td class="buttons">
                 <button class="start-phase teacher-button-faded">Start Meetup II</button>
@@ -81,7 +75,7 @@
             </td>
         </tr>
         
-        <tr class="phase phase-explanation" data-phase="explanation">
+        <tr class="phase phase-5 phase-explanation" data-phase="explanation">
             <th>5. Open Inquiry</th>
             <td class="buttons">
                 <button class="start-phase next-time-period teacher-button-faded">Start Next Time Period &raquo;</button>

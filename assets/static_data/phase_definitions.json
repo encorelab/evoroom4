@@ -1,0 +1,8 @@
+[
+    {"number": 0, "name": "orientation", "title": "Orientation"},
+    {"number": 1, "name": "rotation_1", "title": "Rotation I"},
+    {"number": 2, "name": "meetup_1", "title": "Meetup I"},
+    {"number": 3, "name": "rotation_2", "title": "Rotation II"},
+    {"number": 4, "name": "meetup_2", "title": "Meetup II"},
+    {"number": 5, "name": "explanation", "title": "Open Inquiry"}
+]
