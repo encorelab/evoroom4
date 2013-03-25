@@ -43,6 +43,9 @@ EvoRoom.Mobile = function() {
   app.rollcallGroupMembers = null;
   app.rollcallMetadata = null;
   app.rollcallMetadata = null; // switch me to local?
+  app.keyCount = 0;
+
+  app.autoSaveTimer = window.setTimeout(function() { console.log("timer activated"); } ,10);
 
   app.init = function() {
     jQuery('#evoroom').addClass('hide'); // hide everything except login screen
@@ -178,29 +181,6 @@ EvoRoom.Mobile = function() {
   app.initModels = function() {
     console.log('Initializing models...');
 
-    // PHASES collection
-    if (app.phase === null) {
-      app.phases = new EvoRoom.Model.Phases();
-      var fetchPhasesSuccess = function(collection, response) {
-        console.log("Retrieved phases collection...");
-        if (collection.length === 1) {
-          // PHASE model
-          app.phase = app.phases.first();
-          app.phase.wake(Sail.app.config.wakeful.url);
-          app.phase.on('change', app.updatePhaseHTML);
-          app.updatePhaseHTML();
-        } else {
-          console.error("More or less than 1 phase object found in phases collection...");
-        }
-      };
-      var fetchPhasesError = function(collection, response) {
-        console.error("No phase found - and we are dead!!!");
-      };
-      app.phases.fetch({success: fetchPhasesSuccess, error: fetchPhasesError});
-    } else {
-      console.error("Phase model already exists...");
-    }
-
     // GROUPS collection
     if (app.group === null) {
       var gn = app.rollcallGroupName;
@@ -220,10 +200,15 @@ EvoRoom.Mobile = function() {
           app.group.set('all_members', app.rollcallGroupMembers);
           app.group.set('meetup_location_1',app.rollcallGroupMetadata.meetup_location_1);
           app.group.set('meetup_location_2',app.rollcallGroupMetadata.meetup_location_2);
+          app.group.set('meetup_1_notes_completed',0);
         }
-        app.group.wake(Sail.app.config.wakeful.url);
-        app.group.on('change', app.updateGroupHTML);
-        app.updateGroupHTML();
+        var saveSuccess = function(model, response) {
+          app.group.wake(Sail.app.config.wakeful.url);
+          app.group.on('change', app.updateGroupHTML);
+          app.updateGroupHTML();
+          app.initPhaseModels();
+        };
+        app.group.save(null, {success: saveSuccess});
       };
       var fetchGroupsError = function(collection, response) {
         console.error("No group collection found - and we are dead!!!");
@@ -308,6 +293,31 @@ EvoRoom.Mobile = function() {
 
   };
 
+  app.initPhaseModels = function() {
+    // PHASES collection
+    if (app.phase === null) {
+      app.phases = new EvoRoom.Model.Phases();
+      var fetchPhasesSuccess = function(collection, response) {
+        console.log("Retrieved phases collection...");
+        if (collection.length === 1) {
+          // PHASE model
+          app.phase = app.phases.first();
+          app.phase.wake(Sail.app.config.wakeful.url);
+          app.phase.on('change', app.updatePhaseHTML);
+          app.updatePhaseHTML();
+        } else {
+          console.error("More or less than 1 phase object found in phases collection...");
+        }
+      };
+      var fetchPhasesError = function(collection, response) {
+        console.error("No phase found - and we are dead!!!");
+      };
+      app.phases.fetch({success: fetchPhasesSuccess, error: fetchPhasesError});
+    } else {
+      console.error("Phase model already exists...");
+    }
+  };
+
   app.initObservationModels = function() {
     // OBSERVATIONS collection
     if (app.observation === null) {
@@ -381,10 +391,10 @@ EvoRoom.Mobile = function() {
 
 
     } else if (phase === 2) {
+      // might be a very bad idea to put these here
       app.hidePageElements();
       jQuery('#rotation-complete').show();
       jQuery('#rotation-complete .small-button').show();
-
 
       if (app.group.get('meetup_location_1') === "200 mya") {
         jQuery('.large-year-text').text("200 mya and 150 mya");
@@ -394,10 +404,10 @@ EvoRoom.Mobile = function() {
         jQuery('.large-year-text').text("100 mya and 50 mya");
       } else {
         console.error('Unknown meetup_location_1');
-      }      
+      }
+
 
     } else if (phase === 3) {
-
 
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
@@ -427,6 +437,7 @@ EvoRoom.Mobile = function() {
   app.updateGroupHTML = function() {
     console.log('Updating group model related UI elements...');
 
+    jQuery('.team-members-container').html('');
     _.each(app.group.get('all_members'), function(m) {
       console.log('member',m.display_name);
       var memberDiv = jQuery('<div />');
@@ -453,6 +464,12 @@ EvoRoom.Mobile = function() {
     }
 
     // MEETUPS
+
+    //var myNotes = app.notes.filter(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false; });
+
+    // if this user
+    //if (app.note.get('username') === app.user.get('username'))
+
     if (app.note && app.note.get('question')) {
       jQuery('#note-response .note-entry').val(""); 
       jQuery('#question-text').html('');
@@ -469,8 +486,7 @@ EvoRoom.Mobile = function() {
       } else {
         console.error('Unknown question type!');
       }
-    } // START HERE - how do we bring back the note
-
+    }
     
   };
 
@@ -628,16 +644,47 @@ EvoRoom.Mobile = function() {
         console.log('show guide screen here');
         // show the guide screen - still called guide?
       } else {
-        app.createNewNote();
-        app.note.set('time',app.group.get('meetup_location_1'));
+        var myNote = null;
         if (jQuery(ev.target).hasClass('q1-button')) {
-          app.note.set('question','Question 1');
+          // check if there's already an an finished note, then either set it up or create a new one - this needs to get cleaned up to deal with rot2 at least
+          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false; });
+          if (myNote) {
+            app.note = myNote;
+            jQuery('#note-response .note-entry').val(app.note.get('body'));
+          } else {
+            jQuery('#note-response .note-entry').val("");
+            app.createNewNote();
+            app.note.set('question','Question 1');
+            app.note.set('time',app.group.get('meetup_location_1'));
+          }
         } else if (jQuery(ev.target).hasClass('q2-button')) {
-          app.note.set('question','Question 2');
+          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 2" && n.get('published') === false; });
+          if (myNote) {
+            app.note = myNote;
+            jQuery('#note-response .note-entry').val(app.note.get('body'));
+          } else {
+            jQuery('#note-response .note-entry').val("");
+            app.createNewNote();
+            app.note.set('question','Question 2');
+            app.note.set('time',app.group.get('meetup_location_1'));
+          }
         } else if (jQuery(ev.target).hasClass('q3-button')) {
-          app.note.set('question','Question 3');
+          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 3" && n.get('published') === false; });
+          if (myNote) {
+            app.note = myNote;
+            jQuery('#note-response .note-entry').val(app.note.get('body'));
+          } else {
+            jQuery('#note-response .note-entry').val("");
+            app.createNewNote();
+            app.note.set('question','Question 3');
+            app.note.set('time',app.group.get('meetup_location_1'));
+          }
         }
         app.note.save();
+
+        jQuery('#note-response .note-entry').keyup(function(ev) {
+          app.autoSave(app.note, "body", jQuery('#note-response .note-entry').val(), false);
+        });
         app.hidePageElements();
         jQuery('#note-response').show();
       }
@@ -648,18 +695,19 @@ EvoRoom.Mobile = function() {
       jQuery('#meetup-instructions').show();
     });
     jQuery('#note-response .done-button').click(function() {
+      app.note.set('body',jQuery('#note-response .note-entry').val());
       app.note.set('published',true);
       app.note.save();
       app.hidePageElements();
-      var notesCompleted = false;
 
-      // START HERE - this isn't the right thing to check
-      var myGroupNotes = app.notes.filter(function(n) { return n.get('group_name') === app.user.get('group_name'); });
-      notesCompleted = _.all(myGroupNotes, function(n) { return n.get('published'); });
-
-      if (notesCompleted) {
-        jQuery('#rotation-instructions').show();          // TODO - this is going to need a lot of work to deal with the different phases
+      var notesCompleted = app.group.get('notes_completed_meetup_1');
+      notesCompleted++;
+      app.group.set('notes_completed_meetup_1',notesCompleted);
+      app.group.save();
+      if (notesCompleted > 2) {
+        jQuery('#rotation-instructions').show();
       } else {
+        // setup some HTML stuff for this page
         jQuery('#meetup-instructions').show();
       }
       
@@ -858,6 +906,17 @@ EvoRoom.Mobile = function() {
 
     if (k%2 !== 0) {
       table.append(tr);
+    }
+  };
+
+  app.autoSave = function(model, inputKey, inputValue, instantSave) {
+    app.keyCount++;
+    console.log("saving stuff as we go at", app.keyCount);
+
+    if (instantSave || app.keyCount > 9) {
+      model.set(inputKey, inputValue, {silent: true});
+      model.save(null, {silent: true});
+      app.keyCount = 0;
     }
   }; 
 
