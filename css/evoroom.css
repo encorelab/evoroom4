@@ -275,6 +275,7 @@ header {
 /* ========= INFO LOOKUP ========= */
 
 #information-lookup-overview .time-period-image {
+    height: 230px;
     margin-top: 15px;
 }
 
