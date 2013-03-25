@@ -295,7 +295,9 @@
 
         <div id="explanation-organism-assigned" class="text-box-medium" style="display:none">
             <div class="body-container-large">
-                <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">Pulled from Rollcall? Also needs the img in the top corner</span></div>
+                <div>
+                    <b>Organism: </b><span class="assigned-organism-text dynamic-text"></span>
+                </div>
                 <div><b>Introduction: </b>While you're waiting for your teacher to take you "back in time" go to the cladogram and survey important time periods for your organism.</div>
                 <br />
                 <div>Think about:</div>
@@ -310,22 +312,49 @@
         <div id="explanation-response" class="text-box-large" style="display:none">
             <div class="body-container-large">
                 <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">some organism</span></div>
-                <div><b>Instructions: </b>For your organism, what evolutionary forces do you think are at play between <span class="time-periods-text dynamic-text"></span></div>
-                <br />
-                <div>
-                    <form>
-                        <p><input type="checkbox" name="evolutionary-force" value="adaptation" /><span>Adaptation</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="bottleneck" /><span>Bottleneck</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="coevolution" /><span>Coevolution</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="founder-effect" /><span>Founder effect</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="gene-flow" /><span>Gene flow</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="natural-selection" /><span>Natural selection</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="reproductive-isolation" /><span>Reproductive isolation</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="sexual-selection" /><span>Sexual selection</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="other" /><span>Other</span></p>
-                    </form>
+                <div><b>Instructions: </b>For your organism, what evolutionary forces do you think are at play between <span class="time-periods-text dynamic-text"></span>
                 </div>
-                <br />
+                
+                <div>
+                    <ul class="explanation-response-list">
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-adaptation" value="adaptation" />
+                            <label for="explanation-response-adaptation">Adaptation</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-bottleneck" value="bottleneck" />
+                            <label for="explanation-response-bottleneck">Bottleneck</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-coevolution" value="coevolution" />
+                            <label for="explanation-response-coevolution">Coevolution</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-founder-effect" value="founder-effect" />
+                            <label for="explanation-response-founder-effect">Founder effect</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-gene-flow" value="gene-flow" />
+                            <label for="explanation-response-gene-flow">Gene flow</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-natural-selection" value="natural-selection" />
+                            <label for="explanation-response-natural-selection">Natural selection</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-reproductive-isolation" value="reproductive-isolation" />
+                            <label for="explanation-response-reproductive-isolation">Reproductive isolation</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-sexual-selection" value="sexual-selection" />
+                            <label for="explanation-response-sexual-selection">Sexual selection</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-other" value="other" />
+                            <label for="explanation-response-other">Other</label>
+                        </li>
+                    </ul>
+                </div>
                 <div><input type="file" name="pikachu-file" id="pikachu-file" class="" /></div>
                 <br />
                 <div>Integrate your thinking and <b>briefly</b> explain</div>
