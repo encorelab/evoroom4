@@ -755,7 +755,8 @@ EvoRoom.Mobile = function() {
       jQuery('#information-lookup-year').show();
       jQuery('#information-lookup-container').show();
 
-      var time = '';
+      // START HERE
+      var time = '200mya';
       app.showTimePeriodLandscape(time);
     });
 
@@ -815,38 +816,37 @@ EvoRoom.Mobile = function() {
   /************** Helper functions **************/
 
   app.showTimePeriodLandscape = function(time) {
+    jQuery('<div class="organism-image-container">').html('');
+    jQuery('#lookup-text').text("None selected.");
 
-    // jQuery().get().done(function () {
-
-    //   _.each(data, function () {
-    //     var cont = jQuery('<div class="organism-image-container">');
-    //     var src = '';
-    //     cont.append('<img class="image-button image-button-off" src="" />');
-    //     cont.append('<img class="image-button image-button-on" src="" />');
-    //     // need to also add class for css
+    // grab the orgs and org descriptions for Information Lookup guy
+    jQuery.get('assets/static_data/information_lookup.json', function(data) {
+      _.each(data[time], function (text, org) {
+        var cont = jQuery('<div class="organism-image-container">');
+        cont.attr('id',"organism-"+org);
+        var srcOff = 'assets/information_lookup_images/' + time + '/' + org + '_white.png';
+        var srcOn = 'assets/information_lookup_images/' + time + '/' + org + '_blue.png';
+        cont.append('<img class="image-button image-button-off" src="'+srcOff+'" />');
+        cont.append('<img class="image-button image-button-on" src="'+srcOn+'" style="display:none"/>');
         
-    //     cont.click(function(ev) {
-    //       jQuery('.image-button-on').hide();
-    //       var imageButton = jQuery(ev.target);
-    //       var org = imageButton.data('organism');
+        cont.click(function(ev) {
+          jQuery('#lookup-text').text("None selected.");
+          jQuery('.image-button-off').show();
+          jQuery('.image-button-on').not(cont.find('.image-button-on')).hide();
+          if (cont.find('.image-button-on').is(':visible')) {
+            cont.find('.image-button-on').hide();
+            cont.find('.image-button-off').show();
+          } else {
+            cont.find('.image-button-off').hide();
+            cont.find('.image-button-on').show();
+            jQuery('#lookup-text').text(text);
+          }
+        });
 
-    //       if (imageButton.find('.image-button-on').is(':visible')) {
-    //         imageButton.find('.image-button-on').show();
-    //         imageButton.find('.image-button-off').hide();
-    //       } else {
-    //         imageButton.find('.image-button-on').hide();
-    //         imageButton.find('.image-button-off').show();
-    //       }
-
-    //       // do the #lookup-text ajax
-    //       //jQuery.get
-    //       //lookup-text.html
-
-    //       jQuery('#organisms-go-here').append(cont);
-    //     });
-    //   });
-
-    // });
+        jQuery('#clickable-organism-container').append(cont);
+      });
+      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>')
+    });
     
   };
 
@@ -861,9 +861,6 @@ EvoRoom.Mobile = function() {
       app.createNewObservation();
       jQuery('#organism-presence').show();      
     }
-
-    // START HERE (need to copy assigned_organisms so that there are some to do for r2)
-    // else reset the time array and change organisms (if there are orgs left)
     else {
       if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length > 0) {
         if (app.user.get('direction') === "forward") {
