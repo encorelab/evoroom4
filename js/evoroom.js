@@ -348,15 +348,22 @@ EvoRoom.Mobile = function() {
     app.note.save();
   };
 
-  app.createNewExplanation = function() {
+  app.createNewExplanation = function(callback) {
     // also initExplanationModels
-    app.explanation = new EvoRoom.Model.Explanation();
-    app.explanation.set('username',app.user.get('username'));
-    // more sets
-    app.explanation.set('published',false);
-    app.explanation.wake(Sail.app.config.wakeful.url);
-    // app.explanation.on('change', ???);
-    app.explanation.save();
+    var myExplanation = app.explanations.find(function(expl) { return (expl.get('username') === Sail.app.session.account.login && !expl.get('published')); });
+
+    if (myExplanation) {
+      app.explanation = myExplanation;
+      callback();
+    } else {
+      app.explanation = new EvoRoom.Model.Explanation();
+      app.explanation.set('username',app.user.get('username'));
+      // more sets
+      app.explanation.set('published',false);
+      app.explanation.wake(Sail.app.config.wakeful.url);
+      // app.explanation.on('change', ???);
+      app.explanation.save(null, {success:callback});
+    }
   };
 
 
@@ -419,6 +426,12 @@ EvoRoom.Mobile = function() {
         console.error('Unknown meetup_location_2');
       }      
 
+    } else if (phase === 5) {
+      // explanation stuff goes here
+      var explanation_id = app.user.get('phase_data').explanation_id;
+      if (explanation_id) {
+        // go back to work on explanation
+      }
     } else {
       console.error('Unknown phase - this is probably really bad!');
     }
@@ -672,22 +685,31 @@ EvoRoom.Mobile = function() {
     // fake entrance
     jQuery('#fake-explanation').click( function() {
       app.hidePageElements();
-      jQuery('#explanation-create').show();
+      jQuery('#explanation-wait').show();
     });
 
     jQuery('#explanation-introduction button').click( function() {
       app.hidePageElements();
       jQuery('#explanation-wait').show();
-    }); 
+    });
 
     jQuery('#explanation-wait button').click( function() {
       app.hidePageElements();
       // create new Explanation or use unpublished one
       //explanation
+      app.createNewExplanation(function () {
+        // some setup depending on time?
+        jQuery('#explanation-create').show();
+      });
+    });
 
-      jQuery('#explanation-create').show();
-    });    
+    jQuery('#explanation-create button').click( function() {
+      app.explanation.set('published', true);
+      app.explanation.save();
 
+      app.hidePageElements();
+      jQuery('#explanation-wait').show();
+    });
   };
 
 
@@ -907,10 +929,13 @@ EvoRoom.Mobile = function() {
     function success(data, status, xhr) {
       console.log("Upload to Pikachu SUCCEEDED!");
       console.log(xhr.getAllResponseHeaders());
-      var pikachuPath = app.config.pikachu.url + data.url;
-      var pikachu = {'pikachuPath':pikachuPath};
-      app.user.setPhaseData('explanation', pikachu);
-      app.user.save();
+
+      var pikachuFile = data.url;
+      // var pikachu = {'pikachuPath':pikachuPath};
+      // app.user.setPhaseData('explanation', pikachu);
+      // app.user.save();
+      app.explanation.set('pikachu_file', pikachuFile);
+      app.explanation.save();
     }
   };
 
