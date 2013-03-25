@@ -815,8 +815,7 @@ EvoRoom.Mobile = function() {
       } else if (jQuery('.explanation-entry').val() === "") {
         alert('Please explain your thinking. Point form notes are sufficient');
       } else {
-        app.explanation.set('published', true);
-        app.explanation.save();
+        app.saveExplanationResponse();
         app.hidePageElements();
         jQuery('#explanation-organism-assigned').show();        
       }
@@ -1043,6 +1042,24 @@ EvoRoom.Mobile = function() {
     return str;
   };
 
+  // ======= EXPLANATION STUFF ==========
+
+  app.clearExplanationResponse = function () {
+
+  };
+
+  app.saveExplanationResponse = function () {
+    var evolutionary_forces = jQuery('.explanation-response-list input:checked').map(function(){return this.value;}).get();
+    app.explanation.set('evolutionary_forces', evolutionary_forces);
+
+    var justification = jQuery('.explanation-entry').val();
+    app.explanation.set('justification', justification);
+
+    app.explanation.set('published', true);
+    app.explanation.save();
+    
+  };
+
   app.initPikachu = function() {
     var pikachuFile = jQuery('#pikachu-file');
     // var uploadInput = jQuery('#upload');
@@ -1050,6 +1067,7 @@ EvoRoom.Mobile = function() {
     pikachuFile.on('change', function () { 
       if (pikachuFile.val()) {
         //uploadInput.removeAttr('disabled');
+        jQuery('#explanation-response').attr('disabled', 'disabled'); // disable the UI during upload
         app.uploadToPikachu(pikachuFile);
       }
     });
@@ -1090,6 +1108,10 @@ EvoRoom.Mobile = function() {
       // app.user.save();
       app.explanation.set('pikachu_file', pikachuFile);
       app.explanation.save();
+
+      // show toast that upload was successfull
+      jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");
+      jQuery('#explanation-response').removeAttr('disabled'); // enable the UI
     }
   };
 
