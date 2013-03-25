@@ -43,7 +43,6 @@ EvoRoom.Mobile = function() {
   app.rollcallGroupName = null;
   app.rollcallGroupMembers = null;
   app.rollcallMetadata = null;
-  app.rollcallMetadata = null; // switch me to local?
   app.rotationNumber = 1;
   app.keyCount = 0;
 
@@ -403,18 +402,13 @@ EvoRoom.Mobile = function() {
     jQuery('#phase-number-container').text(phase);
 
     if (phase === 0) {
-
-
-    } else if (phase === 1) {
-      jQuery('#participant-instructions .small-button').show();
-      jQuery('#guide-instructions .small-button').show();
-
       jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
       jQuery('.time-choice-1').text("200 mya");
       jQuery('.time-choice-2').text("150 mya");
       jQuery('.time-choice-3').text("100 mya");
       jQuery('.time-choice-4').text("50 mya");
 
+    } else if (phase === 1) {
 
     } else if (phase === 2) {
       // might be a very bad idea to put these shows here
@@ -438,16 +432,15 @@ EvoRoom.Mobile = function() {
         console.error('Unknown meetup_location_1');
       }
 
-
-    } else if (phase === 3) {
-      app.group.set('notes_completed_meetup_1', 0, {silent: true});
-      app.group.save(null, {silent: true});
-
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
+
+    } else if (phase === 3) {
+      app.group.set('notes_completed_meetup_1', 0, {silent: true});
+      app.group.save(null, {silent: true});
 
 
     } else if (phase === 4) {
@@ -512,6 +505,11 @@ EvoRoom.Mobile = function() {
     console.log('Updating user model related UI elements...');
 
     jQuery('#team-name-container').text(app.user.get('group_name'));
+
+    if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length !== 0) {
+      jQuery('#participant-instructions .small-button').show();
+      jQuery('#guide-instructions .small-button').show();
+    }
 
     // ROTATIONS    
     jQuery('.time').text(app.user.get('phase_data').time);
