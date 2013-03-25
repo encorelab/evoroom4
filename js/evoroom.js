@@ -27,6 +27,7 @@ EvoRoom.Mobile = function() {
   app.rollcall = null;
   app.ancestors = null;
   app.guideOrganisms = null;
+  app.explanationOrganism = null;
   app.phases = null;
   app.phase = null;
   app.users = null;
@@ -176,6 +177,17 @@ EvoRoom.Mobile = function() {
     });
     jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/guide_organisms", function(data) {
       app.guideOrganisms = data[0];
+    });
+    jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/explanation_organisms", function(data) {
+      _.map(data[0], function (v, k) {
+        if (k === Sail.app.session.account.login) {
+          app.explanationOrganism = v;
+        }
+      });
+
+      if (app.explanationOrganism === null) {
+        console.error("No organsim was assigned to this user for explanation phase");
+      }
     });    
   };
 
@@ -754,11 +766,20 @@ EvoRoom.Mobile = function() {
     // fake entrance
     jQuery('#fake-explanation').click( function() {
       app.hidePageElements();
-      jQuery('#explanation-organism-assigned').show();
+      jQuery('#explanation-instructions').show();
     });
 
     jQuery('#explanation-instructions button').click( function() {
       app.hidePageElements();
+      // we need to write the organism name into the HTML and make sure the picture is available
+      var img = jQuery('#assigned-organism-container .organism-image'); // retrieve image container
+      img.attr('src', '/assets/images/' + app.explanationOrganism + '_icon.png'); // change src to point at image associated with users explanation organism
+      jQuery('#assigned-organism-container').show(); // show assigned organism image
+
+      var readableOrganism = app.convertToHumanReadable(app.explanationOrganism);
+      jQuery('#explanation-organism-assigned .assigned-organism-text').text(readableOrganism);
+      jQuery('#explanation-response .assigned-organism-text').text(readableOrganism);
+      
       jQuery('#explanation-organism-assigned').show();
     });
 
