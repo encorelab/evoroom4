@@ -845,7 +845,7 @@ EvoRoom.Mobile = function() {
 
         jQuery('#clickable-organism-container').append(cont);
       });
-      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>')
+      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>');
     });
     
   };
