@@ -3,7 +3,7 @@ body {
 }
 
 #evoroom {
-  background-color: #12120C;
+    background-color: #12120C;
     background-image: url('/assets/images/bkgd_wText.jpg');
     background-repeat: no-repeat;
     width: 800px;
@@ -245,16 +245,36 @@ header {
     right: 70px;
 }
 
-#clickable-rainforest-image {
-    position: absolute;
-    top: 420px;
-    left: 0;
-    height: 400px;
+#explanation-response .explanation-entry {
+    font-size: 20px;
+    margin-top: 15px;
+    width: 454px;
+    height: 300px;
 }
+
+
+/* ========= INFO LOOKUP ========= */
 
 #information-lookup-overview .time-period-image {
     margin-top: 15px;
 }
+
+#information-lookup-container {
+    position: absolute;
+    top: 420px;
+}
+
+#clickable-rainforest-image {
+    position: absolute;
+}
+
+/* 200 mya */
+#organism-dinosaur {
+    position: absolute;
+    top: 95px;
+    left: 515px;
+}
+
 
 #explanation-response .explanation-entry {
     font-size: 20px;

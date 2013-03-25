@@ -248,8 +248,8 @@
                 <div class="large-year-text dynamic-text"></div>
             </div>
             <div>Your assignment at this location is to look up information about these time periods. Select a time period below to begin.</div>
-            <img class="time-period-image-1 time-period-image" src="assets/information_lookup_images/200mya_640x320.png">
-            <img class="time-period-image-2 time-period-image" src="assets/information_lookup_images/200mya_640x320.png">
+            <img class="time-period-image-1 time-period-image" src="assets/information_lookup_images/200mya/200mya_640x320.png">
+            <img class="time-period-image-2 time-period-image" src="assets/information_lookup_images/200mya/200mya_640x320.png">
             <button class="small-button button"><b>Back</b></button>
         </div>
 
@@ -258,12 +258,26 @@
                 <div><b>Time: </b><span class="time dynamic-text"></span></div>
                 <div><b>Instructions: </b>Click an outlined component in the image to read more about it.</div>
             </div>
-            <div class="lookup-text dynamic-text"></div>
-            <!-- image-button -->
             <button class="small-button button"><b>Back</b></button>
         </div>
-        <!-- probably change me to div START HERE -->
-        <img id="clickable-rainforest-image" src="assets/information_lookup_images/200mya_augmented.png" style="display:none"></img>
+        <div id="information-lookup-container" style="display:none">
+            <img id="clickable-rainforest-image" src="assets/information_lookup_images/200mya/200mya_augmented.png"></img>
+            <div id="organisms-go-here">
+            </div>
+<!--             <div id="organism-dinosaur" class="organism-image-container" data-organism="dinosaur">
+                <img class="image-button image-button-off" src="assets/information_lookup_images/200mya/dinosaur_white.png"></img>
+                <img class="image-button image-button-on" src="assets/information_lookup_images/200mya/dinosaur_blue.png" style="display:none"></img>
+            </div>
+
+            <div id="organism-dinosaur" class="organism-image-container" data-organism="dinosaur">
+                <img class="image-button image-button-off" src="assets/information_lookup_images/200mya/dinosaur_white.png"></img>
+                <img class="image-button image-button-on" src="assets/information_lookup_images/200mya/dinosaur_blue.png" style="display:none"></img>
+            </div> -->
+
+
+            <div id="lookup-text" class="highlighted-text">None selected.</div>
+        </div>  
+
         
 
         <!-- //////////// EXPLANATION / OPEN INQUIRY (PHASE 5) //////////// -->

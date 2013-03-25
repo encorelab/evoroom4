@@ -548,7 +548,7 @@ EvoRoom.Mobile = function() {
     jQuery('#note-response').hide();
     jQuery('#information-lookup-overview').hide();
     jQuery('#information-lookup-year').hide();
-    jQuery('#clickable-rainforest-image').hide();    
+    jQuery('#information-lookup-container').hide();    
     jQuery('#explanation-instructions').hide();
     jQuery('#explanation-organism-assigned').hide();
     jQuery('#explanation-response').hide();
@@ -753,7 +753,10 @@ EvoRoom.Mobile = function() {
     jQuery('#information-lookup-overview .time-period-image').click(function() {
       app.hidePageElements();
       jQuery('#information-lookup-year').show();
-      jQuery('#clickable-rainforest-image').show();
+      jQuery('#information-lookup-container').show();
+
+      var time = '';
+      app.showTimePeriodLandscape(time);
     });
 
     jQuery('#information-lookup-year .small-button').click(function() {
@@ -810,6 +813,42 @@ EvoRoom.Mobile = function() {
 
 
   /************** Helper functions **************/
+
+  app.showTimePeriodLandscape = function(time) {
+
+    // jQuery().get().done(function () {
+
+    //   _.each(data, function () {
+    //     var cont = jQuery('<div class="organism-image-container">');
+    //     var src = '';
+    //     cont.append('<img class="image-button image-button-off" src="" />');
+    //     cont.append('<img class="image-button image-button-on" src="" />');
+    //     // need to also add class for css
+        
+    //     cont.click(function(ev) {
+    //       jQuery('.image-button-on').hide();
+    //       var imageButton = jQuery(ev.target);
+    //       var org = imageButton.data('organism');
+
+    //       if (imageButton.find('.image-button-on').is(':visible')) {
+    //         imageButton.find('.image-button-on').show();
+    //         imageButton.find('.image-button-off').hide();
+    //       } else {
+    //         imageButton.find('.image-button-on').hide();
+    //         imageButton.find('.image-button-off').show();
+    //       }
+
+    //       // do the #lookup-text ajax
+    //       //jQuery.get
+    //       //lookup-text.html
+
+    //       jQuery('#organisms-go-here').append(cont);
+    //     });
+    //   });
+
+    // });
+    
+  };
 
   app.rotationStepForward = function() {
     app.clearPageElements();
@@ -881,7 +920,7 @@ EvoRoom.Mobile = function() {
 
         if (chosenAncestor !== "none"){
           jQuery('.ancestor-organism-image').attr('src', '/assets/images/' + chosenAncestor + '_icon.png');     // AWK
-          chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
+          // chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
           
           jQuery('.ancestor-organism-text').text(app.convertToHumanReadable(chosenAncestor));
           jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '.html', function(data) {
@@ -950,7 +989,7 @@ EvoRoom.Mobile = function() {
       img.click(function() {
         var chosenAncestor = jQuery(this).data('organism');
         jQuery('.ancestor-organism-image').attr('src', '/assets/images/' + chosenAncestor + '_icon.png');
-        chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
+        // chosenAncestor = 'fig_tree_test';       // TODO: get rid of me when there are real ancestor descriptions to fetch
         
         jQuery('.ancestor-organism-text').text(app.convertToHumanReadable(chosenAncestor));
         jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '_guide.html', function(data) {
