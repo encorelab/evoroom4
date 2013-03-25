@@ -172,14 +172,14 @@ EvoRoom.Mobile = function() {
   /************** Collection and Model functions **************/
 
   app.fetchStaticData = function() {
-    jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/ancestors", function(data) {
-      app.ancestors = data[0];
+    jQuery.get("../assets/static_data/ancestors.json", function(data) {
+      app.ancestors = data;
     });
-    jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/guide_organisms", function(data) {
-      app.guideOrganisms = data[0];
+    jQuery.get("../assets/static_data/guide_organisms.json", function(data) {
+      app.guideOrganisms = data;
     });
-    jQuery.get(app.config.drowsy.url + "/" + app.run.name + "/explanation_organisms", function(data) {
-      _.map(data[0], function (v, k) {
+    jQuery.get("../assets/static_data/explanation_organisms.json", function(data) {
+      _.map(data, function (v, k) {
         if (k === Sail.app.session.account.login) {
           app.explanationOrganism = v;
         }
