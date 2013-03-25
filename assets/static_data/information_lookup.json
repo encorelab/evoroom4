@@ -1,0 +1,58 @@
+{
+	"200mya":{
+		"dinosaur":"The earliest dinosaurs appeared approximately 255 million years ago.",
+		"hadrocodium":"Most of the synapsids that had dominated the Permian disappeared, except for one group, the cynodonts, who spread and diversified, eventually giving rise to the first true mammals approximately 220 mya.",
+		"leaf":"Much of the land was warm and arid. Toward the end of the period, as Pangea continued to split apart, global climates had become cooler and wetter.",
+		"tree1":"At 200 million years ago is the Triassic Period in the Mesozoic era. At this time, almost all of the earth’s land mass was still connected to each other as Pangaea.",
+		"tree2":"The Permian–Triassic (P–Tr) extinction event occurred at 248 million years ago. It wiped out much of plant and animal life on earth."
+	},
+	"150mya":{
+		"tree1":"At 150 million years ago is the Jurassic Period in the Mesozoic era. By now, the break up of Pangea became more obvious. The Jurassic period also saw the replenishment of plant and animal diversity after the major distinction event of the previous age. There were two land bridges attached to Borneo at this time, one between Borneo and SE Asia, one between Borneo and Sulawesi.",
+		"conifer":"The arid, continental conditions characteristic of the Triassic steadily eased during the Jurassic period, especially at higher latitudes; the warm, humid climate allowed lush jungles to cover much of the landscape. Conifers dominated the flora, as during the Triassic period.",
+		"crusafonta":"Mammals lived in the shadow of the dinosaurs. Small, shrew-like mammals thrived, scampering about among the dinosaurs. Because they were warm-blooded, they could hunt at night to avoid being eaten by daytime carnivores, including dinosaurs.",
+		"archaeopteryx":"Archaeopteryx, a possible ancestor to the birds, appears in the fossil record at approximately 155 million years ago, along with triconodontid and symmetrodont mammals.",
+		"styporaphidia":"The first blood-sucking insects first appeared 155 million years ago."		
+	},
+	"100mya":{
+		"tree3":"At 100 million years ago is the Cretaceous Period in the Mesozoic era. It was a warm period with no ice caps at the poles.",
+		"tree4":"land connection between southern Borneo and mainland SE Asia as well as the land connection between Borneo and Sulawesi are still present. This land-bridge would have allowed the free migration of terrestrial biota between SE Asia and Borneo.",
+		"pterosaurs":"This was the Cretaceous period, the age of chalk. Dinosaurs still ruled the land. It was during this time that massive carnivorous dinosaurs such as Tyrannosaurus roamed, and flying Pterosaurs ruled the sky.",
+		"williamsonia":"Flowering plants, also known as angiosperms (first appeared at 130 million years ago), spread during this period, although they did not become predominant until near the end of the period. Their evolution was aided by the appearance of bees.",
+		"fig_tree":"The first representatives of many modern trees, including figs, planes and magnolias, appeared in the Cretaceous period.",
+		"wasp":"Mutual relationship between figs and wasps developed at approximately 90 million years ago."
+	},
+	"50mya":{
+		"tree5":"At 50 million years ago is the Eocene epoch in the Paleogene Period. The climate was much milder and more uniform than present. Borneo’s land mass appears to have been emergent/above-water.",
+		"tree6":"A land connection between southern Borneo and mainland SE Asia as well as the land connection between Borneo and Sulawesi are still present. This land-bridge would have allowed the free migration of terrestrial biota between SE Asia and Borneo.",
+		"heptodon":"It was during the Eocene that mammals took over the large-animal niches previously held by the dinosaurs. The Cretaceous ended with the most famous mass extinction in history at 65 million years ago - the one that killed the dinosaurs. Following the mass extinctions at the end of the Cretaceous Period, mammals became the dominant land-living life form.",
+		"grass":"As commonplace as it seems now, it wasn't until the Early Eocene that grasses developed, (and with them a host of grass-living animals).",
+		"purgatorius":"Old World and New World monkeys are thought to have diverged from a common ancestor about 55-60 million years ago.",
+		"miacids":"The beginning of the Eocene Epoch coincides with the appearance of early forms of most of the placental mammal orders that are present today."
+	},
+	"25mya":{
+		"tree7":"The land bridge between Borneo and SE Asia was severed.  Additionally, the land bridge between Borneo and Sulawesi was severed – this was one of the most important geological events to affect the biogeography of Borneo and Sulawesi. Prior to the split, the interchange of terrestrial biota between Borneo and western Sulawesi could have occurred unhindered across this continuous land bridge. A land bridge between Borneo and Indochina formed at approximately 34 mya. Sea floor spreading between Borneo and Sulawesi began, forming the Makassar Strait.",
+		"tree8":"At 25 million years ago is the Oligocene epoch in the Paleogene Period. The Oligocene epoch saw the start of the global cooling that would eventually shift the Earth's climate to one where glaciers were present and ice ages were possible.",
+		"mountain":"Rhyolitic (strongly acidic) volcanism, ash-falls and lava flows coincided with the formation of the Tarakan and Kutai basins. Similar volcanism occurred along the southern margin of the Mangkalihat peninsula and in the Muller Mountains.",
+		"asiavorator":"Oceanic sedimentation occurred creating large shallow water basins.  This brought an abundance of aquatic organisms towards Borneo's mainland, providing another potential food supply for terrestrial organisms.",
+		"grass":"This was the time when grasslands began to expand and forests - especially tropical ones - shrank correspondingly.",
+		"felidae":"Animals evolved to fit the new, open landscape and many fast-running prey and predator species arose as a result.",
+		"old_world_monkey":"Cooler temperatures and the appearance of the first monkeys (at approximately 33.9 million years ago) during the transition to the next geologic epoch, the Oligocene By the end of the Eocene Epoch, many of the prosimian species had become extinct."
+	},
+	"10mya":{
+		"tree9":"At 10 million years ago is the Miocene epoch in the Paleogene Period.",
+		"bucerotidae":"Volcanic activity throughout central Borneo created land uplift and also supplied sediment towards the Makassar Strait.  The volcanos became inactive during the late Miocene, however the large mountainous geographic divide across Borneo remained.  Only organisms that were capable of traversing this large geographic barrier were able to migrate freely, including pollinating plants and flying birds (e.g. hornbills).",
+		"tree4":"Most of the major river systems began draining into the northern and eastern parts of Borneo.  By the end of the Miocene, the drainage system within Borneo was similar to the present day.",
+		"old_world_porcupine":"It was during the Miocene that a new ecological niche was filled, as grazing animals became common after the rise of grasses in the Oligocene.",
+		"dryopithecus":"The apes arose and diversified during the Miocene epoch, becoming widespread in the Old World. In fact, by the end of this epoch, the ancestors of humans had split away from the ancestors of the chimpanzees to follow their own evolutionary path."
+	},
+	"5mya":{
+		"tree9":"At 10 million years ago is the Pliocene epoch in the Neogene Period in the Cenozoic Era. The Pliocene world looked very similar to Earth today.",
+		"mountain":"Volcanic arc activity occurred in the Sulu and Cagayan regions during the Miocene, and this probably resulted in emergent chains of volcanic islands.  The Sulu and Cagayan volcanic island chain may have formed an island-hopping route for organisms between the northeast tip of Borneo and parts of the Philippines.  Island-hopping organisms may have undergone peripatric speciation via the founder effect.",
+		"tree1":"The Makassar strait remained a deep water basin, however the distance across this seaway was progressively reduced."
+	},
+	"2mya":{
+		"tree3":"At 2 million years ago is the Pleistocene epoch of the Quaternary Period in the Cenozoic Era. Glaciers came and went, resulting in a series of ice ages punctuated by warmer periods. There were at least 20 cycles of this advance and retreat. During the ice ages, global temperatures were 5 degrees centigrade cooler than today and it was much drier, since much of the world's water was locked up in massive ice sheets. The expansion of the deserts and the action of glaciers grinding up rocks meant that dust storms would have been a lot more common in the Pleistocene than they are now.",
+		"tree10":"The land bridge between Borneo and Indochina was severed at 4 mya.  Possible events responsible include reorganization of plates, the end of a late Miocene glaciation, and/or global sea level changes in the late Miocene.",
+		"pond":"Sea level changes with magnitudes of tens of meters, combined with the compressive sedimentation across the Mkassar Strait, suggests that part of the shallow water areas separating Borneo and Sulawesi may have become emergent during the later part of the Neogene. If such a situation developed, migration of terrestrial organisms would have been facilitated. A few plant taxa that were well-adapted for dispersal may have also been able to cross the Makassar Strait at this time."
+	}
+}

@@ -1,7 +1,5 @@
 /*jshint node: true, strict: false, devel: true, debug: true, unused:false, undef:true, loopfunc:true */
 // variables to store static data from MongoDB
-var organism_groups;
-var user_specializations;
 var users = null;
 var phases = null;
 
@@ -26,21 +24,25 @@ var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
 // read config.json
 var fs = require('fs');
 var config = JSON.parse(fs.readFileSync('./config.json'));
+// read static data from file system
+var organism_groups = JSON.parse(fs.readFileSync('./assets/static_data/organism_groups.json'));
+console.log(organism_groups);
+var user_specializations = JSON.parse(fs.readFileSync('./assets/static_data/user_specializations.json'));
+console.log(user_specializations);
+
 // pull in EvoRoom model
 var EvoRoom = {};
 EvoRoom.Model = require('../js/evoroom.model.js').EvoRoom.Model;
 
-// var DATABASE = 'evo4-march-2013';
-
 
 // reacting to changes in PHASES Model
 var reactToPhaseChange = function (phase) {
-  var phasename = phase.get('phase_name');  // for debugging later phase_name
-  console.log("Phase is now: ", phasename);
+  var phasenumber = phase.get('phase_number');  // for debugging later phase_name
+  console.log("Phase number is now: ", phasenumber);
   var users_with_assigned_organisms = {};
 
-  if (phasename === "rotation 1" || phasename === "rotation 2") {
-    console.log("Phase "+phasename+" entered. Start to assign animals to students!");
+  if (phasenumber === 1 || phasenumber === 3) {
+    console.log("Phase "+phasenumber+" entered. Start to assign animals to students!");
     
     // Look up students that are present and marked as participants from users collection
     var participant_names = [];
@@ -121,49 +123,38 @@ var reactToPhaseChange = function (phase) {
   }
 };
 
+// Wakeful connection via EvoRoom.Model that allows to receive change triggers 
+EvoRoom.Model.init(config.drowsy.url, DATABASE).done(function () {
+  // Start Listening to changes in the phases and react where needed
+  var fetchUsersSuccess = function () {
+    phases = new EvoRoom.Model.Phases();
+    phases.wake(config.wakeful.url);
 
-var whenObj = jQuery.when(jQuery.get(config.drowsy.url +'/'+DATABASE+'/organism_groups'), jQuery.get(config.drowsy.url +'/'+DATABASE+'/user_specializations'));
-whenObj.done(function (og_result, us_result) {
-  organism_groups = og_result[0][0];
-  console.log(organism_groups);
-  user_specializations = us_result[0][0];
-  console.log(user_specializations);
-
-  // Wakeful connection via EvoRoom.Model that allows to receive change triggers 
-  EvoRoom.Model.init(config.drowsy.url, DATABASE).done(function () {
-    // Start Listening to changes in the phases and react where needed
-    var fetchUsersSuccess = function () {
-      phases = new EvoRoom.Model.Phases();
-      phases.wake(config.wakeful.url);
-
-      phases.on('change add', reactToPhaseChange);
-      phases.on('reset', function () {
-        if (phases.models.length === 0) {
-          var p = new EvoRoom.Model.Phase();
-          p.set('phase_name', "orientation");
-          p.set('phase_number', 1);
-          p.save();
-        } else {
-          _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
-        }
-      });
-
-      phases.fetch();
-    };
-
-    users = new EvoRoom.Model.Users();
-    users.wake(config.wakeful.url);
-
-    users.on('change add', updateUserStuff);
-    users.on('reset', function () {
-      _.each(users.models, function (user) {updateUserStuff(user);});
+    phases.on('change add', reactToPhaseChange);
+    phases.on('reset', function () {
+      if (phases.models.length === 0) {
+        var p = new EvoRoom.Model.Phase();
+        //p.set('phase_name', "orientation");
+        p.set('phase_number', 0);
+        p.save();
+      } else {
+        _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
+      }
     });
 
-    users.fetch({success: fetchUsersSuccess});
+    phases.fetch();
+  };
+
+  users = new EvoRoom.Model.Users();
+  users.wake(config.wakeful.url);
+
+  users.on('change add', updateUserStuff);
+  users.on('reset', function () {
+    _.each(users.models, function (user) {updateUserStuff(user);});
   });
 
+  users.fetch({success: fetchUsersSuccess});
 });
-
 
  
 // reacting to changes in USERS Model

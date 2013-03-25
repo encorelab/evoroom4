@@ -3,7 +3,7 @@ body {
 }
 
 #evoroom {
-  background-color: #12120C;
+    background-color: #12120C;
     background-image: url('/assets/images/bkgd_wText.jpg');
     background-repeat: no-repeat;
     width: 800px;
@@ -245,7 +245,82 @@ header {
     right: 70px;
 }
 
+#explanation-response .explanation-entry {
+    font-size: 20px;
+    margin-top: 15px;
+    width: 454px;
+    height: 300px;
+}
 
+#explanation-response .explanation-entry {
+    font-size: 20px;
+    margin-top: 15px;
+    width: 454px;
+    height: 215px;
+}
 
+#explanation-response .body-container-large {
+    height: 680px;
+    overflow-y: auto;
+}
 
-/**** EXPLANATION ****/
+#explanation-response .explanation-response-list {
+    list-style: none;
+}
+
+#explanation-response label {
+    font-weight: normal;
+}
+
+/* ========= INFO LOOKUP ========= */
+
+#information-lookup-overview .time-period-image {
+    height: 230px;
+    margin-top: 15px;
+}
+
+#information-lookup-container {
+    position: absolute;
+    top: 420px;
+}
+
+#clickable-rainforest-image {
+    position: absolute;
+}
+
+.image-button {
+    position: absolute;
+}
+
+#lookup-text {
+    position: absolute;
+    top: 410px;
+    left: 180px;
+    width: 445px;
+}
+
+/* 200 mya */
+#organism-dinosaur {
+    position: absolute;
+    top: 95px;
+    left: 515px;
+}
+#organism-hadrocodium {
+    position: absolute;
+    top: 355px;
+    left: 380px;
+}
+#organism-leaf {
+    position: absolute;
+    top: 110px;
+    left: 120px;    
+}
+#organism-tree1 {
+    position: absolute;
+    left: -45px;    
+}
+#organism-tree2 {
+    position: absolute;
+    left: 692px;    
+}
+

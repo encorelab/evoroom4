@@ -10,6 +10,7 @@
     <link href="js/sail.js/css/sail.css" rel="stylesheet" type="text/css" />
     <link href="css/deps/jquery-ui.css" rel="stylesheet" type="text/css" />
     <link href="css/evoroom.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" href="css/deps/jquery.toastmessage.css" rel="stylesheet">
 
     <script src="js/sail.js/load.js" type="text/javascript"></script>
     <script src="js/sail.js/sail.js" type="text/javascript"></script>
@@ -212,10 +213,9 @@
 
 
         <!-- //////////// MEETUP (PHASE 2/4) //////////// -->
-
         <div id="meetup-instructions" class="text-box-medium" style="display:none">
             <div class="title-container">
-                <div><b>Instructions: </b>As a team, you will compare the environmental differences:</div>
+                <div><b>Instructions: </b>As a team, you will compare the environment between:</div>
                 <div class="large-year-text dynamic-text"></div>
             </div>
             <div>There are three questions to complete. We have also provided you with additional information about these time periods.</div>
@@ -231,7 +231,7 @@
 
         <div id="note-response" class="text-box-large" style="display:none">
             <div class="title-container">
-                <div><b>Instructions: </b>As a team, you will compare the environmental differences between:</div>
+                <div><b>Instructions: </b>As a team, you will compare the environment between:</div>
                 <div class="large-year-text dynamic-text"></div>
             </div>
             <div>Discuss the following with your group members and record your answer below. Please note that only one person per group should submit an answer, otherwise your answer will be lost</div>
@@ -242,55 +242,114 @@
             <button class="done-button note-button button"><b>Done</b></button>
         </div>
 
- 
-        <!-- //////////// EXPLANATION / OPEN INQUIRY (PHASE 5) //////////// -->
-        <div id="explanation-introduction" class="text-box-medium" style="display:none">
+        <!-- GUIDE -->
+        <div id="information-lookup-overview" class="text-box-large" style="display:none">
             <div class="title-container">
-                <span class="highlighted-text"><b>All questions submitted</b><span>
+                <div><b>Instructions: </b>As a team, you will compare the environment between:</div>
+                <div class="large-year-text dynamic-text"></div>
+            </div>
+            <div>Your assignment at this location is to look up information about these time periods. Select a time period below to begin.</div>
+            <img class="time-period-image-1 time-period-image" src="assets/information_lookup_images/200mya/200mya_640x320.png">
+            <img class="time-period-image-2 time-period-image" src="assets/information_lookup_images/200mya/200mya_640x320.png">
+            <button class="small-button button"><b>Back</b></button>
+        </div>
+
+        <div id="information-lookup-year" class="text-box-large" style="display:none">
+            <div class="title-container">
+                <div><b>Time: </b><span class="time dynamic-text"></span></div>
+                <div><b>Instructions: </b>Click an outlined component in the image to read more about it.</div>
+            </div>
+            <button class="small-button button"><b>Back</b></button>
+        </div>
+        <div id="information-lookup-container" style="display:none">
+            <img id="clickable-rainforest-image" src="assets/information_lookup_images/200mya/200mya_augmented.png"></img>
+            <div id="clickable-organism-container">
+            </div>
+        </div>  
+
+        
+
+        <!-- //////////// EXPLANATION / OPEN INQUIRY (PHASE 5) //////////// -->
+        <div id="explanation-instructions" class="text-box-medium" style="display:none">
+            <div class="title-container">
+                <span class="highlighted-text"><b>All questions submitted!</b><span>
             </div>
             <div class="body-container-medium">
-                <div><b>Instructions: </b>Blah blah, blah. Stuff do, go make.</div>
+                <div><b>Instructions: </b>Go up to the cladogram and take a look at the organisms in your specialty (e.g., birds, primates, other mammals, plants and insects). An organism will be assigned to you and your task is to follow its evolution from 200 mya to present day.</div>
                 <br />
+                <div>Your teacher will take you "back in time" so that you can collect evidence related to your organism's evolution, e.g. by writing a note, taking a photo, interviewing colleagues.</div>
             </div> 
-            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+            <button class="small-button button"><b>Next</b></button>
         </div>
 
-        <div id="explanation-wait" class="text-box-medium" style="display:none">
+        <div id="explanation-organism-assigned" class="text-box-medium" style="display:none">
             <div class="body-container-large">
-                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
-                
-                <div><b>Introduction: </b> La la la</div>
-                <br />
-                <div>Na na na na</div>
-                <br />
-                <div>If you are the first in your team to finish, take this time to review the cladogram.</div>
-            </div>
-            <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
-        </div>
-
-        <div id="explanation-create" class="text-box-large" style="display:none">
-            <div class="body-container-large">
-                <div><b>Organism: </b><span class="time-periods-text dynamic-text">some organism</span></div>
-                
-                <div><b>Introduction: </b> La la la. A lot of it and it should fill some lines here and be longish and at time <span class="time-periods-text dynamic-text">some organism</span></div>
-                <br />
                 <div>
-                    <form>
-                        <p><input type="checkbox" name="evolutionary-force" value="adaptation" /><span>Adaptation</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="bottleneck" /><span>Bottleneck</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="coevolution" /><span>Coevolution</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="founder-effect" /><span>Founder effect</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="gene-flow" /><span>Gene flow</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="natural-selection" /><span>Natural selection</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="reproductive-isolation" /><span>Reproductive isolation</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="sexual-selection" /><span>Sexual selection</span></p>
-                        <p><input type="checkbox" name="evolutionary-force" value="other" /><span>Other</span></p>
-                    </form>
+                    <b>Organism: </b><span class="assigned-organism-text dynamic-text"></span>
                 </div>
+                <div><b>Introduction: </b>While you're waiting for your teacher to take you "back in time" go to the cladogram and survey important time periods for your organism.</div>
                 <br />
-                <div><input type="file" name="pikachu-file" id="pikachu-file" class="" /></div>
+                <div>Think about:</div>
+                <br />
+                <div>1. When was the most interesting point in time for your species and</div>
+                <br />
+                <div>2. What adaptation and evolutionary forces do you think are at play at the different time periods? Consider interactions with other organisms.</div>
             </div>
             <button class="small-button button"><b>Next</b></button><!-- style="display:none" -->
+        </div>
+
+        <div id="explanation-response" class="text-box-large" style="display:none">
+            <div class="body-container-large">
+                <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">some organism</span></div>
+                <div><b>Instructions: </b>For your organism, what evolutionary forces do you think are at play between <span class="time-periods-text dynamic-text"></span>
+                </div>
+                
+                <div>
+                    <ul class="explanation-response-list">
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-adaptation" value="adaptation" />
+                            <label for="explanation-response-adaptation">Adaptation</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-bottleneck" value="bottleneck" />
+                            <label for="explanation-response-bottleneck">Bottleneck</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-coevolution" value="coevolution" />
+                            <label for="explanation-response-coevolution">Coevolution</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-founder-effect" value="founder-effect" />
+                            <label for="explanation-response-founder-effect">Founder effect</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-gene-flow" value="gene-flow" />
+                            <label for="explanation-response-gene-flow">Gene flow</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-natural-selection" value="natural-selection" />
+                            <label for="explanation-response-natural-selection">Natural selection</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-reproductive-isolation" value="reproductive-isolation" />
+                            <label for="explanation-response-reproductive-isolation">Reproductive isolation</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-sexual-selection" value="sexual-selection" />
+                            <label for="explanation-response-sexual-selection">Sexual selection</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="evolutionary-force" id="explanation-response-other" value="other" />
+                            <label for="explanation-response-other">Other</label>
+                        </li>
+                    </ul>
+                </div>
+                <div><input type="file" name="pikachu-file" id="pikachu-file" class="" /></div>
+                <br />
+                <div>Integrate your thinking and <b>briefly</b> explain</div>
+                <textarea class="explanation-entry"></textarea>
+            </div>
+            <button class="small-button button"><b>Done</b></button>
         </div>
 
     </div>
