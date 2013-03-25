@@ -260,5 +260,18 @@ header {
     font-size: 20px;
     margin-top: 15px;
     width: 454px;
-    height: 300px;
+    height: 215px;
+}
+
+#explanation-response .body-container-large {
+    height: 680px;
+    overflow-y: auto;
+}
+
+#explanation-response .explanation-response-list {
+    list-style: none;
+}
+
+#explanation-response label {
+    font-weight: normal;
 }
