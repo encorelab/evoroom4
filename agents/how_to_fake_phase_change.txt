@@ -1,5 +1,7 @@
 p = new EvoRoom.Model.Phase({'_id': '51422225c03c1e6752000000'});
-p.fetch()
+
+p = new EvoRoom.Model.Phase({'_id': '5150a30a72d13666a9000000'});
+p.fetch();
 p.wake(Sail.app.config.wakeful.url);
-p.set('phase_name', 'rotation 1');
+p.set('phase_number', 1);
 p.save();

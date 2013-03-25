@@ -27,6 +27,11 @@ module.exports = function(grunt) {
         },
         src: ['css/*.css']
       }
+    },
+    jsonlint: {
+      dev: {
+        src: [ 'assets/**/*.json' ]
+      }
     }
   });
 
@@ -35,12 +40,13 @@ module.exports = function(grunt) {
   // grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib');
   grunt.loadNpmTasks('grunt-contrib-csslint');
+  grunt.loadNpmTasks('grunt-jsonlint');
   // grunt.loadNpmTasks('grunt-coffeelint');
   // grunt.loadNpmTasks('grunt-coffee');
 
   // Default task(s).
   // grunt.registerTask('default', ['uglify']);
-  grunt.registerTask('default', ['jshint', 'csslint']);
+  grunt.registerTask('default', ['jshint', 'csslint', 'jsonlint']);
   
 
 };
