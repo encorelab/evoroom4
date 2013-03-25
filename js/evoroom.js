@@ -747,16 +747,38 @@ EvoRoom.Mobile = function() {
     });
 
     jQuery('#information-lookup-overview .small-button').click(function() {
+      // START HERE
+      if (app.phase.get('phase_number') === 2) {
+        if (app.group.get('meetup_location_1') === "200 mya") {
+          jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
+          jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
+        } else if (app.group.get('meetup_location_1') === "150 mya") {
+          
+        } else if (app.group.get('meetup_location_1') === "100 mya") {
+          
+        } 
+      } else if (app.phase.get('phase_number') === 4) {
+        if (app.group.get('meetup_location_2') === "25 mya") {
+          
+        } else if (app.group.get('meetup_location_2') === "10 mya") {
+          
+        } else if (app.group.get('meetup_location_2') === "5 mya") {
+          
+        } 
+      } else {
+        console.error('phase_number does not sync up with information-lookup-overview');
+      }
       app.hidePageElements();
       jQuery('#meetup-instructions').show();
     });
     jQuery('#information-lookup-overview .time-period-image').click(function() {
       app.hidePageElements();
+
       jQuery('#information-lookup-year').show();
       jQuery('#information-lookup-container').show();
 
       // START HERE
-      var time = '200mya';
+      var time = '2mya';
       app.showTimePeriodLandscape(time);
     });
 
@@ -812,7 +834,6 @@ EvoRoom.Mobile = function() {
   };
 
 
-
   /************** Helper functions **************/
 
   app.showTimePeriodLandscape = function(time) {
@@ -845,7 +866,7 @@ EvoRoom.Mobile = function() {
 
         jQuery('#clickable-organism-container').append(cont);
       });
-      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>')
+      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>');
     });
     
   };
