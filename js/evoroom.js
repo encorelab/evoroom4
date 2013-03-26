@@ -948,10 +948,10 @@ EvoRoom.Mobile = function() {
 
     ////////////////////////// EXPLANATION ////////////////////////////
     // fake entrance
-    jQuery('#fake-explanation').click( function() {
-      app.hidePageElements();
-      jQuery('#explanation-instructions').show();
-    });
+    // jQuery('#fake-explanation').click( function() {
+    //   app.hidePageElements();
+    //   jQuery('#explanation-instructions').show();
+    // });
 
     jQuery('#explanation-instructions button').click( function() {
       app.hidePageElements();
