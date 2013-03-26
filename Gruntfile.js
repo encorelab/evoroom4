@@ -23,7 +23,10 @@ module.exports = function(grunt) {
           'ids': false,
           'important': false,
           'shorthand': false,
-          'universal-selector': false
+          'universal-selector': false,
+          'fallback-colors': false,
+          'compatible-vendor-prefixes': false,
+          'adjoining-classes': false
         },
         src: ['css/*.css']
       }

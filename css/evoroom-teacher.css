@@ -104,7 +104,6 @@ header .hide {
 button {
   color: black;
   cursor: pointer;
-  border: 2px;
   display: inline-block;
   padding: 8px;
   border-radius: 8px;
