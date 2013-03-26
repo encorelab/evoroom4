@@ -520,11 +520,14 @@ EvoRoom.Mobile = function() {
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
       if (app.group.get('notes_completed').length  >= 3) {
+        jQuery('.question-button').prop('disabled', true);
         if (userPhase === "meetup_1") {
-          app.updateUserHTML();
-          jQuery('#rotation-instructions').show();
+          app.markCompleted(2);
+          // app.updateUserHTML();
+          // jQuery('#rotation-instructions').show();
         } else if (userPhase === "meetup_2") {
-          jQuery('#explanation-instructions').show();
+          app.markCompleted(4);
+          //jQuery('#explanation-instructions').show();
         } else {
           console.error('About to be very stuck - check updateGroupHTML');
         }
@@ -542,7 +545,7 @@ EvoRoom.Mobile = function() {
     jQuery('#team-name-container').text(app.user.get('group_name'));
 
     var userPhase = app.user.get('user_phase');
-    if (userPhase === "orientation" || userPhase === "rotation_1") {
+    if (userPhase === "orientation" || userPhase === "rotation_1" || userPhase === "meetup_1") {
       jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
       jQuery('.time-choice-1').text("200 mya");
       jQuery('.time-choice-2').text("150 mya");
@@ -550,27 +553,27 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-4').text("50 mya");
       jQuery('.time-period-image-1').removeAttr('id');
       jQuery('.time-period-image-2').removeAttr('id');
-    if (app.group && app.group.get('meetup_location_1') === "200 mya") {
-      jQuery('.large-year-text').text("200 mya and 150 mya");
-      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
-      jQuery('.time-period-image-1').attr('id','200mya');
-      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
-      jQuery('.time-period-image-2').attr('id','150mya');
-    } else if (app.group && app.group.get('meetup_location_1') === "150 mya") {
-      jQuery('.large-year-text').text("150 mya and 100 mya");
-      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
-      jQuery('.time-period-image-1').attr('id','150mya');
-      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
-      jQuery('.time-period-image-2').attr('id','100mya');
-    } else if (app.group && app.group.get('meetup_location_1') === "100 mya") {
-      jQuery('.large-year-text').text("100 mya and 50 mya");
-      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
-      jQuery('.time-period-image-1').attr('id','100mya');
-      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/50mya/50mya_640x320.png');
-      jQuery('.time-period-image-2').attr('id','50mya');
-    } else {
-      console.error('Unknown meetup_location_1');
-    }    
+      if (app.group && app.group.get('meetup_location_1') === "200 mya") {
+        jQuery('.large-year-text').text("200 mya and 150 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','200mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','150mya');
+      } else if (app.group && app.group.get('meetup_location_1') === "150 mya") {
+        jQuery('.large-year-text').text("150 mya and 100 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','150mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','100mya');
+      } else if (app.group && app.group.get('meetup_location_1') === "100 mya") {
+        jQuery('.large-year-text').text("100 mya and 50 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','100mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/50mya/50mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','50mya');
+      } else {
+        console.error('Unknown meetup_location_1');
+      }    
 
     } else if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
@@ -916,6 +919,7 @@ EvoRoom.Mobile = function() {
         app.group.save();
         // else gets handled by updateGroupHTML
       });
+      jQuery('#meetup-instructions').show();
     });
 
     jQuery('#information-lookup-overview .small-button').click(function() {
