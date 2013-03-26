@@ -77,9 +77,9 @@ header .hide {
   padding-left: 50px;
 }
 
-.teacher-dashboard tr.phase:nth-child(even) {
+.teacher-dashboard tr.phase:nth-child(odd) {
   background-color: black;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(255,255,255,0.1);
 }
 
 .teacher-dashboard tr.phase > th {
@@ -100,7 +100,7 @@ header .hide {
 
 .teacher-dashboard tr.phase > .buttons {
   line-height: 50px;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
 }
 
 .teacher-dashboard tr.phase > .students {
@@ -128,12 +128,38 @@ button:active {
 }
 
 .teacher-button-done {
-  background-color: rgb(64, 179, 79);
-  opacity: 0.5;
+  /*background-color: rgb(64, 179, 79);
+  opacity: 0.5;*/
+
+  display: none;
+}
+
+tr.done button {
+  display: none;
+}
+
+tr.current button {
+  display: none;
+}
+
+tr.current.phase-explanation button {
+  display: block;
+}
+
+.objective {
+  display: none;
+}
+
+tr.done .objective {
+  display: block;
+}
+
+tr.current .objective {
+  display: block;
 }
 
 tr.current .teacher-button-done {
-  opacity: 1.0;
+  /*opacity: 1.0;*/
 }
 
 .teacher-button-primed {
@@ -152,6 +178,11 @@ tr.phase th {
 
 tr.phase.current {
   background-color: rgba(255,255,200,0.4) !important;
+}
+
+
+tr.phase.done th {
+  opacity: 0.3; 
 }
 
 tr.phase.current th {
@@ -175,7 +206,7 @@ tr.phase.current th {
   background: gray;
   border-radius: 4px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px;
   margin-right: 5px;
   cursor: pointer;
@@ -184,6 +215,29 @@ tr.phase.current th {
 
 .student.ready:before {
   content: "✓ ";
+}
+
+.phase .objective {
+  text-align: center;
+  color: #999;
+  line-height: 12px;
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+  border-radius: 10px;
+  margin-right: 48px;
+  max-width: 220px;
+  opacity: 0.25;
+}
+
+.current.phase .objective {
+  opacity: 1.0;
+}
+
+.phase .objective .count {
+  color: white;
+  display: block;
+  font-size: 200%;
+  line-height: 100%;
 }
 
 .team-Darwin   { background-color: #001BDB; }
