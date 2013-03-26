@@ -608,7 +608,7 @@ EvoRoom.Mobile = function() {
     }
 
     // user_phase is complete, but not general phase
-    if ( (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) || (userPhase === "rotation_2") ) {
+    if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
