@@ -281,7 +281,7 @@ header {
 
 #information-lookup-container {
     position: absolute;
-    top: 420px;
+    top: 395px;
 }
 
 #clickable-rainforest-image {
@@ -294,9 +294,11 @@ header {
 
 #lookup-text {
     position: absolute;
+    overflow-y: scroll;
     top: 410px;
     left: 180px;
     width: 445px;
+    height: 170px;
 }
 
 /* 200 mya */
@@ -313,14 +315,175 @@ header {
 #organism-leaf {
     position: absolute;
     top: 110px;
-    left: 120px;    
+    left: 120px;
 }
 #organism-tree1 {
     position: absolute;
-    left: -45px;    
+    left: -45px;
 }
 #organism-tree2 {
     position: absolute;
-    left: 692px;    
+    left: 692px;
 }
 
+/* 150 mya */
+#organism-conifer {
+    position: absolute;
+    top: 95px;
+    left: 338px;
+}
+#organism-crusafonta {
+    position: absolute;
+    top: 330px
+    left: 300px;
+}
+#organism-archaeopteryx {
+    position: absolute;
+    top: 222px;
+    left: 500px;
+}
+#organism-styporaphidia {
+    position: absolute;
+    top: 310px;
+    left: 50px;
+}
+
+/* 100 mya */
+#organism-tree3 {
+    position: absolute;
+    top: -19px;
+    left: 38px;
+}
+#organism-tree4 {
+    position: absolute;
+    top: 170px;
+    left: 355px;
+}
+#organism-pterosaurs {
+    position: absolute;
+    top: 50px;
+    left: 276px;
+}
+#organism-williamsonia {
+    position: absolute;
+    top: 27px;
+    left: 423px;
+}
+#organism-fig_tree {
+    position: absolute;
+    top: -19px;
+    left: 568px;
+}
+#organism-wasp {
+    position: absolute;
+    top: 191px;
+    left: 75px;
+}
+
+/* 50 mya */
+#organism-tree5 {
+    position: absolute;
+    top: -13px;
+    left: 82px;
+}
+#organism-tree6 {
+    position: absolute;
+    top: -131px;
+    left: 673px;
+}
+#organism-heptodon {
+    position: absolute;
+    top: 273px;
+    left: 527px;
+}
+#organism-grass {
+    position: absolute;
+    top: 330px;
+    left: 152px;
+}
+#organism-purgatorius {
+    position: absolute;
+    top: 350px;
+    left: 710px;
+}
+#organism-miacids {
+    position: absolute;
+    top: 300px
+    left: 280px;
+}
+
+/* 25mya */
+#organism-tree7 {
+    position: absolute;
+    top: -9px;
+    left: 285px;
+}
+#organism-tree8 {
+    position: absolute;
+    top: -64px;
+    left: 208px;
+}
+#organism-mountain {
+    position: absolute;
+    top: 149px;
+    left: -46px;
+}
+#organism-asiavorator {
+    position: absolute;
+    top: 350px;
+    left: 500px;
+}
+#organism-grass {
+    position: absolute;
+    top: 330px;
+    left: 152px;
+}
+#organism-felidae {
+    position: absolute;
+    top: 300px;
+    left: 600px;
+}
+#organism-old_world_monkey {
+    position: absolute;
+    top: 50px;
+    left: 618px;
+}
+
+/* 10mya */
+#organism-tree9 {
+    position: absolute;
+    top: -70px;
+    left: 122px;
+}
+#organism-bucerotidae {
+    position: absolute;
+    top: 27px;
+    left: 342px;
+}
+#organism-tree4 {
+    position: absolute;
+    top: 170px;
+    left: 355px;
+}
+#organism-old_world_porcupine {
+    position: absolute;
+    top: 340px;
+    left: 631px;
+}
+#organism-dryopithecus {
+    position: absolute;
+    top: 250px;
+    left: 485px;
+}
+
+/* 2mya */
+#organism-tree10 {
+    position: absolute;
+    top: -64px;
+    left: 535px;
+}
+#organism-pond {
+    position: absolute;
+    top: 350px;
+    left: 200px;
+}
