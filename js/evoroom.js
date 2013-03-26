@@ -440,10 +440,8 @@ EvoRoom.Mobile = function() {
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions-2 .small-button').show();
     } else if (phase === 2) { // meetup 1
-      // might be a very bad idea to put these shows here
-      // app.hidePageElements();
-      // jQuery('#rotation-complete').show();
-      // jQuery('#rotation-complete .small-button').show();
+      app.user.setPhaseData('role','');
+
       jQuery('#rotation-complete .small-button').show();
 
       jQuery('.time-period-image-1').removeAttr('id');
