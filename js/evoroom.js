@@ -453,22 +453,23 @@ EvoRoom.Mobile = function() {
         jQuery('#rotation-complete .small-button').show();
       });
 
+      // rehide the part/guide Next buttons for agent
+      jQuery('#participant-instructions .small-button').hide();
+      jQuery('#guide-instructions-2 .small-button').hide();      
+
     } else if (phase === 3) { // rotation 2
-      // reenable buttons
+      // reenable question buttons
       jQuery('.question-button').prop('disabled', false);
       app.group.set('notes_completed', [], {silent: true});
       app.group.save(null, {silent: true});
 
-      app.hidePageElements();
-      app.user.set('user_phase',"rotation_2");
-
       app.user.on('change:phase_data',function() {
         if (app.user.get('phase_data').assigned_organisms.length > 0) {
+          app.user.set('user_phase','rotation_2');
           jQuery('#participant-instructions .small-button').show();
           jQuery('#guide-instructions-2 .small-button').show();        
         }
       });
-
       app.user.save().done(function() {
         jQuery('#rotation-instructions').show();
       });
