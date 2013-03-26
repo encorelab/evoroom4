@@ -110,13 +110,14 @@ var reactToPhaseChange = function (phase) {
     console.log(users_with_assigned_organisms);
 
     // write organisms array into users
-    _.each(users.models, function (user) {
+    users.each(function (user) {
       var username = user.get('username');
       var phase_data = user.get('phase_data');
       var assigned_organisms = users_with_assigned_organisms[username];
       if (assigned_organisms) {
         phase_data.assigned_organisms = assigned_organisms;
         user.set('phase_data', phase_data);
+        user.wake(config.wakeful.url);
         user.save();
       }
     });
