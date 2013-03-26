@@ -78,12 +78,17 @@ window.EvoRoom.Teacher = function () {
       app.phase.wake(app.config.wakeful.url);
 
       app.users = new EvoRoom.Model.Users();
-      app.users.on('change', app.userChanged);
+      app.users.on('change add', app.userChanged);
       app.users.on('reset', function(users) { users.each(app.userChanged); });
       app.users.wake(app.config.wakeful.url);
       app.users.fetch().done(function () {
         app.phaseChanged(app.phase);
       });
+
+      app.explanations = new EvoRoom.Model.Explanations();
+      app.explanations.on('change add', app.explanationChanged);
+      app.explanations.on('reset', function(explanations) { explanations.each(app.explanationChanged); });
+      app.users.fetch();
     });
   };
   
@@ -155,6 +160,10 @@ window.EvoRoom.Teacher = function () {
     });
   };
 
+  app.lookupUserByUsername = function (username) {
+    return app.users.find(function (u) { return u.get('username') === username; });
+  };
+
   // find or create element in parent matching the selector;
   // if element doesn't exist in parent, create it with the given html
   function foc(parent, selector, html) {
@@ -204,29 +213,51 @@ window.EvoRoom.Teacher = function () {
     app.users.each(function (u) {
       app.userChanged(u);
     });
+
+    app.updateOpenInquiryButton();
+  };
+
+  app.studentMarker = function (username) {
+    var marker = jQuery('#'+username);
+    if (marker.length === 0) {
+      marker = jQuery("<span class='student' id='"+username+"'>"+username+"</span>");
+    }
+    return marker;
   };
 
   app.userChanged = function (user) {
     var username = user.get('username');
     var phaseName = user.get('user_phase') || app.phase.get('phase_name');
-    var marker = jQuery('#'+username);
+    var marker = app.studentMarker(username);
 
     var phaseDef = app.lookupPhaseDefinitionByName(phaseName);
     
-    if (marker.length === 0) {
-      marker = jQuery("<span class='student' id='"+username+"'>"+username+"</span>");
-      marker.addClass('team-'+user.get('group_name'));
-    }
+    marker.addClass('team-'+user.get('group_name'));
 
     jQuery('tr.phase-'+phaseDef.number+' .students').append(marker);
 
-    if (_.max(user.get('phases_completed')) >= app.phase.get('phase_number')) {
+    var readyToMoveOn = user.maxPhaseCompleted() >= app.phase.get('phase_number') ||
+        (app.phase.get('phase_name') === 'explanation' && user.isTimePeriodCompleted(app.phase.get('time')));
+
+    if (readyToMoveOn) {
       marker.addClass('ready');
     } else {
       marker.removeClass('ready');
     }
 
     app.updatePhaseReady();
+  };
+
+  app.explanationChanged = function (exp) {
+    if (exp.get('published') && exp.get('time_period') === app.phase.get('time')) {
+      var time = exp.get('time_period');
+      var user = app.lookupUserByUsername(exp.get('username'));
+      var timesCompleted = user.get('time_periods_completed') || [];
+      if (!_.contains(timesCompleted, time)) {
+        timesCompleted.push(time);
+        user.save({time_periods_completed: timesCompleted});
+      }
+    }
   };
 
   app.updatePhaseReady = function () {
@@ -240,11 +271,23 @@ window.EvoRoom.Teacher = function () {
         .addClass('teacher-button-primed ready');
     }
 
-    if (app.users.all(function (u) {return _.contains(u.get('phases_completed'), 1); })) {
-      jQuery('.phase-rotation_1 button.start-phase')
+    if (app.users.all(function (u) { return u.maxPhaseCompleted() >= app.phase.get('phase_number'); })) {
+      jQuery('.phase-'+(app.phase.get('phase_number')+1)+' button.start-phase')
         .removeClass('teacher-button-faded')
         .removeClass('teacher-button-done')
         .addClass('teacher-button-primed ready');
+    }
+  };
+
+  app.updateOpenInquiryButton = function () {
+    var explanationPhase = app.lookupPhaseDefinitionByName('explanation');
+    var i = _.indexOf(explanationPhase.time_periods, app.phase.get('time'));
+    
+    if (explanationPhase.time_periods[i + 1]) {
+      jQuery('tr.phase-explanation button.start-phase')
+        .text("Start "+explanationPhase.time_periods[i + 1]+" »");
+    } else {
+      jQuery('tr.phase-explanation button.start-phase').hide();
     }
   };
   
@@ -255,10 +298,32 @@ window.EvoRoom.Teacher = function () {
 
       var pd = app.lookupPhaseDefinitionByName(phaseName);
 
+      var newTime;
+      if (phaseName == 'explanation') {
+        var explanationPhase = app.lookupPhaseDefinitionByName('explanation');
+        var currTime = app.phase.get('time');
+        var i;
+        var newTime;
+        if (!currTime) {
+          newTime = explanationPhase.time_periods[0];
+          i = 0;
+        } else {
+          i = _.indexOf(explanationPhase.time_periods, currTime);
+
+          if (i < explanationPhase.time_periods.length - 1)
+            newTime = explanationPhase.time_periods[i + 1];
+        }
+      }
+
       app.phase.save({
+        time: newTime, 
         phase_name: pd.name,
         phase_number: pd.number
       });
+    });
+
+    jQuery('tr.phase-explanation button.start-phase').click(function (ev) {
+      
     });
   };
 };
