@@ -430,11 +430,11 @@ EvoRoom.Mobile = function() {
       app.markCompleted(4);
     }    
 
-    if (phase === 0) {
+    if (phase === 0) { // orientation
 
-    } else if (phase === 1) {
+    } else if (phase === 1) { // rotation 1
 
-    } else if (phase === 2) {
+    } else if (phase === 2) { // meetup 1
       // might be a very bad idea to put these shows here
       // app.hidePageElements();
       // jQuery('#rotation-complete').show();
@@ -465,14 +465,14 @@ EvoRoom.Mobile = function() {
         console.error('Unknown meetup_location_1');
       }
 
-    } else if (phase === 3) {
+    } else if (phase === 3) { // rotation 2
       app.group.set('notes_completed', 0, {silent: true});
       app.group.save(null, {silent: true});
 
-    } else if (phase === 4) {
+    } else if (phase === 4) { // meetup 2
       jQuery('.time-period-image-1').removeAttr('id');
       jQuery('.time-period-image-2').removeAttr('id');
-      if (app.group.get('meetup_location_2') === "25 mya") {
+      if (app.group.get('meetup_location_2') === "25 mya") {      
         jQuery('.large-year-text').text("25 mya and 10 mya");
         jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/25mya/25mya_640x320.png');
         jQuery('.time-period-image-1').attr('id','25mya');
@@ -494,7 +494,7 @@ EvoRoom.Mobile = function() {
         console.error('Unknown meetup_location_2');
       }
 
-    } else if (phase === 5) {
+    } else if (phase === 5) { // explanation
       jQuery('#explanation-instructions .small-button').show();
       // explanation stuff goes here
       
@@ -1179,6 +1179,9 @@ EvoRoom.Mobile = function() {
     var justification = jQuery('.explanation-entry').val();
     app.explanation.set('justification', justification);
 
+    var time_period = jQuery('#explanation-response .time-periods-text').text();
+    app.explanation.set('time_period', time_period);
+
     app.explanation.set('published', true);
     app.explanation.save();
     
@@ -1218,7 +1221,8 @@ EvoRoom.Mobile = function() {
         var pikachuUrl = app.config.pikachu.url + "/" + pikachuFile;
         var fileObj = {file: pikachuFile, url:pikachuUrl};
         app.explanation.set(explanation_key, fileObj);
-        app.explanation.save();
+
+        app.saveExplanationResponse();
 
         // show toast that upload was successfull
         jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");

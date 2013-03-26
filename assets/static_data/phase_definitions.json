@@ -4,5 +4,15 @@
     {"number": 2, "name": "meetup_1", "title": "Meetup I"},
     {"number": 3, "name": "rotation_2", "title": "Rotation II"},
     {"number": 4, "name": "meetup_2", "title": "Meetup II"},
-    {"number": 5, "name": "explanation", "title": "Open Inquiry"}
+    {"number": 5, "name": "explanation", "title": "Open Inquiry",
+        "time_periods": [
+            "200 and 150 mya" ,
+            "150 and 100 mya" ,
+            "100 and 50 mya" ,
+            "50 and 25 mya" ,
+            "25 and 10 mya" ,
+            "10 and 5 mya" ,
+            "5 and 2 mya" ,
+            "2 mya and present"
+        ]}
 ]
