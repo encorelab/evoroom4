@@ -9,7 +9,7 @@
         "url": "http://badger.encorelab.org:7777/faye"
     },
     "pikachu": {
-        "url": "http://pikachu.badger.encorelab.org/"
+        "url": "http://pikachu.badger.encorelab.org"
     },
     "curnit": "EvoRoom-4-March-2013"
 }

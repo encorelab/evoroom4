@@ -91,8 +91,12 @@ EvoRoom.Model = (function() {
       }
     });
     model.Users = model.db.Collection('users').extend({
-      model: model.User
-      /* define any collection methods here */
+      model: model.User,
+      allObservationsCompleted: function(phaseNum) {
+        return this.all(function(u) {
+          return (u.get('phase_data').role === "participant" && _.contains(u.get('phases_completed'), phaseNum)) || u.get('phase_data').role === "guide";
+        });
+      }
     });
 
     model.Phase = model.db.Document('phases').extend({
