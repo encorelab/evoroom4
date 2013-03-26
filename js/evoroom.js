@@ -446,6 +446,7 @@ EvoRoom.Mobile = function() {
     } else if (phase === 2) { // meetup 1
       app.user.setPhaseData('role','');
 
+      jQuery('#rotation-complete').show();                 // FOR EXTRA TEACHER OVERRIDE (GUIDE ISSUES?) - also 4
       jQuery('#rotation-complete .small-button').show();
 
     } else if (phase === 3) { // rotation 2
@@ -461,7 +462,8 @@ EvoRoom.Mobile = function() {
       jQuery('#guide-instructions-2 .small-button').show();
 
     } else if (phase === 4) { // meetup 2
-
+      jQuery('#rotation-complete').show();
+      jQuery('#rotation-complete .small-button').show();
 
     } else if (phase === 5) { // explanation
       app.user.set('user_phase',"explanation");
