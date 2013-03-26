@@ -1142,6 +1142,9 @@ EvoRoom.Mobile = function() {
     var justification = jQuery('.explanation-entry').val();
     app.explanation.set('justification', justification);
 
+    var time_period = jQuery('#explanation-response .time-periods-text').text();
+    app.explanation.set('time_period', time_period);
+
     app.explanation.set('published', true);
     app.explanation.save();
     
@@ -1181,7 +1184,8 @@ EvoRoom.Mobile = function() {
         var pikachuUrl = app.config.pikachu.url + "/" + pikachuFile;
         var fileObj = {file: pikachuFile, url:pikachuUrl};
         app.explanation.set(explanation_key, fileObj);
-        app.explanation.save();
+
+        app.saveExplanationResponse();
 
         // show toast that upload was successfull
         jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");
