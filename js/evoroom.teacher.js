@@ -74,6 +74,7 @@ window.EvoRoom.Teacher = function () {
     var phases = EvoRoom.Model.awake.phases;
     phases.fetch().done(function () {
       app.phase = phases.first();
+      app.phase.wake(app.config.wakeful.url);
 
       if (!app.phase.has('phase_name')) {
         var phaseDef = app.lookupPhaseDefinitionByNumber(app.phase.get('phase_number'));
