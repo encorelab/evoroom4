@@ -110,8 +110,8 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
       app.observations.on('change add reset', function () {
-        jQuery('#obs-count .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 1}).length); 
-        jQuery('#obs-count2 .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 3}).length); 
+        jQuery('#obs-count .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 1; }).length); 
+        jQuery('#obs-count2 .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 3; }).length); 
       });
       app.observations.fetch();
 
