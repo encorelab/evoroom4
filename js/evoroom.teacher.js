@@ -94,7 +94,9 @@ window.EvoRoom.Teacher = function () {
       app.explanations = new EvoRoom.Model.Explanations();
       app.explanations.wake(app.config.wakeful.url);
       app.explanations.on('change add', app.explanationChanged);
-      app.explanations.on('reset', function(explanations) { explanations.each(app.explanationChanged); });
+      app.explanations.on('reset', function(explanations) { 
+        explanations.each(app.explanationChanged); 
+      });
       app.users.fetch();
 
       app.observations = new EvoRoom.Model.Observations();
@@ -103,7 +105,8 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
       app.observations.on('change add reset', function () {
-        jQuery('#obs-count .count').text(app.observations.length); 
+          jQuery('#obs-count .count').text(app.observations.length); 
+          jQuery('#obs-count2 .count').text(app.observations.length); 
       });
       app.observations.fetch();
 
@@ -113,7 +116,8 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(no.get('username'))); 
       });
       app.notes.on('change add reset', function () {
-        jQuery('#notes-count .count').text(app.notes.length); 
+        var publishedCount = app.notes.filter(function (n) { return n.get('published')}).length;
+        jQuery('#notes-count .count').text(publishedCount); 
       });
       app.notes.fetch();
     });
@@ -224,33 +228,54 @@ window.EvoRoom.Teacher = function () {
   app.phaseChanged = function(phase) {
     app.updateProgressbar();
 
-    jQuery('tr.phase')
-      .removeClass('teacher-button-done');
+    var cpDef = app.lookupPhaseDefinitionByName(phase.get('phase_name'));
+    
+    jQuery('tr.phase').each(function () {
+      var pTr = jQuery(this);
+      var pDef = app.lookupPhaseDefinitionByName(pTr.data('phase'));
+      
+      if (pDef.number < cpDef.number) {
+        pTr
+          .removeClass('current')
+          .addClass('done');
 
-    jQuery('tr.phase-'+phase.get('phase_number')+' button.start-phase')
-      .removeClass('teacher-phase-primed ready')
-      .removeClass('teacher-button-faded')
-      .addClass('teacher-button-done');
+      } else if (pDef.number > cpDef.number) {
+        pTr
+          .removeClass('current done');
 
-    jQuery('tr.phase')
-      .removeClass('current');
-    jQuery('tr.phase-'+phase.get('phase_number'))
-      .addClass('current');
+      } else {
+        pTr
+          .removeClass('done')
+          .addClass('current');
+      }
+
+    });
+    
+    
+
+    
 
     app.users.each(function (u) {
       app.updateStudentMarkerForUser(u);
     });
 
-    jQuery('tr.phase').each(function () {
-      var tr = jQuery(this);
-      var trPhaseDef = app.lookupPhaseDefinitionByName(tr.data('phase'));
-      if (trPhaseDef.number <= app.phase.get('phase_number')) {
-        tr.find('.buttons button').addClass('teacher-button-done');
-        tr.find('.buttons .objective').show();
-      } else {
-        tr.find('.buttons .objective').hide();
-      }
-    });
+    // jQuery('tr.phase').each(function () {
+    //   var tr = jQuery(this);
+    //   var trPhaseDef = app.lookupPhaseDefinitionByName(tr.data('phase'));
+    //   if (trPhaseDef.number <= app.phase.get('phase_number')) {
+    //     tr.find('.buttons .objective').show();
+
+    //     if (trPhaseDef.name !== 'explanation') {
+    //       tr.find('.buttons button').addClass('teacher-button-done');
+    //     }
+
+    //     if (trPhaseDef.number < app.phase.get('phase_number')) {
+    //       tr.addClass('done');
+    //     }
+    //   } else {
+    //     tr.find('.buttons .objective').hide();
+    //   }
+    // });
 
     app.updateOpenInquiryButton();
     app.updatePhaseReady();
@@ -263,6 +288,10 @@ window.EvoRoom.Teacher = function () {
     }
     return marker;
   };
+
+  app.flashStudentMarker = function (username) {
+
+  }
 
   app.updateStudentMarkerForUser = function (user) {
     var username = user.get('username');
@@ -363,10 +392,6 @@ window.EvoRoom.Teacher = function () {
         phase_name: pd.name,
         phase_number: pd.number
       });
-    });
-
-    jQuery('tr.phase-explanation button.start-phase').click(function (ev) {
-      
     });
   };
 };
