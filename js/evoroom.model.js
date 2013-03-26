@@ -88,6 +88,15 @@ EvoRoom.Model = (function() {
         var pd = _.clone(this.get('phase_data'));
         pd[phaseKey] = value;
         this.set('phase_data', pd);
+      },
+      maxPhaseCompleted: function () {
+        return _.max(this.get('phases_completed'));
+      },
+      isPhaseCompleted: function (phaseNum) {
+        return _.contains(this.get('phases_completed'), phaseNum);
+      },
+      isTimePeriodCompleted: function (timePeriod) {
+        return _.contains(this.get('time_periods_completed'), timePeriod);
       }
     });
     model.Users = model.db.Collection('users').extend({
