@@ -402,16 +402,16 @@ EvoRoom.Mobile = function() {
     phase = parseInt(phase, 10);
     jQuery('#phase-number-container').text(phase);
 
-    if (phase === 0) {
+    if (phase === 0) { // orientation
       jQuery('.time-periods-text').text("200, 150, 100, and 50 mya");
       jQuery('.time-choice-1').text("200 mya");
       jQuery('.time-choice-2').text("150 mya");
       jQuery('.time-choice-3').text("100 mya");
       jQuery('.time-choice-4').text("50 mya");
 
-    } else if (phase === 1) {
+    } else if (phase === 1) { // rotation 1
 
-    } else if (phase === 2) {
+    } else if (phase === 2) { // meetup 1
       // might be a very bad idea to put these shows here
       // app.hidePageElements();
       // jQuery('#rotation-complete').show();
@@ -439,12 +439,12 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
 
-    } else if (phase === 3) {
+    } else if (phase === 3) { // rotation 2
       app.group.set('notes_completed_meetup_1', 0, {silent: true});
       app.group.save(null, {silent: true});
 
 
-    } else if (phase === 4) {
+    } else if (phase === 4) { // meetup 2
       if (app.group.get('meetup_location_2') === "25 mya") {
         jQuery('.large-year-text').text("25 mya and 10 mya");
         jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/25mya/25mya_640x320.png');
@@ -462,7 +462,7 @@ EvoRoom.Mobile = function() {
       }
 
 
-    } else if (phase === 5) {
+    } else if (phase === 5) { // explanation
       jQuery('#explanation-instructions .small-button').show();
       // explanation stuff goes here
       
