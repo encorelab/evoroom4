@@ -301,7 +301,20 @@
                 <div><b>Organism: </b><span class="assigned-organism-text dynamic-text">some organism</span></div>
                 <div><b>Instructions: </b>For your organism, what evolutionary forces do you think are at play between <span class="time-periods-text dynamic-text"></span>
                 </div>
-                
+                <br />
+                <div><b>Steps:</b>
+                    <ol>
+                        <li>Review cladogram
+                            <img class="picture-capture cladogram-picture" src="../assets/images/take_source_photo.png"/>
+                        </li>
+                        <li>Review rainforest
+                            <img class="picture-capture rainforest-picture" src="../assets/images/take_source_photo.png"/>
+                        </li>
+                        <li>Review additional information
+                            <img class="picture-capture additional-picture" src="../assets/images/take_source_photo.png"/>
+                        </li>
+                    </ol>
+                </div>
                 <div>
                     <ul class="explanation-response-list">
                         <li>
@@ -342,7 +355,11 @@
                         </li>
                     </ul>
                 </div>
-                <div><input type="file" name="pikachu-file" id="pikachu-file" class="" /></div>
+                <div>
+                    <input type="file" name="pikachu-file" id="cladogram-picture" style="display:none" />
+                    <input type="file" name="pikachu-file" id="rainforest-picture" style="display:none" />
+                    <input type="file" name="pikachu-file" id="additional-picture" style="display:none" />
+                </div>
                 <br />
                 <div>Integrate your thinking and <b>briefly</b> explain</div>
                 <textarea class="explanation-entry"></textarea>

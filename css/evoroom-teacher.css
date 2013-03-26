@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 body {
   background-color: #12120C;
   background-image: url('/assets/images/bkgd_horizontal.png');
@@ -102,14 +104,15 @@ header .hide {
 button {
   color: black;
   cursor: pointer;
-  border: 2px;
   display: inline-block;
   padding: 8px;
   border-radius: 8px;
   font-size: 19px;
   -webkit-transition: box-shadow 2s;
   border: 2px solid rgba(0, 0, 0, 0.5);
-  background-color: rgb(64, 179, 79)
+  background-color: rgb(64, 179, 79);
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 button:active {
@@ -126,7 +129,6 @@ tr.current .teacher-button-done {
 }
 
 .teacher-button-primed {
-  box-shadow: #ff4 0px 0px 9px 4px;
   color: #ff4;
   border: 2px solid #ff4;
 }
@@ -136,12 +138,28 @@ tr.current .teacher-button-done {
   background-color: #eee;
 }
 
+tr.phase th {
+  border-left: 7px solid rgba(0,0,0,0.7);
+}
+
 tr.phase.current {
   background-color: rgba(255,255,200,0.4) !important;
 }
 
 tr.phase.current th {
   color: black !important;
+  border-left: 7px solid #ff4;
+}
+
+.ready {
+  border: 1px solid #ff4;
+  box-shadow: #ff4 0 0 9px 1px;
+  color: #ff4 !important;
+
+  -webkit-animation-name: pulseFade;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-out;
 }
 
 .student {
@@ -156,12 +174,35 @@ tr.phase.current th {
   margin-bottom: 8px;
 }
 
-.team-Darwin    { background-color: blue; }
-.team-Linneaus  { background-color: purple; }
-.team-Lamarck   { background-color: red; }
-.team-Wallace   { background-color: green; }
+.student.ready:before {
+  content: "✓ ";
+}
 
-.team-Mendel    { background-color: blue; }
-.team-Lyell     { background-color: purple; }
-.team-Huxley    { background-color: red; }
-.team-Mathus    { background-color: green; }
+.team-Darwin   { background-color: #001BDB; }
+.team-Dawkins  { background-color: #6B00FF; }
+.team-Hook     { background-color: #009EF2; }
+.team-Hutton   { background-color: #0BDBB2; }
+
+.team-Lamarck  { background-color: #00F339; }
+.team-Linneaus { background-color: #3CFF00; }
+.team-Lyell    { background-color: #CDDB00; }
+.team-Malthus  { background-color: #F2C500; }
+
+.team-Mayr     { background-color: #DB8A0B; }
+.team-Wallace  { background-color: #F35000; }
+.team-Wilson   { background-color: #FF0008; }
+.team-Wright   { background-color: #D600DB; }
+
+@-webkit-keyframes pulseFade {
+  0% {
+    box-shadow: #ff4 0 0 9px 1px; 
+  }
+
+  50% {
+    box-shadow: #ff4 0 0 0 1px; 
+  }
+
+  100% {
+    box-shadow: #ff4 0 0 9px 1px; 
+  } 
+}

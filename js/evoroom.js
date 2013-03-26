@@ -833,7 +833,7 @@ EvoRoom.Mobile = function() {
       jQuery('#explanation-organism-assigned').show();
     });
 
-    jQuery('#explanation-organism-assigned button').click( function() {
+    jQuery('#explanation-organism-assigned button').click(function() {
       app.hidePageElements();
       // create new Explanation or use unpublished one
       // explanation
@@ -843,16 +843,29 @@ EvoRoom.Mobile = function() {
       });
     });
 
-    jQuery('#explanation-response .small-button').click( function() {
+    jQuery('#explanation-response .small-button').click(function() {
       if (!app.explanation.get('pikachu_file')) {
         alert('Please include at least one source photo.');
       } else if (jQuery('.explanation-entry').val() === "") {
         alert('Please explain your thinking. Point form notes are sufficient');
       } else {
         app.saveExplanationResponse();
+        app.clearExplanationResponse();
         app.hidePageElements();
         jQuery('#explanation-organism-assigned').show();        
       }
+    });
+
+    jQuery('#explanation-response .cladogram-picture').click(function() {
+      app.cladogram_picture.click();
+    });
+
+    jQuery('#explanation-response .rainforest-picture').click(function() {
+      app.rainforest_picture.click();
+    });
+
+    jQuery('#explanation-response .additional-picture').click(function() {
+      app.additional_picture.click();
     });
   };
 
@@ -1095,7 +1108,10 @@ EvoRoom.Mobile = function() {
   // ======= EXPLANATION STUFF ==========
 
   app.clearExplanationResponse = function () {
-
+    jQuery('.explanation-response-list input:checkbox').removeAttr('checked');
+    jQuery('.explanation-entry').val('');
+    var file = jQuery('#pikachu-file');
+    file.val('');
   };
 
   app.saveExplanationResponse = function () {
@@ -1111,15 +1127,21 @@ EvoRoom.Mobile = function() {
   };
 
   app.initPikachu = function() {
-    var pikachuFile = jQuery('#pikachu-file');
+    app.cladogram_picture = jQuery('#cladogram-picture');
+    app.rainforest_picture = jQuery('#rainforest-picture');
+    app.additional_picture = jQuery('#additional-picture');
     // var uploadInput = jQuery('#upload');
 
-    pikachuFile.on('change', function () { 
-      if (pikachuFile.val()) {
-        //uploadInput.removeAttr('disabled');
-        jQuery('#explanation-response').attr('disabled', 'disabled'); // disable the UI during upload
-        app.uploadToPikachu(pikachuFile);
-      }
+    app.cladogram_picture.on('change', function () { 
+      app.handlePictureChangeEvent(app.cladogram_picture);
+    });
+
+    app.rainforest_picture.on('change', function () { 
+      app.handlePictureChangeEvent(app.rainforest_picture);
+    });
+
+    app.additional_picture.on('change', function () { 
+      app.handlePictureChangeEvent(app.additional_picture);
     });
 
     // uploadInput.on('click', function () {
@@ -1127,7 +1149,25 @@ EvoRoom.Mobile = function() {
     // });
   };
 
-  app.uploadToPikachu = function(fileInput) {
+  app.handlePictureChangeEvent = function(input_file) {
+    if (input_file.val()) {
+      //uploadInput.removeAttr('disabled');
+      // jQuery('#explanation-response').attr('disabled', 'disabled'); // disable the UI during upload
+      jQuery().toastmessage('showSuccessToast', "Uploading picture...");
+      console.log("Uploading picture...");
+
+      app.uploadToPikachu(input_file, function (pikachuFile) {
+        app.explanation.set('pikachu_file', pikachuFile);
+        app.explanation.save();
+
+        // show toast that upload was successfull
+        jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");
+        console.log("Uploaded file "+pikachuFile+" successfully to Pikachu");
+      });
+    }
+  };
+
+  app.uploadToPikachu = function(fileInput, successCallback) {
     var file = fileInput[0].files.item(0);
 
     var formData = new FormData();
@@ -1153,15 +1193,13 @@ EvoRoom.Mobile = function() {
       console.log(xhr.getAllResponseHeaders());
 
       var pikachuFile = data.url;
+
+      successCallback(pikachuFile);
       // var pikachu = {'pikachuPath':pikachuPath};
       // app.user.setPhaseData('explanation', pikachu);
       // app.user.save();
-      app.explanation.set('pikachu_file', pikachuFile);
-      app.explanation.save();
-
-      // show toast that upload was successfull
-      jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");
-      jQuery('#explanation-response').removeAttr('disabled'); // enable the UI
+      
+      // jQuery('#explanation-response').removeAttr('disabled'); // enable the UI
     }
   };
 
