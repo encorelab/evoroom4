@@ -63,7 +63,7 @@ EvoRoom.Model = (function() {
     model.db.collections(function(colls) {
       var existingCollections = _.pluck(colls, 'name');
       _.each(_.difference(requiredCollections, existingCollections), function (col) {
-        console.log("Creating collection '" + col + "' under " + model.dbURL);
+        console.log("Creating collection '" + col + "' under " + model.dbUrl);
         dfs.push(model.db.createCollection(col));
       });
     });
