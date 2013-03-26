@@ -105,7 +105,9 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
       app.observations.on('change add reset', function () {
+        if (app.phase.get('phase_number') <= 1)
           jQuery('#obs-count .count').text(app.observations.length); 
+        else 
           jQuery('#obs-count2 .count').text(app.observations.length); 
       });
       app.observations.fetch();
