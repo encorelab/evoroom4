@@ -237,7 +237,7 @@ EvoRoom.Mobile = function() {
           app.group.set('all_members', app.rollcallGroupMembers);
           app.group.set('meetup_location_1',app.rollcallGroupMetadata.meetup_location_1);
           app.group.set('meetup_location_2',app.rollcallGroupMetadata.meetup_location_2);
-          app.group.set('notes_completed',0);
+          app.group.set('notes_completed',[]);
         }
         var saveSuccess = function(model, response) {
           app.group.wake(Sail.app.config.wakeful.url);
@@ -471,7 +471,8 @@ EvoRoom.Mobile = function() {
       }
 
     } else if (phase === 3) { // rotation 2
-      app.group.set('notes_completed', 0, {silent: true});
+      // reenable buttons
+      app.group.set('notes_completed', [], {silent: true});
       app.group.save(null, {silent: true});
 
       jQuery('#participant-instructions .small-button').show();
@@ -528,20 +529,27 @@ EvoRoom.Mobile = function() {
 
     // MOVING TO ROTATION 2 OR EXPLANATION
     if (app.phase && (app.phase.get('phase_number') === 2 || app.phase.get('phase_number') === 4)) {
-      if (app.phase && app.group.get('notes_completed') > 2) {
+      if (app.phase && app.group.get('notes_completed').length  > 2) {
         app.hidePageElements();
         if (app.phase.get('phase_number') === 2) {
+          app.updateUserHTML();
           jQuery('#rotation-instructions').show();
         } else if (app.phase.get('phase_number') === 4) {
           jQuery('#explanation-instructions').show();
         } else {
           console.error('About to be very stuck - check updateGroupHTML');
         }
-      } else if (app.phase && app.group.get('notes_completed') < 3) {
+      } else if (app.phase && app.group.get('notes_completed').length < 3) {
         jQuery('#meetup-instructions').show();
       }      
     }
-
+    var notesCompleted = app.group.get('notes_completed');
+    if (notesCompleted.length < 3) {
+      _.each(Sail.app.group.get('notes_completed'), function(n) {
+        jQuery('.q'+n+'-button').prop('disabled', true);
+      });
+    }
+    
 
   };
 
@@ -557,7 +565,7 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-2').text("150 mya");
       jQuery('.time-choice-3').text("100 mya");
       jQuery('.time-choice-4').text("50 mya");
-    } else if (userPhase === "meetup_1" && app.group.get('notes_completed') > 2) {
+    } else if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
@@ -851,8 +859,17 @@ EvoRoom.Mobile = function() {
       app.hidePageElements();
 
       var notesCompleted = app.group.get('notes_completed');
-      notesCompleted++;
-      app.group.set('notes_completed',notesCompleted);
+      var currentQuestion = app.note.get('question');
+      if (currentQuestion === "Question 1") {
+        notesCompleted[0] = 1;
+        app.group.set('notes_completed',notesCompleted);
+      } else if (currentQuestion === "Question 2") {
+        notesCompleted[1] = 2;
+        app.group.set('notes_completed',notesCompleted);
+      } else if (currentQuestion === "Question 3") {
+        notesCompleted[2] = 3;
+        app.group.set('notes_completed',notesCompleted);
+      }
       app.group.save();
       // else gets handled by updateGroupHTML
     });
