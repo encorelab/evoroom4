@@ -220,7 +220,7 @@ window.EvoRoom.Teacher = function () {
 
     jQuery('tr.phase-'+phaseDef.number+' .students').append(marker);
 
-    if (_.max(user.get('phases_completed')) > app.phase.get('phase_number')) {
+    if (_.max(user.get('phases_completed')) >= app.phase.get('phase_number')) {
       marker.addClass('ready');
     } else {
       marker.removeClass('ready');
