@@ -464,10 +464,7 @@ EvoRoom.Mobile = function() {
     } else if (phase === 5) {
       jQuery('#explanation-instructions .small-button').show();
       // explanation stuff goes here
-      var explanation_id = app.user.get('phase_data').explanation_id;
-      if (explanation_id) {
-        // go back to work on explanation
-      }
+      
     } else {
       console.error('Unknown phase - this is probably really bad!');
     }
@@ -854,15 +851,24 @@ EvoRoom.Mobile = function() {
       // explanation
       app.createNewExplanation(function () {
         // some setup depending on time?
+        var time = app.phase.get('time');
+        if (time) {
+          jQuery('#explanation-response .time-periods-text').text(time);
+        } else {
+          console.warn("Time in phase is null but should be a string");
+        }
+        
         jQuery('#explanation-response').show();
       });
     });
 
     jQuery('#explanation-response .small-button').click(function() {
-      if (!app.explanation.get('pikachu_file')) {
-        alert('Please include at least one source photo.');
+      if (!app.explanation.get('cladogram_picture') && !app.explanation.get('rainforest_picture') && !app.explanation.get('additional_picture')) {
+        // alert('Please include at least one source photo.');
+        jQuery().toastmessage('showErrorToast', "Please include at least one source photo.");
       } else if (jQuery('.explanation-entry').val() === "") {
-        alert('Please explain your thinking. Point form notes are sufficient');
+        jQuery().toastmessage('showErrorToast', "Please explain your thinking. Point form notes are sufficient");
+        // alert('Please explain your thinking. Point form notes are sufficient');
       } else {
         app.saveExplanationResponse();
         app.clearExplanationResponse();
@@ -1147,15 +1153,15 @@ EvoRoom.Mobile = function() {
     // var uploadInput = jQuery('#upload');
 
     app.cladogram_picture.on('change', function () { 
-      app.handlePictureChangeEvent(app.cladogram_picture);
+      app.handlePictureChangeEvent(app.cladogram_picture, 'cladogram_picture');
     });
 
     app.rainforest_picture.on('change', function () { 
-      app.handlePictureChangeEvent(app.rainforest_picture);
+      app.handlePictureChangeEvent(app.rainforest_picture, 'rainforest_picture');
     });
 
     app.additional_picture.on('change', function () { 
-      app.handlePictureChangeEvent(app.additional_picture);
+      app.handlePictureChangeEvent(app.additional_picture, 'additional_picture');
     });
 
     // uploadInput.on('click', function () {
@@ -1163,7 +1169,7 @@ EvoRoom.Mobile = function() {
     // });
   };
 
-  app.handlePictureChangeEvent = function(input_file) {
+  app.handlePictureChangeEvent = function(input_file, explanation_key) {
     if (input_file.val()) {
       //uploadInput.removeAttr('disabled');
       // jQuery('#explanation-response').attr('disabled', 'disabled'); // disable the UI during upload
@@ -1171,7 +1177,9 @@ EvoRoom.Mobile = function() {
       console.log("Uploading picture...");
 
       app.uploadToPikachu(input_file, function (pikachuFile) {
-        app.explanation.set('pikachu_file', pikachuFile);
+        var pikachuUrl = app.config.pikachu.url + "/" + pikachuFile;
+        var fileObj = {file: pikachuFile, url:pikachuUrl};
+        app.explanation.set(explanation_key, fileObj);
         app.explanation.save();
 
         // show toast that upload was successfull
@@ -1188,7 +1196,7 @@ EvoRoom.Mobile = function() {
     formData.append('file', file);
 
     jQuery.ajax({
-        url: app.config.pikachu.url,
+        url: app.config.pikachu.url + '/',
         type: 'POST',
         success: success,
         error: failure,

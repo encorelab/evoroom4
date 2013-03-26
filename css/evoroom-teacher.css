@@ -55,6 +55,13 @@ header .hide {
 .teacher-dashboard {
   border-collapse: collapse;
   width: 100%;
+
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  border-top: 10px solid black;
 }
 
 .teacher-dashboard tr.phase > * {
@@ -76,6 +83,7 @@ header .hide {
 }
 
 .teacher-dashboard tr.phase > th {
+  height: 90px;
   color: white;
   font-weight: bold;
   width: 15ex;
