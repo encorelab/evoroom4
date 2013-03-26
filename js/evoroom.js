@@ -249,7 +249,7 @@ EvoRoom.Mobile = function() {
           console.log("No users object found for ", u, ", creating...");
           app.user = new EvoRoom.Model.User({username: u}); // create new user object
           app.user.set('user_phase','orientation');
-          app.user.set('phases_completed','[]');
+          app.user.set('phases_completed',[]);
           app.user.set('phase_data', {});
         }
         var saveSuccess = function(model, response) {
@@ -358,7 +358,6 @@ EvoRoom.Mobile = function() {
     app.observation.set('assigned_organism',app.user.get('current_organism'));
     app.observation.set('observed_organism','not chosen');
     app.observation.set('time',app.user.get('phase_data').time);
-    // app.observation.set('group_name', app.rollcallTHISAINTRIGHTObservationName);
     app.observation.wake(Sail.app.config.wakeful.url);
     app.observation.save();
   };
@@ -1114,9 +1113,9 @@ EvoRoom.Mobile = function() {
   };
 
   app.markCompleted = function(phase) {
-    var cArr = app.user.get('phases_complete');
+    var cArr = app.user.get('phases_completed');
     cArr.push(phase);
-    app.user.set('phases_complete',cArr);
+    app.user.set('phases_completed',cArr);
     app.user.save();
   };
 
