@@ -858,6 +858,13 @@ EvoRoom.Mobile = function() {
         } else {
           console.warn("Time in phase is null but should be a string");
         }
+
+        // restore data from unfinished explanation
+        if (app.explanation.get('published')) {
+          app.clearExplanationResponse();
+        } else {
+          app.restoreUnfinishedExplanation();
+        }
         
         jQuery('#explanation-response').show();
       });
@@ -871,7 +878,7 @@ EvoRoom.Mobile = function() {
         jQuery().toastmessage('showErrorToast', "Please explain your thinking. Point form notes are sufficient");
         // alert('Please explain your thinking. Point form notes are sufficient');
       } else {
-        app.saveExplanationResponse();
+        app.saveExplanationResponse(true);
         app.clearExplanationResponse();
         app.hidePageElements();
         jQuery('#explanation-organism-assigned').show();        
@@ -1135,7 +1142,7 @@ EvoRoom.Mobile = function() {
     file.val('');
   };
 
-  app.saveExplanationResponse = function () {
+  app.saveExplanationResponse = function (published) {
     var evolutionary_forces = jQuery('.explanation-response-list input:checked').map(function(){return this.value;}).get();
     app.explanation.set('evolutionary_forces', evolutionary_forces);
 
@@ -1145,9 +1152,29 @@ EvoRoom.Mobile = function() {
     var time_period = jQuery('#explanation-response .time-periods-text').text();
     app.explanation.set('time_period', time_period);
 
-    app.explanation.set('published', true);
+    app.explanation.set('assigned_organism', app.explanationOrganism);
+
+    if (published) {
+      app.explanation.set('published', true);
+    } else {
+      app.explanation.set('published', false);
+    }
     app.explanation.save();
     
+  };
+
+  app.restoreUnfinishedExplanation = function (published) {
+    var evolutionary_forces = app.explanation.get('evolutionary_forces');
+    _.each(evolutionary_forces, function(evo) {
+      var checkbox = jQuery('#'+evo);
+      checkbox.attr('checked','checked');
+    });
+
+    var justification = app.explanation.get('justification');
+    jQuery('.explanation-entry').val(justification);
+
+    var time_period = app.explanation.get('time_period');
+    jQuery('#explanation-response .time-periods-text').text(time_period);
   };
 
   app.initPikachu = function() {
@@ -1185,7 +1212,7 @@ EvoRoom.Mobile = function() {
         var fileObj = {file: pikachuFile, url:pikachuUrl};
         app.explanation.set(explanation_key, fileObj);
 
-        app.saveExplanationResponse();
+        app.saveExplanationResponse(false);
 
         // show toast that upload was successfull
         jQuery().toastmessage('showSuccessToast', "Uploaded file "+pikachuFile+" successfully to Pikachu");
