@@ -458,11 +458,6 @@ EvoRoom.Mobile = function() {
       jQuery('#guide-instructions-2 .small-button').hide();      
 
     } else if (phase === 3) { // rotation 2
-      // reenable question buttons
-      jQuery('.question-button').prop('disabled', false);
-      app.group.set('notes_completed', [], {silent: true});
-      app.group.save(null, {silent: true});
-
       app.user.on('change:phase_data',function() {
         if (app.user.get('phase_data').assigned_organisms.length > 0) {
           app.user.set('user_phase','rotation_2');
@@ -471,7 +466,11 @@ EvoRoom.Mobile = function() {
         }
       });
       app.user.save().done(function() {
-        jQuery('#rotation-instructions').show();
+        // jQuery('#rotation-instructions').show();
+        // reenable question buttons
+        // jQuery('.question-button').prop('disabled', false);
+        app.group.set('notes_completed', [], {silent: true});
+        app.group.save(null, {silent: true});          
       });
 
     } else if (phase === 4) { // meetup 2
@@ -615,6 +614,8 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
+
+      app.user.set('user_phase','rotation_2');
 
       app.hidePageElements();
       jQuery('#rotation-instructions').show();
