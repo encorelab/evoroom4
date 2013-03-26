@@ -105,10 +105,8 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
       app.observations.on('change add reset', function () {
-        if (app.phase.get('phase_number') <= 1)
-          jQuery('#obs-count .count').text(app.observations.length); 
-        else 
-          jQuery('#obs-count2 .count').text(app.observations.length); 
+        jQuery('#obs-count .count').text(app.observations.length); 
+        jQuery('#obs-count2 .count').text(app.observations.length); 
       });
       app.observations.fetch();
 
@@ -120,6 +118,7 @@ window.EvoRoom.Teacher = function () {
       app.notes.on('change add reset', function () {
         var publishedCount = app.notes.filter(function (n) { return n.get('published')}).length;
         jQuery('#notes-count .count').text(publishedCount); 
+        jQuery('#notes-count2 .count').text(publishedCount);
       });
       app.notes.fetch();
     });
