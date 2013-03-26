@@ -248,7 +248,7 @@ EvoRoom.Mobile = function() {
         } else {
           console.log("No users object found for ", u, ", creating...");
           app.user = new EvoRoom.Model.User({username: u}); // create new user object
-          app.user.set('user_phase', 'orientation');
+          app.user.set('user_phase','orientation');
           app.user.set('phases_completed','[]');
           app.user.set('phase_data', {});
         }
@@ -463,6 +463,7 @@ EvoRoom.Mobile = function() {
 
 
     } else if (phase === 5) {
+      jQuery('#explanation-instructions .small-button').show();
       // explanation stuff goes here
       var explanation_id = app.user.get('phase_data').explanation_id;
       if (explanation_id) {
@@ -516,6 +517,12 @@ EvoRoom.Mobile = function() {
     if (app.user.get('current_organism')) {
       jQuery('.assigned-organism-text').text(app.convertToHumanReadable(app.user.get('current_organism')));
       jQuery('#assigned-organism-container .organism-image').attr('src', '/assets/images/' + app.user.get('current_organism') + '_icon.png');
+    }
+
+    if (app.phase && app.users.allObservationsCompleted(app.phase.get('phase_number')) && (app.phase.get('phase_number') === 2)) {
+      app.markCompleted(2);
+    } else if (app.phase && app.users.allObservationsCompleted(app.phase.get('phase_number')) && (app.phase.get('phase_number') === 4)) {
+      app.markCompleted(4);
     }
 
     // MEETUPS
@@ -590,12 +597,12 @@ EvoRoom.Mobile = function() {
       // TODO: add me back in!
       // var ok = confirm("Do you want to choose to be a guide?");
       // if (ok) {
-        if (app.phase.get('phase_number') === 1) {
+        if (app.phase.get('phase_number') === 0) {
           app.markCompleted(0);
-        } else if (app.phase.get('phase_number') === 3) {
+        } else if (app.phase.get('phase_number') === 2) {
           app.markCompleted(2);
         } else {
-          console.error('Out of sync (623)');
+          console.error('Out of sync (599)');
         }
         app.user.setPhaseData('role', 'guide');
         app.user.save();
@@ -608,9 +615,16 @@ EvoRoom.Mobile = function() {
       // TODO: add me back in!
       // var ok = confirm("Do you want to choose to be a participant?");
       // if (ok) {
+        if (app.phase.get('phase_number') === 0) {
+          app.markCompleted(0);
+        } else if (app.phase.get('phase_number') === 2) {
+          app.markCompleted(2);
+        } else {
+          console.error('Out of sync (617)');
+        }
         app.user.setPhaseData('role', 'participant');
-        app.user.setPhaseData('time','');                 // TODO - remove me so restoreState works
-        app.user.setPhaseData('assigned_times',[]);       // TODO - remove me so restoreState works
+        app.user.setPhaseData('time','');
+        app.user.setPhaseData('assigned_times',[]);
         app.user.save();
         app.hidePageElements();
         jQuery('#participant-instructions').show();
@@ -821,6 +835,8 @@ EvoRoom.Mobile = function() {
 
     jQuery('#explanation-instructions button').click( function() {
       app.hidePageElements();
+      app.user.set('user_phase','explanation');
+      app.user.save();
       // we need to write the organism name into the HTML and make sure the picture is available
       var img = jQuery('#assigned-organism-container .organism-image'); // retrieve image container
       img.attr('src', '/assets/images/' + app.explanationOrganism + '_icon.png'); // change src to point at image associated with users explanation organism
@@ -940,14 +956,13 @@ EvoRoom.Mobile = function() {
       } else {
         console.log('Rotation complete!');
 
-        if (app.phase.get('phase_number' === 1)) {
+        if (app.phase.get('phase_number') === 1) {
           app.markCompleted(1);
-        } else if (app.phase.get('phase_number' === 3)) {
+        } else if (app.phase.get('phase_number') === 3) {
           app.markCompleted(3);
         } else {
           console.error('Out of sync (918)');
         }
-        //app.user.setPhaseData('complete',true);
         jQuery('#assigned-organism-container').hide();
         app.hidePageElements();
         jQuery('#rotation-complete').show();
@@ -1206,4 +1221,3 @@ EvoRoom.Mobile = function() {
 };
 
 EvoRoom.Mobile.prototype = new Sail.App();
-
