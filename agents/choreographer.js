@@ -137,6 +137,7 @@ EvoRoom.Model.init(config.drowsy.url, DATABASE).done(function () {
         var p = new EvoRoom.Model.Phase();
         //p.set('phase_name', "orientation");
         p.set('phase_number', 0);
+        p.set('time', null);
         p.save();
       } else {
         _.each(phases.models, function (phase) {reactToPhaseChange(phase);});
