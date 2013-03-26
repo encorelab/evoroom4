@@ -61,7 +61,7 @@ header .hide {
   left:0;
   right:0;
   bottom:0;
-  border-top: 10px solid black;
+  border-top: 5px solid black;
 }
 
 .teacher-dashboard tr.phase > * {
