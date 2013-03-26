@@ -71,7 +71,7 @@ window.EvoRoom.Teacher = function () {
   app.setupModels = function() {
     console.log('Initializing models...');
 
-    var phases = new EvoRoom.Model.Phases();
+    var phases = EvoRoom.Model.awake.phases;
     phases.fetch().done(function () {
       app.phase = phases.first();
 
@@ -86,26 +86,22 @@ window.EvoRoom.Teacher = function () {
       }
 
       app.phase.on('change', app.phaseChanged);
-      app.phase.wake(app.config.wakeful.url);
 
-      app.users = new EvoRoom.Model.Users();
+      app.users = EvoRoom.Model.awake.users;
       app.users.on('change add', app.userChanged);
       app.users.on('reset', function(users) { users.each(app.userChanged); });
-      app.users.wake(app.config.wakeful.url);
       app.users.fetch().done(function () {
         app.phaseChanged(app.phase);
       });
 
-      app.explanations = new EvoRoom.Model.Explanations();
-      app.explanations.wake(app.config.wakeful.url);
+      app.explanations = EvoRoom.Model.awake.explanations;
       app.explanations.on('change add', app.explanationChanged);
       app.explanations.on('reset', function(explanations) { 
         explanations.each(app.explanationChanged); 
       });
       app.users.fetch();
 
-      app.observations = new EvoRoom.Model.Observations();
-      app.observations.wake(app.config.wakeful.url);
+      app.observations = EvoRoom.Model.awake.observations;
       app.observations.on('change add', function (ob) {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
@@ -115,8 +111,7 @@ window.EvoRoom.Teacher = function () {
       });
       app.observations.fetch();
 
-      app.notes = new EvoRoom.Model.Notes();
-      app.notes.wake(app.config.wakeful.url);
+      app.notes = EvoRoom.Model.awake.notes;
       app.notes.on('change add', function (no) { 
         app.userChanged(app.lookupUserByUsername(no.get('username'))); 
       });
@@ -142,7 +137,9 @@ window.EvoRoom.Teacher = function () {
 
       EvoRoom.Model.init(app.config.drowsy.url, app.run.name).done(function () {
         Wakeful.loadFayeClient(app.config.wakeful.url).done(function () {
-          app.trigger('ready');
+          EvoRoom.Model.initWakefulCollections(app.config.wakeful.url).done(function () {
+            app.trigger('ready');
+          });
         });
       });
     },

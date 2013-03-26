@@ -147,7 +147,9 @@ EvoRoom.Mobile = function() {
       EvoRoom.Model.init(app.config.drowsy.url, app.run.name)
       .done(function () {
         Wakeful.loadFayeClient(app.config.wakeful.url).done(function () {
-          app.trigger('ready');
+          EvoRoom.Model.initWakefulCollections(app.config.wakeful.url).done(function () {
+            app.trigger('ready');
+          });
         });
       });
     },
@@ -224,8 +226,7 @@ EvoRoom.Mobile = function() {
     // GROUPS collection
     if (app.group === null) {
       var gn = app.rollcallGroupName;
-      app.groups = new EvoRoom.Model.Groups();
-      app.groups.wake(Sail.app.config.wakeful.url);   // do we actually need this?
+      app.groups = EvoRoom.Model.awake.groups;
 
       var fetchGroupsSuccess = function(collection, response) {
         console.log("Retrieved groups collection...");
@@ -261,8 +262,7 @@ EvoRoom.Mobile = function() {
     // USERS collection
     if (app.user === null) {
       var u = Sail.app.session.account.login;   // grab username from Rollcall
-      app.users = new EvoRoom.Model.Users();    // create a users collction object
-      app.users.wake(Sail.app.config.wakeful.url);
+      app.users = EvoRoom.Model.awake.users;
 
       var fetchUsersSuccess = function(collection, response) {
         console.log('Retrieved users collection...');
@@ -302,8 +302,7 @@ EvoRoom.Mobile = function() {
 
     // NOTES collection
     if (app.note === null) {
-      app.notes = new EvoRoom.Model.Notes();
-      app.notes.wake(Sail.app.config.wakeful.url);
+      app.notes = EvoRoom.Model.awake.notes;
 
       var fetchNotesSuccess = function(collection, response) {
         console.log("Retrieved notes collection...");
@@ -318,8 +317,7 @@ EvoRoom.Mobile = function() {
 
     // EXPLANATIONS collection
     if (app.explanations === null) {
-      app.explanations = new EvoRoom.Model.Explanations();
-      app.explanations.wake(Sail.app.config.wakeful.url);
+      app.explanations = EvoRoom.Model.awake.explanations;
 
       var fetchExplanationsSuccess = function(collection, response) {
         console.log("Retrieved explanations collection...");
@@ -337,7 +335,7 @@ EvoRoom.Mobile = function() {
   app.initPhaseModels = function() {
     // PHASES collection
     if (app.phase === null) {
-      app.phases = new EvoRoom.Model.Phases();
+      app.phases = EvoRoom.Model.awake.phases;
       var fetchPhasesSuccess = function(collection, response) {
         console.log("Retrieved phases collection...");
         if (collection.length === 1) {
@@ -365,8 +363,7 @@ EvoRoom.Mobile = function() {
   app.initObservationModels = function() {
     // OBSERVATIONS collection
     if (app.observation === null) {
-      app.observations = new EvoRoom.Model.Observations();
-      app.observations.wake(Sail.app.config.wakeful.url);
+      app.observations = EvoRoom.Model.awake.observations;
 
       var fetchObservationsSuccess = function(collection, response) {
         console.log("Retrieved observations collection...");

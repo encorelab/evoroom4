@@ -100,6 +100,7 @@ EvoRoom.Model = (function() {
         return _.contains(this.get('time_periods_completed'), timePeriod);
       }
     });
+    
     model.Users = model.db.Collection('users').extend({
       model: model.User,
       allObservationsCompleted: function(phaseNum) {
@@ -152,6 +153,38 @@ EvoRoom.Model = (function() {
     /* define additional document and collection types here! 
     ... just copy and paste the Observation and Observations classes and rename them */
   };
+
+  model.initWakefulCollections = function(wakefulUrl) {
+    var deferreds = [];
+
+    model.awake = {};
+
+    model.awake.users = new model.Users();
+    model.awake.users.wake(wakefulUrl);
+    deferreds.push(model.awake.users.fetch());
+
+    model.awake.phases = new model.Phases();
+    model.awake.phases.wake(wakefulUrl);
+    deferreds.push(model.awake.phases.fetch());
+
+    model.awake.groups = new model.Groups();
+    model.awake.groups.wake(wakefulUrl);
+    deferreds.push(model.awake.groups.fetch());
+
+    model.awake.observations = new model.Observations();
+    model.awake.observations.wake(wakefulUrl);
+    deferreds.push(model.awake.observations.fetch());
+
+    model.awake.notes = new model.Notes();
+    model.awake.notes.wake(wakefulUrl);
+    deferreds.push(model.awake.notes.fetch());
+
+    model.awake.explanations = new model.Explanations();
+    model.awake.explanations.wake(wakefulUrl);
+    deferreds.push(model.awake.explanations.fetch());
+
+    return jQuery.when.apply(jQuery, deferreds);
+  }
 
   return model;
 })();
