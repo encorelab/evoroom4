@@ -849,6 +849,7 @@ EvoRoom.Mobile = function() {
           } else {
             cont.find('.image-button-off').hide();
             cont.find('.image-button-on').show();
+            // jQuery('#lookup-text').text("");
             jQuery('#lookup-text').text(text);
           }
         });
