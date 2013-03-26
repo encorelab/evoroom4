@@ -204,6 +204,8 @@ window.EvoRoom.Teacher = function () {
     app.users.each(function (u) {
       app.userChanged(u);
     });
+
+    app.updateOpenInquiryButton();
   };
 
   app.userChanged = function (user) {
@@ -247,6 +249,18 @@ window.EvoRoom.Teacher = function () {
         .addClass('teacher-button-primed ready');
     }
   };
+
+  app.updateOpenInquiryButton = function () {
+    var explanationPhase = app.lookupPhaseDefinitionByName('explanation');
+    var i = _.indexOf(explanationPhase.time_periods, app.phase.get('time'));
+    
+    if (explanationPhase.time_periods[i + 1]) {
+      jQuery('tr.phase-explanation button.start-phase')
+        .text("Start "+explanationPhase.time_periods[i + 1]+" »");
+    } else {
+      jQuery('tr.phase-explanation button.start-phase').hide();
+    }
+  };
   
   app.makeInteractive = function() {
     jQuery('button.start-phase').click(function (ev) {
@@ -255,10 +269,32 @@ window.EvoRoom.Teacher = function () {
 
       var pd = app.lookupPhaseDefinitionByName(phaseName);
 
+      var newTime;
+      if (phaseName == 'explanation') {
+        var explanationPhase = app.lookupPhaseDefinitionByName('explanation');
+        var currTime = app.phase.get('time');
+        var i;
+        var newTime;
+        if (!currTime) {
+          newTime = explanationPhase.time_periods[0];
+          i = 0;
+        } else {
+          i = _.indexOf(explanationPhase.time_periods, currTime);
+
+          if (i < explanationPhase.time_periods.length - 1)
+            newTime = explanationPhase.time_periods[i + 1];
+        }
+      }
+
       app.phase.save({
+        time: newTime, 
         phase_name: pd.name,
         phase_number: pd.number
       });
+    });
+
+    jQuery('tr.phase-explanation button.start-phase').click(function (ev) {
+      
     });
   };
 };
