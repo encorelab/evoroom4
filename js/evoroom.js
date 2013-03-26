@@ -977,12 +977,16 @@ EvoRoom.Mobile = function() {
   app.rotationStepForward = function() {
     app.clearPageElements();
     app.hidePageElements();
+    var times = [];
+    var orgs = [];
     // if there are still times to do for this org, change time and remove that time from the array
     if (app.user.get('phase_data').assigned_times && app.user.get('phase_data').assigned_times.length > 0) {
       app.user.setPhaseData('time',app.user.get('phase_data').assigned_times[0]);
+      times = app.user.get('phase_data').assigned_times;
+      times.shift();
+      app.user.setPhaseData('assigned_times',times);
       app.user.save();
-
-      app.user.get('phase_data').assigned_times.shift();
+      
       app.createNewObservation();
       jQuery('#organism-presence').show();      
     }
@@ -997,10 +1001,14 @@ EvoRoom.Mobile = function() {
         app.user.setPhaseData('time',app.user.get('phase_data').assigned_times[0]);
         app.user.set('current_organism',app.user.get('phase_data').assigned_organisms[0]);
 
-        app.user.save();
         // remove an org and a time
-        app.user.get('phase_data').assigned_times.shift();
-        app.user.get('phase_data').assigned_organisms.shift();
+        times = app.user.get('phase_data').assigned_times;
+        orgs = app.user.get('phase_data').assigned_organisms;
+        times.shift();
+        orgs.shift();
+        app.user.setPhaseData('assigned_times',times);
+        app.user.setPhaseData('assigned_organisms',orgs);
+        app.user.save();
 
         app.createNewObservation();
         jQuery('#organism-presence').show();        
