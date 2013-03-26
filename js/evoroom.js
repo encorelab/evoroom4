@@ -95,6 +95,8 @@ EvoRoom.Mobile = function() {
       jQuery('#log-in-success').show();
     } else if (app.user.get('user_phase') === "rotation_1") {
       if (app.user.get('phase_data').role === "participant") {
+        app.createNewObservation();
+        app.updateUserHTML();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
@@ -105,6 +107,8 @@ EvoRoom.Mobile = function() {
       jQuery('#meetup-instructions').show();
     } else if (app.user.get('user_phase') === "rotation_2") {
       if (app.user.get('phase_data').role === "participant") {
+        app.createNewObservation();
+        app.updateUserHTML();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
