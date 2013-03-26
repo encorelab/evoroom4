@@ -437,7 +437,8 @@ EvoRoom.Mobile = function() {
     if (phase === 0) { // orientation
 
     } else if (phase === 1) { // rotation 1
-
+      jQuery('#participant-instructions .small-button').show();
+      jQuery('#guide-instructions-2 .small-button').show();
     } else if (phase === 2) { // meetup 1
       // might be a very bad idea to put these shows here
       // app.hidePageElements();
