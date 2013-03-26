@@ -46,13 +46,14 @@ EvoRoom.Model = (function() {
       'groups',
       'observations',
       'notes',
-      'explanations'
+      'explanations',
+      'events'
     ]).then(function () {
       model.defineModelClasses();
       dfInit.resolve();
     });
 
-      return dfInit;
+    return dfInit;
   };
 
   model.createNecessaryCollections = function(requiredCollections) {
