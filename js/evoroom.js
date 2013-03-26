@@ -470,6 +470,7 @@ EvoRoom.Mobile = function() {
 
     } else if (phase === 3) { // rotation 2
       // reenable buttons
+      jQuery('.question-button').prop('disabled', false);
       app.group.set('notes_completed', [], {silent: true});
       app.group.save(null, {silent: true});
 
@@ -526,28 +527,29 @@ EvoRoom.Mobile = function() {
     });
 
     // MOVING TO ROTATION 2 OR EXPLANATION
-    if (app.phase && (app.phase.get('phase_number') === 2 || app.phase.get('phase_number') === 4)) {
-      if (app.phase && app.group.get('notes_completed').length  > 2) {
-        app.hidePageElements();
-        if (app.phase.get('phase_number') === 2) {
-          app.updateUserHTML();
-          jQuery('#rotation-instructions').show();
-        } else if (app.phase.get('phase_number') === 4) {
-          jQuery('#explanation-instructions').show();
-        } else {
-          console.error('About to be very stuck - check updateGroupHTML');
-        }
-      } else if (app.phase && app.group.get('notes_completed').length < 3) {
-        jQuery('#meetup-instructions').show();
-      }      
-    }
     var notesCompleted = app.group.get('notes_completed');
     if (notesCompleted.length < 3) {
       _.each(Sail.app.group.get('notes_completed'), function(n) {
         jQuery('.q'+n+'-button').prop('disabled', true);
       });
     }
-    
+    var userPhase = app.user.get('user_phase');
+    if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
+      // if all of the groups notes are completed, move on to the next phase
+      if (app.group.get('notes_completed').length  >= 3) {
+        if (userPhase === "meetup_1") {
+          app.updateUserHTML();
+          jQuery('#rotation-instructions').show();
+        } else if (userPhase === "meetup_2") {
+          jQuery('#explanation-instructions').show();
+        } else {
+          console.error('About to be very stuck - check updateGroupHTML');
+        }
+      // else not all notes are completed, go back to the 'choose question' screen
+      } else if (app.group.get('notes_completed').length < 3) {
+        jQuery('#meetup-instructions').show();
+      }      
+    }
 
   };
 
@@ -660,15 +662,16 @@ EvoRoom.Mobile = function() {
     jQuery('#rotation-instructions .guide-button').click(function() {
       var ok = confirm("Do you want to choose to be a guide?");
       if (ok) {
-        if (app.phase.get('phase_number') === 0) {
-          app.markCompleted(0);
-        } else if (app.phase.get('phase_number') === 2) {
-          app.markCompleted(2);
-        } else {
-          console.error('Out of sync (599)');
-        }
         app.user.setPhaseData('role', 'guide');
-        app.user.save();
+        app.user.save().done(function() {
+          if (app.phase.get('phase_number') === 0) {
+            app.markCompleted(0);
+          } else if (app.phase.get('phase_number') === 2) {
+            app.markCompleted(2);
+          } else {
+            console.error('Out of sync (599)');
+          }          
+        });
         app.hidePageElements();
         jQuery('#guide-instructions-1').show();
       }
@@ -683,10 +686,11 @@ EvoRoom.Mobile = function() {
         } else {
           console.error('Out of sync (617)');
         }
-        app.user.setPhaseData('role', 'participant');
-        app.user.setPhaseData('time','');
-        app.user.setPhaseData('assigned_times',[]);
-        app.user.save();
+        app.user.save().done(function() {
+          app.user.setPhaseData('role', 'participant');
+          app.user.setPhaseData('time','');
+          app.user.setPhaseData('assigned_times',[]);          
+        });
         app.hidePageElements();
         jQuery('#participant-instructions').show();
       }
@@ -853,23 +857,23 @@ EvoRoom.Mobile = function() {
     jQuery('#note-response .done-button').click(function() {
       app.note.set('body',jQuery('#note-response .note-entry').val());
       app.note.set('published',true);
-      app.note.save();
       app.hidePageElements();
-
-      var notesCompleted = app.group.get('notes_completed');
-      var currentQuestion = app.note.get('question');
-      if (currentQuestion === "Question 1") {
-        notesCompleted[0] = 1;
-        app.group.set('notes_completed',notesCompleted);
-      } else if (currentQuestion === "Question 2") {
-        notesCompleted[1] = 2;
-        app.group.set('notes_completed',notesCompleted);
-      } else if (currentQuestion === "Question 3") {
-        notesCompleted[2] = 3;
-        app.group.set('notes_completed',notesCompleted);
-      }
-      app.group.save();
-      // else gets handled by updateGroupHTML
+      app.note.save().done(function() {
+        var notesCompleted = app.group.get('notes_completed');
+        var currentQuestion = app.note.get('question');
+        if (currentQuestion === "Question 1") {
+          notesCompleted[0] = 1;
+          app.group.set('notes_completed',notesCompleted);
+        } else if (currentQuestion === "Question 2") {
+          notesCompleted[1] = 2;
+          app.group.set('notes_completed',notesCompleted);
+        } else if (currentQuestion === "Question 3") {
+          notesCompleted[2] = 3;
+          app.group.set('notes_completed',notesCompleted);
+        }
+        app.group.save();
+        // else gets handled by updateGroupHTML
+      });
     });
 
     jQuery('#information-lookup-overview .small-button').click(function() {
@@ -1001,7 +1005,7 @@ EvoRoom.Mobile = function() {
 
         jQuery('#clickable-organism-container').append(cont);
       });
-      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text">None selected.</div>');
+      jQuery('#clickable-organism-container').append('<div id="lookup-text" class="highlighted-text"></div>');
     });
     
   };
