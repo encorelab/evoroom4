@@ -237,7 +237,6 @@ EvoRoom.Mobile = function() {
           app.group.set('all_members', app.rollcallGroupMembers);
           app.group.set('meetup_location_1',app.rollcallGroupMetadata.meetup_location_1);
           app.group.set('meetup_location_2',app.rollcallGroupMetadata.meetup_location_2);
-          app.group.set('notes_started',[]);
           app.group.set('notes_completed',[]);
         }
         var saveSuccess = function(model, response) {
@@ -453,7 +452,6 @@ EvoRoom.Mobile = function() {
       // reenable buttons
       jQuery('.question-button').prop('disabled', false);
       app.group.set('notes_completed', [], {silent: true});
-      app.group.set('notes_started', [], {silent: true});
       app.group.save(null, {silent: true});
 
       app.user.set('user_phase',"rotation_2");
@@ -499,7 +497,9 @@ EvoRoom.Mobile = function() {
     //   });
     // }
 
-    var userPhase = app.user.get('user_phase');
+    if (app.user) {
+      var userPhase = app.user.get('user_phase');      
+    }
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
       if (app.group.get('notes_completed').length  >= 3) {
@@ -533,19 +533,19 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-4').text("50 mya");
       jQuery('.time-period-image-1').removeAttr('id');
       jQuery('.time-period-image-2').removeAttr('id');
-    if (app.group.get('meetup_location_1') === "200 mya") {
+    if (app.group && app.group.get('meetup_location_1') === "200 mya") {
       jQuery('.large-year-text').text("200 mya and 150 mya");
       jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
       jQuery('.time-period-image-1').attr('id','200mya');
       jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
       jQuery('.time-period-image-2').attr('id','150mya');
-    } else if (app.group.get('meetup_location_1') === "150 mya") {
+    } else if (app.group && app.group.get('meetup_location_1') === "150 mya") {
       jQuery('.large-year-text').text("150 mya and 100 mya");
       jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
       jQuery('.time-period-image-1').attr('id','150mya');
       jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
       jQuery('.time-period-image-2').attr('id','100mya');
-    } else if (app.group.get('meetup_location_1') === "100 mya") {
+    } else if (app.group && app.group.get('meetup_location_1') === "100 mya") {
       jQuery('.large-year-text').text("100 mya and 50 mya");
       jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
       jQuery('.time-period-image-1').attr('id','100mya');
@@ -708,9 +708,11 @@ EvoRoom.Mobile = function() {
     jQuery('#participant-instructions .small-button').click(function() {
       if (app.phase.get('phase_number') === 1) {
         app.user.set('user_phase','rotation_1');
+        app.updateUserHTML();
         app.user.save();
       } else if (app.phase.get('phase_number') === 3) {
         app.user.set('user_phase','rotation_2');
+        app.updateUserHTML();
         app.user.save();
       } else {
         console.error('Out of sync (633)');
@@ -736,9 +738,11 @@ EvoRoom.Mobile = function() {
     jQuery('#guide-instructions-2 .small-button').click(function() {
       if (app.phase.get('phase_number') === 1) {
         app.user.set('user_phase','rotation_1');
+        app.updateUserHTML();
         app.user.save();
       } else if (app.phase.get('phase_number') === 3) {
         app.user.set('user_phase','rotation_2');
+        app.updateUserHTML();
         app.user.save();
       } else {
         console.error('Out of sync (648)');
@@ -814,12 +818,8 @@ EvoRoom.Mobile = function() {
         jQuery('#information-lookup-overview').show();
       } else {
         var myNote = null;
-        var notesStarted = null;
         if (jQuery(ev.target).hasClass('q1-button')) {
           // check if there's already an an finished note, then either set it up or create a new one - this needs to get cleaned up to deal with rot2 at least
-          notesStarted = app.group.get('notesStarted');
-          notesStarted[0] = 1;
-          app.group.set('notesStarted',notesStarted);
           if (app.phase.get('phase_number') === 2) {
             myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
           } else if (app.phase.get('phase_number') === 4) {
@@ -834,10 +834,7 @@ EvoRoom.Mobile = function() {
             app.note.set('question','Question 1');
             app.note.set('time',app.group.get('meetup_location_1'));
           }
-        } else if (jQuery(ev.target).hasClass('q2-button')) {
-          notesStarted = app.group.get('notesStarted');
-          notesStarted[1] = 2;
-          app.group.set('notesStarted',notesStarted);          
+        } else if (jQuery(ev.target).hasClass('q2-button')) {         
           if (app.phase.get('phase_number') === 2) {
             myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 2" && n.get('published') === false && n.get('phase') === 2; });
           } else if (app.phase.get('phase_number') === 4) {
@@ -852,10 +849,7 @@ EvoRoom.Mobile = function() {
             app.note.set('question','Question 2');
             app.note.set('time',app.group.get('meetup_location_1'));
           }
-        } else if (jQuery(ev.target).hasClass('q3-button')) {
-          notesStarted = app.group.get('notesStarted');
-          notesStarted[2] = 3;
-          app.group.set('notesStarted',notesStarted);          
+        } else if (jQuery(ev.target).hasClass('q3-button')) {         
           if (app.phase.get('phase_number') === 2) {
             myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 3" && n.get('published') === false && n.get('phase') === 2; });
           } else if (app.phase.get('phase_number') === 4) {
