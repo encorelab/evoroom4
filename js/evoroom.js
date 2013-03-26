@@ -244,8 +244,8 @@ EvoRoom.Mobile = function() {
           app.group.set('notes_completed',[]);
         }
         var saveSuccess = function(model, response) {
-          app.group.wake(Sail.app.config.wakeful.url);
           app.group.on('change', app.updateGroupHTML);
+          app.group.wake(Sail.app.config.wakeful.url);
           app.updateGroupHTML();
           app.initPhaseModels();
         };
@@ -530,18 +530,8 @@ EvoRoom.Mobile = function() {
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
       if (app.group.get('notes_completed').length  >= 3) {
+        app.updateUserHTML();   // this will move tablet screens
         // jQuery('.question-button').prop('disabled', true);
-        if (userPhase === "meetup_1") {
-          app.markCompleted(2);
-          // app.updateUserHTML();
-          //app.hidePageElements();
-          //jQuery('#rotation-instructions').show();
-        } else if (userPhase === "meetup_2") {
-          app.markCompleted(4);
-          //jQuery('#explanation-instructions').show();
-        } else {
-          console.error('About to be very stuck - check updateGroupHTML');
-        }
       // else not all notes are completed, go back to the 'choose question' screen
       } else if (app.group.get('notes_completed').length < 3) {
         jQuery('#meetup-instructions').show();
@@ -637,6 +627,9 @@ EvoRoom.Mobile = function() {
       jQuery('#assigned-organism-container .organism-image').attr('src', '/assets/images/' + app.user.get('current_organism') + '_icon.png');
     }
 
+    // do a set of guide checks
+    //jQuery('#rotation-complete').show(); is result
+
     // MEETUPS
     if (app.note && app.note.get('question')) {
       jQuery('#note-response .note-entry').val(""); 
@@ -709,15 +702,6 @@ EvoRoom.Mobile = function() {
       var ok = confirm("Do you want to choose to be a guide?");
       if (ok) {
         app.user.setPhaseData('role', 'guide');
-        app.user.save().done(function() {
-          if (app.phase.get('phase_number') === 0) {
-            app.markCompleted(0);
-          } else if (app.phase.get('phase_number') === 2) {
-            app.markCompleted(2);
-          } else {
-            console.error('Out of sync (599)');
-          }          
-        });
         app.hidePageElements();
         jQuery('#guide-instructions-1').show();
       }
@@ -729,6 +713,7 @@ EvoRoom.Mobile = function() {
         app.user.setPhaseData('time','');
         app.user.setPhaseData('assigned_times',[]); 
         app.user.save().done(function() {
+          // resync
           if (app.phase.get('phase_number') === 0) {
             app.markCompleted(0);
           } else if (app.phase.get('phase_number') === 2) {
@@ -736,13 +721,18 @@ EvoRoom.Mobile = function() {
           } else {
             console.error('Out of sync (617)');
           }
+          // // mark previous phase as completed
+          // if (userPhase === "meetup_1") {
+          //   app.markCompleted(2);
+          // }
+          app.hidePageElements();
+          jQuery('#participant-instructions').show();          
         });
-        app.hidePageElements();
-        jQuery('#participant-instructions').show();
       }
     });
 
     jQuery('#participant-instructions .small-button').click(function() {
+      // resync
       if (app.phase.get('phase_number') === 1) {
         app.user.set('user_phase','rotation_1');
         app.updateUserHTML();
@@ -762,9 +752,19 @@ EvoRoom.Mobile = function() {
     jQuery('#guide-instructions-1 .time-choice-button').click(function(ev) {
       var time = jQuery(ev.target).text();
       app.user.setPhaseData('time', time);
-      app.user.save();
-      app.hidePageElements();
-      jQuery('#guide-instructions-2').show();      
+      app.user.save().done(function() {
+        if (app.phase.get('phase_number') === 0) {
+          app.markCompleted(0);
+          app.markCompleted(1);
+        } else if (app.phase.get('phase_number') === 2) {
+          app.markCompleted(2);
+          app.markCompleted(3);
+        } else {
+          console.error('Out of sync (599)');
+          app.hidePageElements();
+          jQuery('#guide-instructions-2').show();          
+        }
+      });
     });    
     jQuery('#guide-instructions-1 .small-button').click(function() {
       // back button
@@ -1162,7 +1162,6 @@ EvoRoom.Mobile = function() {
           jQuery.get('assets/ancestor_descriptions/' + chosenAncestor + '.html', function(data) {
             jQuery('.ancestor-description-body').html(data);
             jQuery('.ancestor-description-body').children(":first").css('display', 'inline');     //compensating for an early mistake in how the fetched html is formatted
-            // jQuery('.guide-text').css('color', '#F7F7F7');
 
             app.hidePageElements();
             jQuery('#ancestor-description').show();
