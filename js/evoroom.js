@@ -237,6 +237,7 @@ EvoRoom.Mobile = function() {
           app.group.set('all_members', app.rollcallGroupMembers);
           app.group.set('meetup_location_1',app.rollcallGroupMetadata.meetup_location_1);
           app.group.set('meetup_location_2',app.rollcallGroupMetadata.meetup_location_2);
+          app.group.set('notes_started',[]);
           app.group.set('notes_completed',[]);
         }
         var saveSuccess = function(model, response) {
@@ -384,6 +385,7 @@ EvoRoom.Mobile = function() {
     app.observation.set('username',app.user.get('username'));
     app.observation.set('assigned_organism',app.user.get('current_organism'));
     app.observation.set('observed_organism','not chosen');
+    app.observation.set('phase',app.phase.get('phase_number'));
     app.observation.set('time',app.user.get('phase_data').time);
     app.observation.wake(Sail.app.config.wakeful.url);
     app.observation.save();
@@ -395,6 +397,7 @@ EvoRoom.Mobile = function() {
     app.note.set('group_name',app.group.get('group_name'));
     app.note.set('body','');
     app.note.set('published',false);
+    app.note.set('phase',app.phase.get('phase_number'));
     app.note.wake(Sail.app.config.wakeful.url);
     app.note.on('change', app.updateUserHTML);
     app.note.save();
@@ -439,70 +442,32 @@ EvoRoom.Mobile = function() {
     } else if (phase === 1) { // rotation 1
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions-2 .small-button').show();
+    
     } else if (phase === 2) { // meetup 1
       app.user.setPhaseData('role','');
 
+      jQuery('#rotation-complete').show();                 // FOR EXTRA TEACHER OVERRIDE (GUIDE ISSUES?) - also 4
       jQuery('#rotation-complete .small-button').show();
-
-      jQuery('.time-period-image-1').removeAttr('id');
-      jQuery('.time-period-image-2').removeAttr('id');
-      if (app.group.get('meetup_location_1') === "200 mya") {
-        jQuery('.large-year-text').text("200 mya and 150 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','200mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','150mya');
-      } else if (app.group.get('meetup_location_1') === "150 mya") {
-        jQuery('.large-year-text').text("150 mya and 100 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','150mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','100mya');
-      } else if (app.group.get('meetup_location_1') === "100 mya") {
-        jQuery('.large-year-text').text("100 mya and 50 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','100mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/50mya/50mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','50mya');
-      } else {
-        console.error('Unknown meetup_location_1');
-      }
 
     } else if (phase === 3) { // rotation 2
       // reenable buttons
       jQuery('.question-button').prop('disabled', false);
       app.group.set('notes_completed', [], {silent: true});
+      app.group.set('notes_started', [], {silent: true});
       app.group.save(null, {silent: true});
 
+      app.user.set('user_phase',"rotation_2");
+      jQuery('#rotation-instructions').show();
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions-2 .small-button').show();
 
     } else if (phase === 4) { // meetup 2
-      jQuery('.time-period-image-1').removeAttr('id');
-      jQuery('.time-period-image-2').removeAttr('id');
-      if (app.group.get('meetup_location_2') === "25 mya") {      
-        jQuery('.large-year-text').text("25 mya and 10 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/25mya/25mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','25mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/10mya/10mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','10mya');
-      } else if (app.group.get('meetup_location_2') === "10 mya") {
-        jQuery('.large-year-text').text("10 mya and 5 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/10mya/10mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','10mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/5mya/5mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','5mya');
-      } else if (app.group.get('meetup_location_2') === "5 mya") {
-        jQuery('.large-year-text').text("5 mya and 2 mya");
-        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/5mya/5mya_640x320.png');
-        jQuery('.time-period-image-1').attr('id','5mya');
-        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/2mya/2mya_640x320.png');
-        jQuery('.time-period-image-2').attr('id','2mya');
-      } else {
-        console.error('Unknown meetup_location_2');
-      }
+      jQuery('#rotation-complete').show();
+      jQuery('#rotation-complete .small-button').show();
 
     } else if (phase === 5) { // explanation
+      app.user.set('user_phase',"explanation");
+      jQuery('#explanation-instructions').show();
       jQuery('#explanation-instructions .small-button').show();
       // explanation stuff goes here
       
@@ -527,12 +492,13 @@ EvoRoom.Mobile = function() {
     });
 
     // MOVING TO ROTATION 2 OR EXPLANATION
-    var notesCompleted = app.group.get('notes_completed');
-    if (notesCompleted.length < 3) {
-      _.each(Sail.app.group.get('notes_completed'), function(n) {
-        jQuery('.q'+n+'-button').prop('disabled', true);
-      });
-    }
+    // var notesStarted = app.group.get('notes_started');
+    // if (notesStarted.length < 3) {
+    //   _.each(Sail.app.group.get('notes_started'), function(n) {
+    //     jQuery('.q'+n+'-button').prop('disabled', true);
+    //   });
+    // }
+
     var userPhase = app.user.get('user_phase');
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
@@ -565,24 +531,67 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-2').text("150 mya");
       jQuery('.time-choice-3').text("100 mya");
       jQuery('.time-choice-4').text("50 mya");
+      jQuery('.time-period-image-1').removeAttr('id');
+      jQuery('.time-period-image-2').removeAttr('id');
+    if (app.group.get('meetup_location_1') === "200 mya") {
+      jQuery('.large-year-text').text("200 mya and 150 mya");
+      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/200mya/200mya_640x320.png');
+      jQuery('.time-period-image-1').attr('id','200mya');
+      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
+      jQuery('.time-period-image-2').attr('id','150mya');
+    } else if (app.group.get('meetup_location_1') === "150 mya") {
+      jQuery('.large-year-text').text("150 mya and 100 mya");
+      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/150mya/150mya_640x320.png');
+      jQuery('.time-period-image-1').attr('id','150mya');
+      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
+      jQuery('.time-period-image-2').attr('id','100mya');
+    } else if (app.group.get('meetup_location_1') === "100 mya") {
+      jQuery('.large-year-text').text("100 mya and 50 mya");
+      jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/100mya/100mya_640x320.png');
+      jQuery('.time-period-image-1').attr('id','100mya');
+      jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/50mya/50mya_640x320.png');
+      jQuery('.time-period-image-2').attr('id','50mya');
+    } else {
+      console.error('Unknown meetup_location_1');
+    }    
+
     } else if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
+
     } else if (userPhase === "rotation_2" || userPhase === "meetup_2") {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
+      jQuery('.time-period-image-1').removeAttr('id');
+      jQuery('.time-period-image-2').removeAttr('id');
+      if (app.group.get('meetup_location_2') === "25 mya") {      
+        jQuery('.large-year-text').text("25 mya and 10 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/25mya/25mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','25mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/10mya/10mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','10mya');
+      } else if (app.group.get('meetup_location_2') === "10 mya") {
+        jQuery('.large-year-text').text("10 mya and 5 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/10mya/10mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','10mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/5mya/5mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','5mya');
+      } else if (app.group.get('meetup_location_2') === "5 mya") {
+        jQuery('.large-year-text').text("5 mya and 2 mya");
+        jQuery('.time-period-image-1').attr('src','assets/information_lookup_images/5mya/5mya_640x320.png');
+        jQuery('.time-period-image-1').attr('id','5mya');
+        jQuery('.time-period-image-2').attr('src','assets/information_lookup_images/2mya/2mya_640x320.png');
+        jQuery('.time-period-image-2').attr('id','2mya');
+      } else {
+        console.error('Unknown meetup_location_2');
+      }      
     }
-
-    //if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length !== 0) {
-      // jQuery('#participant-instructions .small-button').show();
-      // jQuery('#guide-instructions .small-button').show();            RETEST ME, I COULD BE A PROBLEM
-    //}
 
     // ROTATIONS    
     jQuery('.time').text(app.user.get('phase_data').time);
@@ -805,9 +814,17 @@ EvoRoom.Mobile = function() {
         jQuery('#information-lookup-overview').show();
       } else {
         var myNote = null;
+        var notesStarted = null;
         if (jQuery(ev.target).hasClass('q1-button')) {
           // check if there's already an an finished note, then either set it up or create a new one - this needs to get cleaned up to deal with rot2 at least
-          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false; });
+          notesStarted = app.group.get('notesStarted');
+          notesStarted[0] = 1;
+          app.group.set('notesStarted',notesStarted);
+          if (app.phase.get('phase_number') === 2) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
+          } else if (app.phase.get('phase_number') === 4) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 4; });
+          }
           if (myNote) {
             app.note = myNote;
             jQuery('#note-response .note-entry').val(app.note.get('body'));
@@ -818,7 +835,14 @@ EvoRoom.Mobile = function() {
             app.note.set('time',app.group.get('meetup_location_1'));
           }
         } else if (jQuery(ev.target).hasClass('q2-button')) {
-          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 2" && n.get('published') === false; });
+          notesStarted = app.group.get('notesStarted');
+          notesStarted[1] = 2;
+          app.group.set('notesStarted',notesStarted);          
+          if (app.phase.get('phase_number') === 2) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 2" && n.get('published') === false && n.get('phase') === 2; });
+          } else if (app.phase.get('phase_number') === 4) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 2" && n.get('published') === false && n.get('phase') === 4; });
+          }
           if (myNote) {
             app.note = myNote;
             jQuery('#note-response .note-entry').val(app.note.get('body'));
@@ -829,7 +853,14 @@ EvoRoom.Mobile = function() {
             app.note.set('time',app.group.get('meetup_location_1'));
           }
         } else if (jQuery(ev.target).hasClass('q3-button')) {
-          myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 3" && n.get('published') === false; });
+          notesStarted = app.group.get('notesStarted');
+          notesStarted[2] = 3;
+          app.group.set('notesStarted',notesStarted);          
+          if (app.phase.get('phase_number') === 2) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 3" && n.get('published') === false && n.get('phase') === 2; });
+          } else if (app.phase.get('phase_number') === 4) {
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 3" && n.get('published') === false && n.get('phase') === 4; });
+          }
           if (myNote) {
             app.note = myNote;
             jQuery('#note-response .note-entry').val(app.note.get('body'));
@@ -1059,6 +1090,8 @@ EvoRoom.Mobile = function() {
           console.error('Out of sync (918)');
         }
         jQuery('#assigned-organism-container').hide();
+
+
         app.hidePageElements();
         jQuery('#rotation-complete').show();
       }
