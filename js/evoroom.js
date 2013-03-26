@@ -98,6 +98,7 @@ EvoRoom.Mobile = function() {
       if (app.user.get('phase_data').role === "participant") {
         app.createNewObservation();
         app.updateUserHTML();
+        jQuery('#assigned-organism-container').show();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
@@ -110,6 +111,7 @@ EvoRoom.Mobile = function() {
       if (app.user.get('phase_data').role === "participant") {
         app.createNewObservation();
         app.updateUserHTML();
+        jQuery('#assigned-organism-container').show();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
@@ -445,6 +447,7 @@ EvoRoom.Mobile = function() {
     
     } else if (phase === 2) { // meetup 1
       app.user.setPhaseData('role','');
+      app.user.setPhaseData('assigned_organisms',[]);
 
       app.hidePageElements();
       app.user.set('user_phase',"meetup_1");
@@ -461,10 +464,16 @@ EvoRoom.Mobile = function() {
 
       app.hidePageElements();
       app.user.set('user_phase',"rotation_2");
+
+      app.user.on('change:phase_data',function() {
+        if (app.user.get('phase_data').assigned_organisms.length > 0) {
+          jQuery('#participant-instructions .small-button').show();
+          jQuery('#guide-instructions-2 .small-button').show();        
+        }
+      });
+
       app.user.save().done(function() {
         jQuery('#rotation-instructions').show();
-        jQuery('#participant-instructions .small-button').show();
-        jQuery('#guide-instructions-2 .small-button').show();        
       });
 
     } else if (phase === 4) { // meetup 2
@@ -524,7 +533,7 @@ EvoRoom.Mobile = function() {
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
       if (app.group.get('notes_completed').length  >= 3) {
-        jQuery('.question-button').prop('disabled', true);
+        // jQuery('.question-button').prop('disabled', true);
         if (userPhase === "meetup_1") {
           app.markCompleted(2);
           // app.updateUserHTML();
