@@ -526,18 +526,21 @@ EvoRoom.Mobile = function() {
     });
 
     // MOVING TO ROTATION 2 OR EXPLANATION
-    if (app.phase && app.group.get('notes_completed') > 2) {
-      app.hidePageElements();
-      if (app.phase.get('phase_number') === 2) {
-        jQuery('#rotation-instructions').show();
-      } else if (app.phase.get('phase_number') === 4) {
-        jQuery('#explanation-instructions').show();
-      } else {
-        console.error('About to be very stuck - check updateGroupHTML');
-      }
-    } else {
-      jQuery('#meetup-instructions').show();
+    if (app.phase && app.phase.get('phase_number') === 2 && app.phase.get('phase_number') === 4) {
+      if (app.phase && app.group.get('notes_completed') > 2) {
+        app.hidePageElements();
+        if (app.phase.get('phase_number') === 2) {
+          jQuery('#rotation-instructions').show();
+        } else if (app.phase.get('phase_number') === 4) {
+          jQuery('#explanation-instructions').show();
+        } else {
+          console.error('About to be very stuck - check updateGroupHTML');
+        }
+      } else if (app.phase && app.group.get('notes_completed') < 3) {
+        jQuery('#meetup-instructions').show();
+      }      
     }
+
 
   };
 
