@@ -1,5 +1,4 @@
 /*jshint browser: true, devel: true, debug: true, strict: false, undef:true, node:true */
-/*globals  Rollcall */
 
 if (typeof exports !== "undefined" && exports !== null) {
   // we're in node
@@ -8,7 +7,7 @@ if (typeof exports !== "undefined" && exports !== null) {
     var Backbone = require('backbone');
     Backbone.$ = jQuery;
     var Drowsy = require('Backbone.Drowsy').Drowsy;
-    var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
+    //var Wakeful = require('Backbone.Drowsy/wakeful').Wakeful;
 
     var EvoRoom = {};
 
@@ -100,7 +99,7 @@ EvoRoom.Model = (function() {
         return _.contains(this.get('time_periods_completed'), timePeriod);
       }
     });
-    
+
     model.Users = model.db.Collection('users').extend({
       model: model.User,
       allObservationsCompleted: function(phaseNum) {
@@ -184,7 +183,7 @@ EvoRoom.Model = (function() {
     deferreds.push(model.awake.explanations.fetch());
 
     return jQuery.when.apply(jQuery, deferreds);
-  }
+  };
 
   return model;
 })();
