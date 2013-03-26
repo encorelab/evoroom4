@@ -462,7 +462,7 @@ EvoRoom.Mobile = function() {
         if (app.user.get('phase_data').assigned_organisms.length > 0) {
           app.user.set('user_phase','rotation_2');
           jQuery('#participant-instructions .small-button').show();
-          jQuery('#guide-instructions-2 .small-button').show();        
+          jQuery('#guide-instructions-2 .small-button').show();
         }
       });
       app.user.save().done(function() {
@@ -470,7 +470,8 @@ EvoRoom.Mobile = function() {
         // reenable question buttons
         // jQuery('.question-button').prop('disabled', false);
         app.group.set('notes_completed', [], {silent: true});
-        app.group.save(null, {silent: true});          
+        app.group.save(null, {silent: true});
+        jQuery('#rotation-complete .small-button').hide();
       });
 
     } else if (phase === 4) { // meetup 2
@@ -607,8 +608,7 @@ EvoRoom.Mobile = function() {
     }
 
     // user_phase is complete, but not general phase
-    if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
-    //if (app.user.isPhaseCompleted(2)) {
+    if ( (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) || (userPhase === "rotation_2") ) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
@@ -619,6 +619,13 @@ EvoRoom.Mobile = function() {
 
       app.hidePageElements();
       jQuery('#rotation-instructions').show();
+    }
+    else if (userPhase === "meetup_2" && app.group.get('notes_completed').length > 2) {
+      app.markCompleted(4);
+      app.user.set('user_phase','explanation');
+
+      app.hidePageElements();
+      jQuery('#explanation-instructions').show();
     }
 
 
