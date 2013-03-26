@@ -75,6 +75,11 @@ window.EvoRoom.Teacher = function () {
     phases.fetch().done(function () {
       app.phase = phases.first();
 
+      if (!app.phase.has('phase_name')) {
+        var phaseDef = app.lookupPhaseDefinitionByNumber(app.phase.get('phase_number'));
+        app.phase.set('phase_name', phaseDef.name);
+      }
+
       if (!app.phase) {
         console.error("No phase document found in /phases!");
         throw "EXPLOSION!";
@@ -105,10 +110,8 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(ob.get('username'))); 
       });
       app.observations.on('change add reset', function () {
-        if (app.phase.get('phase_number') <= 1)
-          jQuery('#obs-count .count').text(app.observations.length); 
-        else 
-          jQuery('#obs-count2 .count').text(app.observations.length); 
+        jQuery('#obs-count .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 1}).length); 
+        jQuery('#obs-count2 .count').text(app.observations.filter(function (ob) { return ob.get('phase') == 3}).length); 
       });
       app.observations.fetch();
 
@@ -118,8 +121,10 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(no.get('username'))); 
       });
       app.notes.on('change add reset', function () {
-        var publishedCount = app.notes.filter(function (n) { return n.get('published');}).length;
+        var publishedCount = app.notes.filter(function (n) { return n.get('phase') == 2 && n.get('published');}).length;
+        var publishedCount2 = app.notes.filter(function (n) { return n.get('phase') == 4 && n.get('published');}).length;
         jQuery('#notes-count .count').text(publishedCount); 
+        jQuery('#notes-count2 .count').text(publishedCount);
       });
       app.notes.fetch();
     });
@@ -372,6 +377,9 @@ window.EvoRoom.Teacher = function () {
       var phaseName = button.parents('.phase').eq(0).data('phase');
 
       var pd = app.lookupPhaseDefinitionByName(phaseName);
+
+      if (!confirm("Are you sure you want to "+button.text().toUpperCase().replace(/[^\w ]/,'').trim()+"?"))
+        return;
 
       var newTime;
       if (phaseName == 'explanation') {

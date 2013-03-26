@@ -46,13 +46,14 @@ EvoRoom.Model = (function() {
       'groups',
       'observations',
       'notes',
-      'explanations'
+      'explanations',
+      'events'
     ]).then(function () {
       model.defineModelClasses();
       dfInit.resolve();
     });
 
-      return dfInit;
+    return dfInit;
   };
 
   model.createNecessaryCollections = function(requiredCollections) {
@@ -63,7 +64,7 @@ EvoRoom.Model = (function() {
     model.db.collections(function(colls) {
       var existingCollections = _.pluck(colls, 'name');
       _.each(_.difference(requiredCollections, existingCollections), function (col) {
-        console.log("Creating collection '" + col + "' under " + model.dbURL);
+        console.log("Creating collection '" + col + "' under " + model.dbUrl);
         dfs.push(model.db.createCollection(col));
       });
     });
