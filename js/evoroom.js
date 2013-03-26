@@ -587,15 +587,7 @@ EvoRoom.Mobile = function() {
         jQuery('.time-period-image-2').attr('id','50mya');
       } else {
         console.error('Unknown meetup_location_1');
-      }    
-
-    } else if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
-      jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
-      jQuery('.time-choice-1').text("25 mya");
-      jQuery('.time-choice-2').text("10 mya");
-      jQuery('.time-choice-3').text("5 mya");
-      jQuery('.time-choice-4').text("2 mya");
-
+      }
     } else if (userPhase === "rotation_2" || userPhase === "meetup_2") {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
@@ -626,6 +618,20 @@ EvoRoom.Mobile = function() {
         console.error('Unknown meetup_location_2');
       }      
     }
+
+    // user_phase is complete, but not general phase
+    if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
+    //if (app.user.isPhaseCompleted(2)) {
+      jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
+      jQuery('.time-choice-1').text("25 mya");
+      jQuery('.time-choice-2').text("10 mya");
+      jQuery('.time-choice-3').text("5 mya");
+      jQuery('.time-choice-4').text("2 mya");
+
+      app.hidePageElements();
+      jQuery('#rotation-instructions').show();
+    }
+
 
     // ROTATIONS    
     jQuery('.time').text(app.user.get('phase_data').time);
