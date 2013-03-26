@@ -572,7 +572,7 @@ EvoRoom.Mobile = function() {
         qHTML.html("<b>1. </b>What are the major differences between the two time periods?");
         jQuery('#question-text').append(qHTML);
       } else if (app.note.get('question') === "Question 2") {
-        qHTML.html("<div><b>2. </b>What species appeared in this time period that wasn't there before?</div><div style='color:#A6AAAD'>Consider climate, habitat, animals, plants.</div>");      // TODO MOAR TEXT
+        qHTML.html("<div><b>2. </b>What species appeared in this time period that wasn't there before?</div><div style='color:#A6AAAD'>Consider climate, habitat, animals, plants.</div>");
         jQuery('#question-text').append(qHTML);
       } else if (app.note.get('question') === "Question 3") {
         qHTML.html("<b>3. </b>What evolutionary processes might have occurred during this time period? How were these processes related to the climate, habitats or other species at the time?");
@@ -632,9 +632,8 @@ EvoRoom.Mobile = function() {
     });
 
     jQuery('#rotation-instructions .guide-button').click(function() {
-      // TODO: add me back in!
-      // var ok = confirm("Do you want to choose to be a guide?");
-      // if (ok) {
+      var ok = confirm("Do you want to choose to be a guide?");
+      if (ok) {
         if (app.phase.get('phase_number') === 0) {
           app.markCompleted(0);
         } else if (app.phase.get('phase_number') === 2) {
@@ -646,13 +645,11 @@ EvoRoom.Mobile = function() {
         app.user.save();
         app.hidePageElements();
         jQuery('#guide-instructions-1').show();
-      // }
-
+      }
     });
     jQuery('#rotation-instructions .participant-button').click(function() {
-      // TODO: add me back in!
-      // var ok = confirm("Do you want to choose to be a participant?");
-      // if (ok) {
+      var ok = confirm("Do you want to choose to be a participant?");
+      if (ok) {
         if (app.phase.get('phase_number') === 0) {
           app.markCompleted(0);
         } else if (app.phase.get('phase_number') === 2) {
@@ -666,7 +663,7 @@ EvoRoom.Mobile = function() {
         app.user.save();
         app.hidePageElements();
         jQuery('#participant-instructions').show();
-      // }
+      }
     });
 
     jQuery('#participant-instructions .small-button').click(function() {
