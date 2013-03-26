@@ -45,6 +45,7 @@ EvoRoom.Mobile = function() {
   app.rollcallMetadata = null;
   app.rotationNumber = 1;
   app.keyCount = 0;
+  app.explanationTime = null;
 
   app.autoSaveTimer = window.setTimeout(function() { console.log("timer activated"); } ,10);
 
@@ -484,6 +485,11 @@ EvoRoom.Mobile = function() {
       });
 
       // explanation stuff goes here
+      // if time changed re-enable next button
+      if (app.explanationTime && app.explanationTime !== app.phase.get('time')) {
+        // disable next button and wait for time advance
+        jQuery('#explanation-organism-assigned button').prop('disabled', false);
+      }
       
     } else {
       console.error('Unknown phase - this is probably really bad!');
@@ -967,9 +973,9 @@ EvoRoom.Mobile = function() {
       // explanation
       app.createNewExplanation(function () {
         // some setup depending on time?
-        var time = app.phase.get('time');
-        if (time) {
-          jQuery('#explanation-response .time-periods-text').text(time);
+        app.explanationTime = app.phase.get('time');
+        if (app.explanationTime) {
+          jQuery('#explanation-response .time-periods-text').text(app.explanationTime);
         } else {
           console.warn("Time in phase is null but should be a string");
         }
@@ -1265,6 +1271,9 @@ EvoRoom.Mobile = function() {
   };
 
   app.saveExplanationResponse = function (published) {
+    // disable next button and wait for time advance
+    jQuery('#explanation-organism-assigned button').prop('disabled', true);
+
     var evolutionary_forces = jQuery('.explanation-response-list input:checked').map(function(){return this.value;}).get();
     app.explanation.set('evolutionary_forces', evolutionary_forces);
 

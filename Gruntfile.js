@@ -26,7 +26,8 @@ module.exports = function(grunt) {
           'universal-selector': false,
           'fallback-colors': false,
           'compatible-vendor-prefixes': false,
-          'adjoining-classes': false
+          'adjoining-classes': false,
+          'overqualified-elements': false
         },
         src: ['css/*.css']
       }
