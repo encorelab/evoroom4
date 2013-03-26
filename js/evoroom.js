@@ -441,7 +441,6 @@ EvoRoom.Mobile = function() {
 
     } else if (phase === 1) { // rotation 1
       app.hidePageElements();
-      jQuery('#rotation-instructions').show();
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions-2 .small-button').show();
     
