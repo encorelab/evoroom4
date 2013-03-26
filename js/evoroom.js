@@ -604,8 +604,8 @@ EvoRoom.Mobile = function() {
         jQuery('.time-period-image-2').attr('id','2mya');
       } else {
         console.error('Unknown meetup_location_2');
-      }      
-    }
+      }
+
 
     // user_phase is complete, but not general phase
     if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
@@ -614,8 +614,6 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
-
-      app.user.set('user_phase','rotation_2');
 
       app.hidePageElements();
       jQuery('#rotation-instructions').show();
