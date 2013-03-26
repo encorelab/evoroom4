@@ -75,6 +75,11 @@ window.EvoRoom.Teacher = function () {
     phases.fetch().done(function () {
       app.phase = phases.first();
 
+      if (!app.phase.has('phase_name')) {
+        var phaseDef = app.lookupPhaseDefinitionByNumber(app.phase.get('phase_number'));
+        app.phase.set('phase_name', phaseDef.name);
+      }
+
       if (!app.phase) {
         console.error("No phase document found in /phases!");
         throw "EXPLOSION!";
@@ -371,6 +376,9 @@ window.EvoRoom.Teacher = function () {
       var phaseName = button.parents('.phase').eq(0).data('phase');
 
       var pd = app.lookupPhaseDefinitionByName(phaseName);
+
+      if (!confirm("Are you sure you want to "+button.text().toUpperCase().replace(/[^\w ]/,'').trim()+"?"))
+        return;
 
       var newTime;
       if (phaseName == 'explanation') {
