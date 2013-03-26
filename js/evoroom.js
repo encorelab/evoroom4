@@ -615,11 +615,15 @@ EvoRoom.Mobile = function() {
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
 
+      app.user.set('user_phase','rotation_2');
+
       app.hidePageElements();
       jQuery('#rotation-instructions').show();
     }
     else if (userPhase === "meetup_2" && app.group.get('notes_completed').length > 2) {
       app.markCompleted(4);
+      app.user.set('user_phase','explanation');
+
       app.hidePageElements();
       jQuery('#explanation-instructions').show();
     }
