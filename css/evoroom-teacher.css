@@ -77,9 +77,9 @@ header .hide {
   padding-left: 50px;
 }
 
-.teacher-dashboard tr.phase:nth-child(even) {
+.teacher-dashboard tr.phase:nth-child(odd) {
   background-color: black;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(255,255,255,0.1);
 }
 
 .teacher-dashboard tr.phase > th {
@@ -134,6 +134,30 @@ button:active {
   display: none;
 }
 
+tr.done button {
+  display: none;
+}
+
+tr.current button {
+  display: none;
+}
+
+tr.current.phase-explanation button {
+  display: block;
+}
+
+.objective {
+  display: none;
+}
+
+tr.done .objective {
+  display: block;
+}
+
+tr.current .objective {
+  display: block;
+}
+
 tr.current .teacher-button-done {
   /*opacity: 1.0;*/
 }
@@ -154,6 +178,11 @@ tr.phase th {
 
 tr.phase.current {
   background-color: rgba(255,255,200,0.4) !important;
+}
+
+
+tr.phase.done th {
+  opacity: 0.3; 
 }
 
 tr.phase.current th {
@@ -197,6 +226,11 @@ tr.phase.current th {
   border-radius: 10px;
   margin-right: 48px;
   max-width: 220px;
+  opacity: 0.25;
+}
+
+.current.phase .objective {
+  opacity: 1.0;
 }
 
 .phase .objective .count {

@@ -76,7 +76,7 @@ EvoRoom.Model = (function() {
   };
 
   model.defineModelClasses = function () {
-    Drowsy.Document.defaults = function () {
+    Drowsy.Document.prototype.defaults = function () {
       return {
         created_at: new Date()
       };
