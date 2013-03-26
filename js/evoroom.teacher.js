@@ -121,7 +121,7 @@ window.EvoRoom.Teacher = function () {
         app.userChanged(app.lookupUserByUsername(no.get('username'))); 
       });
       app.notes.on('change add reset', function () {
-        var publishedCount = app.notes.filter(function (n) { return n.get('published')}).length;
+        var publishedCount = app.notes.filter(function (n) { return n.get('published');}).length;
         jQuery('#notes-count .count').text(publishedCount); 
         jQuery('#notes-count2 .count').text(publishedCount);
       });
@@ -297,7 +297,7 @@ window.EvoRoom.Teacher = function () {
 
   app.flashStudentMarker = function (username) {
 
-  }
+  };
 
   app.updateStudentMarkerForUser = function (user) {
     var username = user.get('username');

@@ -439,14 +439,19 @@ EvoRoom.Mobile = function() {
     if (phase === 0) { // orientation
 
     } else if (phase === 1) { // rotation 1
+      app.hidePageElements();
       jQuery('#participant-instructions .small-button').show();
       jQuery('#guide-instructions-2 .small-button').show();
     
     } else if (phase === 2) { // meetup 1
       app.user.setPhaseData('role','');
 
-      jQuery('#rotation-complete').show();                 // FOR EXTRA TEACHER OVERRIDE (GUIDE ISSUES?) - also 4
-      jQuery('#rotation-complete .small-button').show();
+      app.hidePageElements();
+      app.user.set('user_phase',"meetup_1");
+      app.user.save().done(function() {
+        jQuery('#rotation-complete').show();                 // FOR EXTRA TEACHER OVERRIDE (GUIDE ISSUES?) - also 4
+        jQuery('#rotation-complete .small-button').show();
+      });
 
     } else if (phase === 3) { // rotation 2
       // reenable buttons
@@ -454,19 +459,29 @@ EvoRoom.Mobile = function() {
       app.group.set('notes_completed', [], {silent: true});
       app.group.save(null, {silent: true});
 
+      app.hidePageElements();
       app.user.set('user_phase',"rotation_2");
-      jQuery('#rotation-instructions').show();
-      jQuery('#participant-instructions .small-button').show();
-      jQuery('#guide-instructions-2 .small-button').show();
+      app.user.save().done(function() {
+        jQuery('#rotation-instructions').show();
+        jQuery('#participant-instructions .small-button').show();
+        jQuery('#guide-instructions-2 .small-button').show();        
+      });
 
     } else if (phase === 4) { // meetup 2
-      jQuery('#rotation-complete').show();
-      jQuery('#rotation-complete .small-button').show();
+      app.hidePageElements();
+      app.user.set('user_phase',"meetup_2");
+      app.user.save().done(function() {
+        jQuery('#rotation-complete').show();
+        jQuery('#rotation-complete .small-button').show();        
+      });
 
     } else if (phase === 5) { // explanation
       app.user.set('user_phase',"explanation");
-      jQuery('#explanation-instructions').show();
-      jQuery('#explanation-instructions .small-button').show();
+      app.user.save().done(function() {
+        jQuery('#explanation-instructions').show();
+        jQuery('#explanation-instructions .small-button').show();
+      });
+
       // explanation stuff goes here
       
     } else {
@@ -497,8 +512,9 @@ EvoRoom.Mobile = function() {
     //   });
     // }
 
+    var userPhase = null;
     if (app.user) {
-      var userPhase = app.user.get('user_phase');      
+      userPhase = app.user.get('user_phase');      
     }
     if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
       // if all of the groups notes are completed, move on to the next phase
