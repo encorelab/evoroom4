@@ -527,7 +527,7 @@ EvoRoom.Mobile = function() {
     });
 
     // MOVING TO ROTATION 2 OR EXPLANATION
-    if (app.phase && app.phase.get('phase_number') === 2 && app.phase.get('phase_number') === 4) {
+    if (app.phase && (app.phase.get('phase_number') === 2 || app.phase.get('phase_number') === 4)) {
       if (app.phase && app.group.get('notes_completed') > 2) {
         app.hidePageElements();
         if (app.phase.get('phase_number') === 2) {
