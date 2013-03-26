@@ -303,7 +303,6 @@ window.EvoRoom.Teacher = function () {
         var explanationPhase = app.lookupPhaseDefinitionByName('explanation');
         var currTime = app.phase.get('time');
         var i;
-        var newTime;
         if (!currTime) {
           newTime = explanationPhase.time_periods[0];
           i = 0;
