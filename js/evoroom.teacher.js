@@ -192,7 +192,7 @@ window.EvoRoom.Teacher = function () {
       .removeClass('teacher-button-done');
 
     jQuery('tr.phase-'+phase.get('phase_number')+' button.start-phase')
-      .removeClass('teacher-phase-primed')
+      .removeClass('teacher-phase-primed ready')
       .removeClass('teacher-button-faded')
       .addClass('teacher-button-done');
 
@@ -220,18 +220,31 @@ window.EvoRoom.Teacher = function () {
 
     jQuery('tr.phase-'+phaseDef.number+' .students').append(marker);
 
+    if (_.max(user.get('phases_completed')) > app.phase.get('phase_number')) {
+      marker.addClass('ready');
+    } else {
+      marker.removeClass('ready');
+    }
+
     app.updatePhaseReady();
   };
 
   app.updatePhaseReady = function () {
     jQuery('button.start-phase')
-      .removeClass('teacher-button-primed');
+      .removeClass('teacher-button-primed ready');
 
     if (app.users.length > 0 && app.phase.get('phase_number') < 1) {
       jQuery('.phase-rotation_1 button.start-phase')
         .removeClass('teacher-button-faded')
         .removeClass('teacher-button-done')
-        .addClass('teacher-button-primed');
+        .addClass('teacher-button-primed ready');
+    }
+
+    if (app.users.all(function (u) {return _.contains(u.get('phases_completed'), 1); })) {
+      jQuery('.phase-rotation_1 button.start-phase')
+        .removeClass('teacher-button-faded')
+        .removeClass('teacher-button-done')
+        .addClass('teacher-button-primed ready');
     }
   };
   
