@@ -679,17 +679,17 @@ EvoRoom.Mobile = function() {
     jQuery('#rotation-instructions .participant-button').click(function() {
       var ok = confirm("Do you want to choose to be a participant?");
       if (ok) {
-        if (app.phase.get('phase_number') === 0) {
-          app.markCompleted(0);
-        } else if (app.phase.get('phase_number') === 2) {
-          app.markCompleted(2);
-        } else {
-          console.error('Out of sync (617)');
-        }
+        app.user.setPhaseData('role', 'participant');
+        app.user.setPhaseData('time','');
+        app.user.setPhaseData('assigned_times',[]); 
         app.user.save().done(function() {
-          app.user.setPhaseData('role', 'participant');
-          app.user.setPhaseData('time','');
-          app.user.setPhaseData('assigned_times',[]);          
+          if (app.phase.get('phase_number') === 0) {
+            app.markCompleted(0);
+          } else if (app.phase.get('phase_number') === 2) {
+            app.markCompleted(2);
+          } else {
+            console.error('Out of sync (617)');
+          }
         });
         app.hidePageElements();
         jQuery('#participant-instructions').show();
