@@ -537,7 +537,8 @@ EvoRoom.Mobile = function() {
         if (userPhase === "meetup_1") {
           app.markCompleted(2);
           // app.updateUserHTML();
-          // jQuery('#rotation-instructions').show();
+          //app.hidePageElements();
+          //jQuery('#rotation-instructions').show();
         } else if (userPhase === "meetup_2") {
           app.markCompleted(4);
           //jQuery('#explanation-instructions').show();
@@ -1034,7 +1035,7 @@ EvoRoom.Mobile = function() {
   /************** Helper functions **************/
 
   app.showTimePeriodLandscape = function(time) {
-    jQuery('<div class="organism-image-container">').html('');
+    jQuery('.organism-image-container').html('');
     jQuery('#lookup-text').text("None selected.");
 
     // grab the orgs and org descriptions for Information Lookup guy
