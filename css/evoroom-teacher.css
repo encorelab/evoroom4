@@ -100,7 +100,7 @@ header .hide {
 
 .teacher-dashboard tr.phase > .buttons {
   line-height: 50px;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
 }
 
 .teacher-dashboard tr.phase > .students {
@@ -128,12 +128,14 @@ button:active {
 }
 
 .teacher-button-done {
-  background-color: rgb(64, 179, 79);
-  opacity: 0.5;
+  /*background-color: rgb(64, 179, 79);
+  opacity: 0.5;*/
+
+  display: none;
 }
 
 tr.current .teacher-button-done {
-  opacity: 1.0;
+  /*opacity: 1.0;*/
 }
 
 .teacher-button-primed {
@@ -175,7 +177,7 @@ tr.phase.current th {
   background: gray;
   border-radius: 4px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px;
   margin-right: 5px;
   cursor: pointer;
@@ -184,6 +186,24 @@ tr.phase.current th {
 
 .student.ready:before {
   content: "✓ ";
+}
+
+.phase .objective {
+  text-align: center;
+  color: #999;
+  line-height: 12px;
+  background: rgba(0,0,0,0.5);
+  padding: 8px;
+  border-radius: 10px;
+  margin-right: 48px;
+  max-width: 220px;
+}
+
+.phase .objective .count {
+  color: white;
+  display: block;
+  font-size: 200%;
+  line-height: 100%;
 }
 
 .team-Darwin   { background-color: #001BDB; }
