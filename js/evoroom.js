@@ -605,6 +605,7 @@ EvoRoom.Mobile = function() {
       } else {
         console.error('Unknown meetup_location_2');
       }
+    }
 
 
     // user_phase is complete, but not general phase
