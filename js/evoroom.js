@@ -458,20 +458,20 @@ EvoRoom.Mobile = function() {
       jQuery('#guide-instructions-2 .small-button').hide();      
 
     } else if (phase === 3) { // rotation 2
-      // reenable question buttons
-      jQuery('.question-button').prop('disabled', false);
-      app.group.set('notes_completed', [], {silent: true});
-      app.group.save(null, {silent: true});
-
       app.user.on('change:phase_data',function() {
         if (app.user.get('phase_data').assigned_organisms.length > 0) {
           app.user.set('user_phase','rotation_2');
           jQuery('#participant-instructions .small-button').show();
-          jQuery('#guide-instructions-2 .small-button').show();        
+          jQuery('#guide-instructions-2 .small-button').show();
         }
       });
       app.user.save().done(function() {
-        jQuery('#rotation-instructions').show();
+        // jQuery('#rotation-instructions').show();
+        // reenable question buttons
+        // jQuery('.question-button').prop('disabled', false);
+        app.group.set('notes_completed', [], {silent: true});
+        app.group.save(null, {silent: true});
+        jQuery('#rotation-complete .small-button').hide();
       });
 
     } else if (phase === 4) { // meetup 2
@@ -609,15 +609,21 @@ EvoRoom.Mobile = function() {
 
     // user_phase is complete, but not general phase
     if (userPhase === "meetup_1" && app.group.get('notes_completed').length > 2) {
-    //if (app.user.isPhaseCompleted(2)) {
       jQuery('.time-periods-text').text("25, 10, 5, and 2 mya");
       jQuery('.time-choice-1').text("25 mya");
       jQuery('.time-choice-2').text("10 mya");
       jQuery('.time-choice-3').text("5 mya");
       jQuery('.time-choice-4').text("2 mya");
 
+      app.user.attributes.user_phase = 'rotation_2';
       app.hidePageElements();
       jQuery('#rotation-instructions').show();
+    }
+    else if (userPhase === "meetup_2" && app.group.get('notes_completed').length > 2) {
+      app.markCompleted(4);
+      app.user.attributes.user_phase = 'explanation';
+      app.hidePageElements();
+      jQuery('#explanation-instructions').show();
     }
 
 
@@ -1093,9 +1099,19 @@ EvoRoom.Mobile = function() {
     else {
       if (app.user.get('phase_data').assigned_organisms && app.user.get('phase_data').assigned_organisms.length > 0) {
         if (app.user.get('direction') === "forward") {
-          app.user.setPhaseData('assigned_times', ["200 mya", "150 mya", "100 mya", "50 mya"]);
+          //if (app.user.get('user_phase') === "rotation_1") {
+          if (app.phase.get('phase_number') === 1) {
+            app.user.setPhaseData('assigned_times', ["200 mya", "150 mya", "100 mya", "50 mya"]);
+          } else {
+            app.user.setPhaseData('assigned_times', ["25 mya", "10 mya", "5 mya", "2 mya"]);
+          }
         } else {
-          app.user.setPhaseData('assigned_times', ["50 mya", "100 mya", "150 mya", "200 mya"]);
+          //if (app.user.get('user_phase') === "rotation_2") {
+          if (app.phase.get('phase_number') === 3) {  
+            app.user.setPhaseData('assigned_times', ["50 mya", "100 mya", "150 mya", "200 mya"]);
+          } else {
+            app.user.setPhaseData('assigned_times', ["2 mya", "5 mya", "10 mya", "25 mya"]);
+          }
         }
         // set current org and time
         app.user.setPhaseData('time',app.user.get('phase_data').assigned_times[0]);
