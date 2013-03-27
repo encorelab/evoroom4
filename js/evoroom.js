@@ -102,6 +102,7 @@ EvoRoom.Mobile = function() {
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
+        app.updateUserHTML();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
@@ -115,6 +116,7 @@ EvoRoom.Mobile = function() {
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
+        app.updateUserHTML();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
