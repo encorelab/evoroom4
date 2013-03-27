@@ -895,7 +895,7 @@ EvoRoom.Mobile = function() {
         if (jQuery(ev.target).hasClass('q1-button')) {
           // check if there's already an an finished note, then either set it up or create a new one - this needs to get cleaned up to deal with rot2 at least
           if (app.phase.get('phase_number') === 2) {
-            myNote = app.notes.find(function(n) { return n.get('us rname') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
+            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
           } else if (app.phase.get('phase_number') === 4) {
             myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 4; });
           }
@@ -970,7 +970,9 @@ EvoRoom.Mobile = function() {
           notesCompleted[2] = 3;
           app.group.set('notes_completed',notesCompleted);
         }
-        app.group.save();
+        app.group.save().done(function() {
+          app.user.save();
+        });
         // else gets handled by updateGroupHTML
       });
       jQuery('#meetup-instructions').show();
