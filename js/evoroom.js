@@ -108,6 +108,7 @@ EvoRoom.Mobile = function() {
         console.error('User on rotation 1 but doesnt have a role');
       }
     } else if (app.user.get('user_phase') === "meetup_1") {
+      app.updateUserHTML();
       jQuery('#meetup-instructions').show();
     } else if (app.user.get('user_phase') === "rotation_2") {
       if (app.user.get('phase_data').role === "participant") {
@@ -123,6 +124,7 @@ EvoRoom.Mobile = function() {
         console.error('User on rotation 1 but doesnt have a role');
       }
     } else if (app.user.get('user_phase') === "meetup_2") {
+      app.updateUserHTML();
       jQuery('#meetup-instructions').show();
     } else if (app.user.get('user_phase') === "explanation") {
       jQuery('#explanation-instructions').show();
@@ -466,8 +468,8 @@ EvoRoom.Mobile = function() {
         if (app.user.get('phase_data').assigned_organisms.length > 0) {
           app.user.set('user_phase','rotation_2');
           jQuery('#participant-instructions .small-button').show();
-          jQuery('#guide-instructions-2 .small-button').show();
         }
+        jQuery('#guide-instructions-2 .small-button').show();        
       });
       app.user.save().done(function() {
         // jQuery('#rotation-instructions').show();
@@ -821,7 +823,7 @@ EvoRoom.Mobile = function() {
       app.user.save().done(function() {
         app.setupGuideTable();
         app.clearPageElements();
-        jQuery('#guide-choice').show();        
+        jQuery('#guide-choice').show();
       });
 
     });
@@ -949,10 +951,10 @@ EvoRoom.Mobile = function() {
       }
     });
 
-    jQuery('#note-response .back-button').click(function() {
-      app.hidePageElements();
-      jQuery('#meetup-instructions').show();
-    });
+    // jQuery('#note-response .back-button').click(function() {
+    //   app.hidePageElements();
+    //   jQuery('#meetup-instructions').show();
+    // });
     jQuery('#note-response .done-button').click(function() {
       app.note.set('body',jQuery('#note-response .note-entry').val());
       app.note.set('published',true);
