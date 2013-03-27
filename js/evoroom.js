@@ -101,9 +101,9 @@ EvoRoom.Mobile = function() {
         jQuery('#assigned-organism-container').show();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
-        jQuery('#guide-choice').show();
         app.updateUserHTML();
         app.setupGuideTable();
+        jQuery('#guide-choice').show();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
@@ -116,9 +116,9 @@ EvoRoom.Mobile = function() {
         jQuery('#assigned-organism-container').show();
         jQuery('#organism-presence').show();
       } else if (app.user.get('phase_data').role === "guide") {
-        jQuery('#guide-choice').show();
         app.updateUserHTML();
         app.setupGuideTable();
+        jQuery('#guide-choice').show();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
@@ -529,18 +529,44 @@ EvoRoom.Mobile = function() {
     // }
 
     var userPhase = null;
+    var q1Present = null;
+    var q2Present = null;
+    var q3Present = null;
     if (app.user) {
       userPhase = app.user.get('user_phase');      
     }
-    if (userPhase && (userPhase === "meetup_1" || userPhase === "meetup_2")) {
+    if (userPhase && userPhase === "meetup_1") {
       // if all of the groups notes are completed, move on to the next phase
-      if (app.group.get('notes_completed').length  >= 3) {
-        app.updateUserHTML();   // this will move tablet screens
-        // jQuery('.question-button').prop('disabled', true);
+      if (app.group.get('notes_completed').length  >= 3) {        
+        q1Present = app.notes.any(function(n) { return n.get('phase') === 2 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 1" && n.get('published') === true; });
+        q2Present = app.notes.any(function(n) { return n.get('phase') === 2 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 2" && n.get('published') === true; });
+        q3Present = app.notes.any(function(n) { return n.get('phase') === 2 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 3" && n.get('published') === true; });
+        if (q1Present && q2Present && q3Present) {
+          app.updateUserHTML();   // this will move tablet screens
+        } else {
+          console.log('Not moving yet...');
+        }
       // else not all notes are completed, go back to the 'choose question' screen
       } else if (app.group.get('notes_completed').length < 3) {
         jQuery('#meetup-instructions').show();
       }      
+    } else if (userPhase && userPhase === "meetup_2") {
+      // if all of the groups notes are completed, move on to the next phase
+      if (app.group.get('notes_completed').length  >= 3) {        
+        q1Present = app.notes.any(function(n) { return n.get('phase') === 4 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 1" && n.get('published') === true; });
+        q2Present = app.notes.any(function(n) { return n.get('phase') === 4 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 2" && n.get('published') === true; });
+        q3Present = app.notes.any(function(n) { return n.get('phase') === 4 && n.get('group_name') === app.user.get('group_name') && n.get('question') === "Question 3" && n.get('published') === true; });
+        if (q1Present && q2Present && q3Present) {
+          app.updateUserHTML();   // this will move tablet screens
+        } else {
+          console.log('Not moving yet...');
+        }
+      // else not all notes are completed, go back to the 'choose question' screen
+      } else if (app.group.get('notes_completed').length < 3) {
+        jQuery('#meetup-instructions').show();
+      }
+    } else {
+      console.log('Notes arent complete for this meetup');
     }
 
   };
@@ -786,17 +812,18 @@ EvoRoom.Mobile = function() {
       if (app.phase.get('phase_number') === 1) {
         app.user.set('user_phase','rotation_1');
         app.updateUserHTML();
-        app.user.save();
       } else if (app.phase.get('phase_number') === 3) {
         app.user.set('user_phase','rotation_2');
         app.updateUserHTML();
-        app.user.save();
       } else {
         console.error('Out of sync (648)');
       }
-      app.setupGuideTable();
-      app.clearPageElements();
-      jQuery('#guide-choice').show();
+      app.user.save().done(function() {
+        app.setupGuideTable();
+        app.clearPageElements();
+        jQuery('#guide-choice').show();        
+      })
+
     });
     
 
@@ -868,7 +895,7 @@ EvoRoom.Mobile = function() {
         if (jQuery(ev.target).hasClass('q1-button')) {
           // check if there's already an an finished note, then either set it up or create a new one - this needs to get cleaned up to deal with rot2 at least
           if (app.phase.get('phase_number') === 2) {
-            myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
+            myNote = app.notes.find(function(n) { return n.get('us rname') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 2; });
           } else if (app.phase.get('phase_number') === 4) {
             myNote = app.notes.find(function(n) { return n.get('username') === app.user.get('username') && n.get('question') === "Question 1" && n.get('published') === false && n.get('phase') === 4; });
           }
