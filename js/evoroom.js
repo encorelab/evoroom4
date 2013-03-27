@@ -822,7 +822,7 @@ EvoRoom.Mobile = function() {
         app.setupGuideTable();
         app.clearPageElements();
         jQuery('#guide-choice').show();        
-      })
+      });
 
     });
     

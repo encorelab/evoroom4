@@ -157,10 +157,10 @@ tr.done .objective {
 tr.current .objective {
   display: block;
 }
-
+/*
 tr.current .teacher-button-done {
-  /*opacity: 1.0;*/
-}
+  /*opacity: 1.0;
+}*/
 
 .teacher-button-primed {
   color: #ff4;
