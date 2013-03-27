@@ -103,6 +103,7 @@ EvoRoom.Mobile = function() {
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
         app.updateUserHTML();
+        app.setupGuideTable();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
@@ -117,6 +118,7 @@ EvoRoom.Mobile = function() {
       } else if (app.user.get('phase_data').role === "guide") {
         jQuery('#guide-choice').show();
         app.updateUserHTML();
+        app.setupGuideTable();
       } else {
         console.error('User on rotation 1 but doesnt have a role');
       }
@@ -769,10 +771,10 @@ EvoRoom.Mobile = function() {
           app.markCompleted(2);
           app.markCompleted(3);
         } else {
-          console.error('Out of sync (599)');
-          app.hidePageElements();
-          jQuery('#guide-instructions-2').show();          
+          console.error('Out of sync (599)');       
         }
+        app.hidePageElements();
+        jQuery('#guide-instructions-2').show();
       });
     });    
     jQuery('#guide-instructions-1 .small-button').click(function() {
