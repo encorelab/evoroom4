@@ -106,8 +106,8 @@ var reactToPhaseChange = function (phase) {
 
     // assign all the other species evenly over all the students
 
-    console.log("Resulting user and their assigned organisms");
-    console.log(users_with_assigned_organisms);
+    console.log("Organisms assigned to users now writing into users ...");
+    //console.log(users_with_assigned_organisms);
 
     // write organisms array into users
     users.each(function (user) {
@@ -119,6 +119,7 @@ var reactToPhaseChange = function (phase) {
         user.set('phase_data', phase_data);
         user.wake(config.wakeful.url);
         user.save();
+        console.log('...all users should have assigned organisms now !!!');
       }
     });
   }
