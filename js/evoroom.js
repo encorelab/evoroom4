@@ -624,7 +624,7 @@ EvoRoom.Mobile = function() {
       jQuery('#rotation-instructions').show();
     }
     else if (userPhase === "meetup_2" && app.group.get('notes_completed').length > 2) {
-      app.markCompleted(4);
+    
       app.user.attributes.user_phase = 'explanation';
       app.hidePageElements();
       jQuery('#explanation-instructions').show();
